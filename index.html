@@ -2,323 +2,271 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-  <title>Hockey Legends v1000</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <title>Hockey Legends v2000 Ultimate</title>
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
     :root{
-      --bg1:#07111f;
-      --bg2:#0e1f38;
-      --panel:rgba(8,18,35,.86);
+      --bg0:#040814;
+      --bg1:#0b1738;
+      --panel:rgba(9,18,38,.88);
       --line:rgba(255,255,255,.12);
-      --text:#eff7ff;
-      --sub:#a9c4e8;
+      --text:#edf5ff;
+      --muted:#b9caf6;
       --cyan:#67e8f9;
       --blue:#60a5fa;
       --violet:#a78bfa;
       --green:#34d399;
       --yellow:#fbbf24;
       --red:#fb7185;
-      --shadow:0 18px 60px rgba(0,0,0,.45);
-      --glow:0 0 20px rgba(103,232,249,.35);
-      --radius:22px;
+      --orange:#fb923c;
+      --shadow:0 18px 70px rgba(0,0,0,.5);
     }
-
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
       margin:0;
       width:100%;
       height:100%;
       overflow:hidden;
-      background:
-        radial-gradient(circle at 20% 15%, rgba(96,165,250,.18), transparent 18%),
-        radial-gradient(circle at 80% 10%, rgba(167,139,250,.16), transparent 18%),
-        radial-gradient(circle at 50% 85%, rgba(52,211,153,.10), transparent 24%),
-        linear-gradient(160deg,var(--bg1),var(--bg2));
       color:var(--text);
       font-family:"Segoe UI","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(96,165,250,.14), transparent 20%),
+        radial-gradient(circle at 80% 16%, rgba(167,139,250,.14), transparent 18%),
+        radial-gradient(circle at 50% 84%, rgba(52,211,153,.08), transparent 20%),
+        linear-gradient(160deg,var(--bg0),var(--bg1));
       user-select:none;
     }
-
     .app{
       width:100%;
       height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px;
-    }
-
-    .shell{
-      width:min(1400px,100%);
-      height:min(900px,100%);
+      padding:10px;
       display:grid;
-      grid-template-columns:340px 1fr;
-      gap:14px;
+      grid-template-columns:360px 1fr;
+      gap:12px;
     }
-
     .panel{
       background:var(--panel);
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius:24px;
       box-shadow:var(--shadow);
-      backdrop-filter: blur(12px);
+      backdrop-filter:blur(12px);
     }
-
-    .left{
-      padding:16px;
+    .side{
+      padding:14px;
       overflow:auto;
     }
-
     .title{
       font-size:30px;
       font-weight:900;
-      letter-spacing:.04em;
       margin:0 0 8px;
-      text-shadow:var(--glow);
+      letter-spacing:.03em;
     }
-
-    .subtitle{
+    .sub{
+      color:var(--muted);
       font-size:13px;
-      color:var(--sub);
+      line-height:1.7;
       margin-bottom:14px;
-      line-height:1.6;
     }
-
     .card{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px;
-      margin-bottom:12px;
       background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px;
+      margin-bottom:12px;
     }
-
     .label{
       font-size:12px;
-      color:var(--sub);
+      color:var(--muted);
       margin-bottom:8px;
     }
-
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    .row.wrap{ flex-wrap:wrap; }
-
-    input, select, button{
-      font:inherit;
+    .row{display:flex;gap:8px;align-items:center}
+    .wrap{flex-wrap:wrap}
+    .col{display:flex;flex-direction:column;gap:8px}
+    input,select,button{
       border:none;
       outline:none;
       border-radius:14px;
+      font:inherit;
     }
-
-    input, select{
+    input,select{
       width:100%;
       padding:12px 14px;
       background:rgba(255,255,255,.08);
       color:var(--text);
       border:1px solid rgba(255,255,255,.08);
     }
-
+    option{color:#000}
     button{
       padding:12px 14px;
+      color:#fff;
       font-weight:800;
-      color:white;
       cursor:pointer;
-      transition:.16s transform,.16s opacity,.16s filter,.16s background;
+      transition:.14s transform,.14s filter;
       min-height:46px;
     }
-    button:hover{ transform:translateY(-1px); filter:brightness(1.05); }
-    button:active{ transform:translateY(1px) scale(.985); }
-
-    .btn-main{ background:linear-gradient(135deg,var(--blue),var(--violet)); }
-    .btn-cpu{ background:linear-gradient(135deg,#16a34a,#22c55e); }
-    .btn-online{ background:linear-gradient(135deg,#0284c7,#06b6d4); }
-    .btn-rank{ background:linear-gradient(135deg,#ca8a04,#f59e0b); }
-    .btn-sub{ background:rgba(255,255,255,.08); }
-    .btn-danger{ background:linear-gradient(135deg,#dc2626,#fb7185); }
-    .btn-copy{ background:linear-gradient(135deg,#7c3aed,#a78bfa); }
-
-    .mini{
-      font-size:12px;
-      color:var(--sub);
-      line-height:1.6;
-    }
-
+    button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    button:active{transform:translateY(1px) scale(.985)}
+    .btn-main{background:linear-gradient(135deg,var(--blue),var(--violet))}
+    .btn-cpu{background:linear-gradient(135deg,#16a34a,#22c55e)}
+    .btn-online{background:linear-gradient(135deg,#0284c7,#06b6d4)}
+    .btn-rank{background:linear-gradient(135deg,#ca8a04,#f59e0b)}
+    .btn-sub{background:rgba(255,255,255,.08)}
+    .btn-danger{background:linear-gradient(135deg,#dc2626,#fb7185)}
+    .btn-copy{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+    .btn-skill{background:linear-gradient(135deg,#f97316,#fb7185)}
     .status{
+      min-height:44px;
       padding:10px 12px;
       border-radius:14px;
       background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
       color:var(--text);
       font-size:13px;
-      margin-top:8px;
-      min-height:42px;
-      line-height:1.5;
-      border:1px solid rgba(255,255,255,.08);
+      line-height:1.6;
     }
-
     .main{
       display:grid;
       grid-template-rows:auto 1fr auto;
       gap:12px;
+      min-width:0;
       min-height:0;
     }
-
     .topbar{
+      padding:12px 14px;
       display:flex;
       justify-content:space-between;
-      align-items:center;
-      padding:14px 16px;
-    }
-
-    .top-left,.top-right{
-      display:flex;
-      gap:12px;
-      align-items:center;
+      gap:10px;
       flex-wrap:wrap;
+      align-items:center;
     }
-
+    .pill-wrap{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
     .pill{
       padding:8px 12px;
       border-radius:999px;
       background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.08);
       font-size:13px;
-      color:var(--text);
     }
-
-    .arena-wrap{
+    .arena-panel{
       position:relative;
-      min-height:0;
       padding:12px;
+      min-height:0;
     }
-
     .arena-card{
       width:100%;
       height:100%;
-      position:relative;
-      overflow:hidden;
       border-radius:26px;
-      border:1px solid var(--line);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.1);
       background:
-        radial-gradient(circle at 50% 50%, rgba(103,232,249,.06), transparent 28%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
-        linear-gradient(180deg, #0d1f37, #091527);
-      box-shadow:inset 0 0 40px rgba(103,232,249,.06), var(--shadow);
+        radial-gradient(circle at 50% 50%, rgba(103,232,249,.05), transparent 25%),
+        linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),
+        linear-gradient(180deg,#0c1b33,#07111f);
+      position:relative;
     }
-
     canvas{
       width:100%;
       height:100%;
       display:block;
-      background:transparent;
+      touch-action:none;
     }
-
     .overlay{
       position:absolute;
       inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      pointer-events:none;
+      padding:16px;
+      background:rgba(0,0,0,.18);
     }
-
-    .overlayBox{
-      pointer-events:auto;
-      width:min(740px,92%);
-      background:rgba(6,14,28,.88);
-      border:1px solid rgba(255,255,255,.12);
+    .overlay.hidden{display:none}
+    .overlay-box{
+      width:min(860px,96%);
       border-radius:24px;
       padding:22px;
+      background:rgba(6,14,28,.92);
+      border:1px solid rgba(255,255,255,.12);
       box-shadow:var(--shadow);
-      backdrop-filter: blur(12px);
+      text-align:center;
     }
-
-    .overlayTitle{
+    .overlay-title{
       font-size:30px;
       font-weight:900;
-      text-align:center;
       margin-bottom:10px;
     }
-
-    .overlayText{
-      text-align:center;
-      color:var(--sub);
+    .overlay-text{
+      white-space:pre-line;
+      color:var(--muted);
       line-height:1.8;
       margin-bottom:16px;
-      white-space:pre-line;
     }
-
     .bottom{
-      padding:10px 12px 12px;
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
     }
-
-    .controls-panel,.ranking-panel{
+    .control-panel,.rank-panel{
       padding:12px;
-      min-height:154px;
+      min-height:170px;
     }
-
     .section-title{
       font-size:15px;
-      font-weight:800;
+      font-weight:900;
       margin-bottom:10px;
-      color:#fff;
     }
-
     .control-grid{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:8px;
-      max-width:360px;
+      max-width:480px;
     }
-
-    .touch-btn{
+    .touch{
       min-height:58px;
       font-size:18px;
-      background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(167,139,250,.25));
+      background:linear-gradient(135deg,rgba(96,165,250,.24),rgba(167,139,250,.22));
       border:1px solid rgba(255,255,255,.12);
     }
-
-    .touch-btn.fire{
-      background:linear-gradient(135deg,rgba(251,191,36,.3),rgba(251,113,133,.26));
+    .touch.fire{
+      background:linear-gradient(135deg,rgba(251,191,36,.26),rgba(251,113,133,.22));
     }
-
-    .touch-btn.empty{
-      visibility:hidden;
+    .touch.hiddenbtn{visibility:hidden}
+    .note{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+      margin-top:10px;
     }
-
-    .ranking-list{
-      max-height:110px;
+    .rank-list{
+      max-height:126px;
       overflow:auto;
       display:flex;
       flex-direction:column;
       gap:8px;
     }
-
     .rank-item{
       display:grid;
-      grid-template-columns:44px 1fr auto;
+      grid-template-columns:42px 1fr auto;
       gap:10px;
       align-items:center;
       padding:10px;
       border-radius:14px;
       background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
       font-size:13px;
     }
-
     .rank-no{
-      width:36px;
-      height:36px;
+      width:34px;
+      height:34px;
       border-radius:50%;
       display:flex;
       align-items:center;
@@ -326,406 +274,555 @@
       font-weight:900;
       background:linear-gradient(135deg,var(--blue),var(--violet));
     }
-
-    .menu-grid{
+    .char-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:10px;
+      gap:8px;
     }
-
-    .note{
-      color:var(--sub);
-      font-size:12px;
-      line-height:1.6;
+    .char-btn,.stage-btn{
+      min-height:58px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
     }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:900;
-      background:rgba(52,211,153,.16);
-      color:#b7ffd9;
-      border:1px solid rgba(52,211,153,.2);
+    .char-btn.active,.stage-btn.active{
+      outline:2px solid rgba(103,232,249,.8);
+      background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(167,139,250,.22));
     }
-
-    .hidden{ display:none !important; }
-
-    @media (max-width: 1100px){
-      .shell{
-        grid-template-columns:1fr;
-        grid-template-rows:auto 1fr;
-      }
-      .left{
-        max-height:42vh;
-      }
+    @media (max-width:1100px){
+      .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+      .side{max-height:46vh}
     }
-
-    @media (max-width: 720px){
-      .app{ padding:8px; }
-      .title{ font-size:24px; }
-      .topbar{ padding:10px 12px; }
-      .bottom{ grid-template-columns:1fr; }
-      .menu-grid{ grid-template-columns:1fr; }
-      .overlayTitle{ font-size:24px; }
-      .control-grid{ max-width:none; }
-      .touch-btn{ min-height:64px; font-size:20px; }
+    @media (max-width:720px){
+      .app{padding:8px}
+      .title{font-size:24px}
+      .bottom{grid-template-columns:1fr}
+      .control-grid{max-width:none;grid-template-columns:repeat(4,1fr)}
+      .touch{min-height:64px;font-size:18px}
+      .overlay-title{font-size:24px}
+      .char-grid{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
 <div class="app">
-  <div class="shell">
-    <aside class="panel left">
-      <h1 class="title">🏒 Hockey Legends v1000</h1>
-      <div class="subtitle">
-        GitHub Pages + Firebase 対応の豪華ホッケーアプリ。<br>
-        CPU4段階、ランキング、オンライン対戦、ルームコード、操作説明、スマホ操作まで全部入り。
-      </div>
+  <aside class="panel side">
+    <h1 class="title">🏒 Hockey Legends v2000</h1>
+    <div class="sub">
+      キャラ選択・必殺シュート・再戦・観戦・ステージ選択・効果音つきの強化版。<br>
+      GitHub Pages + Firebase Realtime Database 対応。
+    </div>
 
-      <div class="card">
-        <div class="label">プレイヤー情報</div>
+    <div class="card">
+      <div class="label">プレイヤー情報</div>
+      <div class="col">
         <input id="nicknameInput" maxlength="16" placeholder="ニックネームを入力" />
-        <div style="height:10px"></div>
-        <button class="btn-main" id="saveNickBtn">ニックネーム保存</button>
-        <div class="status" id="authStatus">Firebase初期化中...</div>
+        <button id="saveNickBtn" class="btn-main">ニックネーム保存</button>
       </div>
+      <div style="height:8px"></div>
+      <div class="status" id="authStatus">Firebase初期化中...</div>
+    </div>
 
-      <div class="card">
-        <div class="label">メニュー</div>
-        <div class="menu-grid">
-          <button class="btn-cpu" id="menuCpuBtn">CPU対戦</button>
-          <button class="btn-online" id="menuOnlineBtn">オンライン</button>
-          <button class="btn-rank" id="menuRankBtn">ランキング</button>
-          <button class="btn-sub" id="menuHelpBtn">操作説明</button>
-        </div>
+    <div class="card">
+      <div class="label">キャラ選択</div>
+      <div class="char-grid">
+        <button class="char-btn active" data-char="balanced" id="charBalanced">⚖️ BALANCED</button>
+        <button class="char-btn" data-char="speed" id="charSpeed">⚡ SPEED</button>
+        <button class="char-btn" data-char="power" id="charPower">💥 POWER</button>
+        <button class="char-btn" data-char="tech" id="charTech">🌀 TECH</button>
       </div>
+      <div style="height:8px"></div>
+      <div class="status" id="charStatus">BALANCED: 全体的にバランス型</div>
+    </div>
 
-      <div class="card" id="cpuCard">
-        <div class="label">CPU対戦</div>
-        <div class="row wrap">
-          <button class="btn-cpu" data-diff="0">EASY</button>
-          <button class="btn-cpu" data-diff="1">NORMAL</button>
-          <button class="btn-cpu" data-diff="2">HARD</button>
-          <button class="btn-cpu" data-diff="3">LEGEND</button>
-        </div>
-        <div class="status" id="cpuDesc">EASY: ゆっくり追う / NORMAL: 標準 / HARD: 速い / LEGEND: かなり強い</div>
+    <div class="card">
+      <div class="label">ステージ選択</div>
+      <div class="char-grid">
+        <button class="stage-btn active" data-stage="classic" id="stageClassic">CLASSIC</button>
+        <button class="stage-btn" data-stage="neon" id="stageNeon">NEON</button>
+        <button class="stage-btn" data-stage="lava" id="stageLava">LAVA</button>
+        <button class="stage-btn" data-stage="ice" id="stageIce">ICE</button>
       </div>
+      <div style="height:8px"></div>
+      <div class="status" id="stageStatus">CLASSIC: 標準ステージ</div>
+    </div>
 
-      <div class="card" id="onlineCard">
-        <div class="label">オンライン対戦</div>
-        <button class="btn-online" id="createRoomBtn">ルーム作成</button>
-        <div style="height:10px"></div>
+    <div class="card">
+      <div class="label">メニュー</div>
+      <div class="row wrap">
+        <button id="menuCpuBtn" class="btn-cpu">CPU対戦</button>
+        <button id="menuOnlineBtn" class="btn-online">オンライン</button>
+        <button id="menuWatchBtn" class="btn-online">観戦</button>
+        <button id="menuRankBtn" class="btn-rank">ランキング</button>
+        <button id="menuHelpBtn" class="btn-sub">操作説明</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">CPU対戦 4段階</div>
+      <div class="row wrap">
+        <button class="btn-cpu diffBtn" data-diff="0">EASY</button>
+        <button class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
+        <button class="btn-cpu diffBtn" data-diff="2">HARD</button>
+        <button class="btn-cpu diffBtn" data-diff="3">LEGEND</button>
+      </div>
+      <div style="height:8px"></div>
+      <div class="status">EASY → やさしい / NORMAL → ふつう / HARD → 強い / LEGEND → かなり強い</div>
+    </div>
+
+    <div class="card">
+      <div class="label">オンライン対戦 / 観戦</div>
+      <div class="col">
+        <button id="createRoomBtn" class="btn-online">ルーム作成</button>
         <div class="row">
           <input id="roomCodeInput" maxlength="6" placeholder="ルームコード6文字" />
-          <button class="btn-online" id="joinRoomBtn">参加</button>
+          <button id="joinRoomBtn" class="btn-online">参加</button>
         </div>
-        <div style="height:10px"></div>
         <div class="row">
-          <input id="currentRoomCode" readonly placeholder="作成したルームコード" />
-          <button class="btn-copy" id="copyRoomBtn">コピー</button>
+          <input id="watchCodeInput" maxlength="6" placeholder="観戦コード6文字" />
+          <button id="watchRoomBtn" class="btn-online">観戦</button>
         </div>
-        <div class="status" id="onlineStatus">まだルームに入っていません。</div>
-      </div>
-
-      <div class="card">
-        <div class="label">ミニ説明</div>
-        <div class="mini">
-          ・PC: W/S で上下、Dでダッシュ<br>
-          ・スマホ: 下の操作ボタンを使用<br>
-          ・先に <b>5点</b> 取った方が勝ち<br>
-          ・オンラインはホスト側が試合進行を管理
+        <div class="row">
+          <input id="currentRoomCode" readonly placeholder="作成されたルームコード" />
+          <button id="copyRoomBtn" class="btn-copy">コピー</button>
         </div>
       </div>
+      <div style="height:8px"></div>
+      <div class="status" id="onlineStatus">まだルームに入っていません。</div>
+    </div>
 
-      <div class="card">
-        <div class="label">管理</div>
-        <div class="row wrap">
-          <button class="btn-sub" id="backMenuBtn">メニュー表示</button>
-          <button class="btn-danger" id="leaveRoomBtn">ルーム退出</button>
-          <button class="btn-sub" id="resetOverlayBtn">演出を閉じる</button>
-        </div>
+    <div class="card">
+      <div class="label">管理</div>
+      <div class="row wrap">
+        <button id="backMenuBtn" class="btn-sub">メニュー表示</button>
+        <button id="leaveRoomBtn" class="btn-danger">ルーム退出</button>
+        <button id="closeOverlayBtn" class="btn-sub">案内を閉じる</button>
+        <button id="rematchBtn" class="btn-main">再戦</button>
       </div>
-    </aside>
+    </div>
 
-    <main class="main">
-      <div class="panel topbar">
-        <div class="top-left">
-          <div class="pill">モード: <span id="modeLabel">MENU</span></div>
-          <div class="pill">プレイヤー: <span id="nickLabel">Guest</span></div>
-          <div class="pill">状態: <span id="stateLabel">待機中</span></div>
-        </div>
-        <div class="top-right">
-          <div class="pill">あなた <span id="scorePlayer">0</span></div>
-          <div class="pill">相手 <span id="scoreEnemy">0</span></div>
-          <div class="pill"><span class="badge" id="firebaseBadge">Firebase接続待ち</span></div>
-        </div>
+    <div class="card">
+      <div class="label">操作まとめ</div>
+      <div class="status">
+        PC: W/S または ↑/↓ で移動、Dでダッシュ、Fで必殺、Spaceで開始/再開<br>
+        スマホ: ▲▼ と DASH と SKILL と START を使う
       </div>
+    </div>
+  </aside>
 
-      <div class="panel arena-wrap">
-        <div class="arena-card">
-          <canvas id="gameCanvas" width="1280" height="720"></canvas>
+  <main class="main">
+    <div class="panel topbar">
+      <div class="pill-wrap">
+        <div class="pill">モード: <span id="modeLabel">MENU</span></div>
+        <div class="pill">プレイヤー: <span id="nickLabel">Guest</span></div>
+        <div class="pill">状態: <span id="stateLabel">待機中</span></div>
+        <div class="pill">キャラ: <span id="charLabel">BALANCED</span></div>
+        <div class="pill">ステージ: <span id="stageLabel">CLASSIC</span></div>
+      </div>
+      <div class="pill-wrap">
+        <div class="pill">あなた <span id="scorePlayer">0</span></div>
+        <div class="pill">相手 <span id="scoreEnemy">0</span></div>
+        <div class="pill">必殺ゲージ <span id="skillGaugeLabel">100%</span></div>
+        <div class="pill">接続 <span id="firebaseState">確認中</span></div>
+      </div>
+    </div>
 
-          <div class="overlay" id="overlay">
-            <div class="overlayBox">
-              <div class="overlayTitle" id="overlayTitle">Hockey Legends v1000</div>
-              <div class="overlayText" id="overlayText">
-メニューからモードを選んでください。
+    <div class="panel arena-panel">
+      <div class="arena-card">
+        <canvas id="gameCanvas" width="1280" height="720"></canvas>
 
-【収録モード】
-・CPU対戦 4段階
-・オンライン対戦
-・ランキング
-・操作説明
-
-勝利演出やスマホ操作にも対応しています。
-              </div>
-              <div class="row wrap" style="justify-content:center">
-                <button class="btn-cpu" id="overlayCpuBtn">CPU対戦へ</button>
-                <button class="btn-online" id="overlayOnlineBtn">オンラインへ</button>
-                <button class="btn-rank" id="overlayRankBtn">ランキング</button>
-                <button class="btn-sub" id="overlayHelpBtn">操作説明</button>
-              </div>
+        <div id="overlay" class="overlay">
+          <div class="overlay-box">
+            <div id="overlayTitle" class="overlay-title">Hockey Legends v2000</div>
+            <div id="overlayText" class="overlay-text">メニューからモードを選んでください。</div>
+            <div class="row wrap" style="justify-content:center">
+              <button id="overlayCpuBtn" class="btn-cpu">CPU対戦へ</button>
+              <button id="overlayOnlineBtn" class="btn-online">オンラインへ</button>
+              <button id="overlayWatchBtn" class="btn-online">観戦へ</button>
+              <button id="overlayRankBtn" class="btn-rank">ランキング</button>
+              <button id="overlayHelpBtn" class="btn-sub">操作説明</button>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="bottom">
-        <div class="panel controls-panel">
-          <div class="section-title">スマホ操作</div>
-          <div class="control-grid">
-            <button class="touch-btn empty"> </button>
-            <button class="touch-btn" id="touchUp">▲</button>
-            <button class="touch-btn empty"> </button>
+    <div class="bottom">
+      <div class="panel control-panel">
+        <div class="section-title">スマホ操作</div>
+        <div class="control-grid">
+          <button class="touch hiddenbtn"></button>
+          <button class="touch" id="touchUp">▲</button>
+          <button class="touch hiddenbtn"></button>
+          <button class="touch fire" id="touchStart">START</button>
 
-            <button class="touch-btn" id="touchDash">DASH</button>
-            <button class="touch-btn fire" id="touchStart">START</button>
-            <button class="touch-btn" id="touchPause">PAUSE</button>
+          <button class="touch" id="touchDash">DASH</button>
+          <button class="touch fire" id="touchSkill">SKILL</button>
+          <button class="touch" id="touchPause">PAUSE</button>
+          <button class="touch hiddenbtn"></button>
 
-            <button class="touch-btn empty"> </button>
-            <button class="touch-btn" id="touchDown">▼</button>
-            <button class="touch-btn empty"> </button>
-          </div>
-          <div style="height:10px"></div>
-          <div class="note">
-            PC操作: W/S で上下、Dで一瞬加速、Spaceで開始/再開<br>
-            スマホ操作: ▲▼で移動、DASHで加速、STARTで開始
-          </div>
+          <button class="touch hiddenbtn"></button>
+          <button class="touch" id="touchDown">▼</button>
+          <button class="touch hiddenbtn"></button>
+          <button class="touch hiddenbtn"></button>
         </div>
+        <div class="note">
+          先に5点取ったら勝利。<br>
+          必殺ゲージが100%のとき SKILL で超加速シュート。<br>
+          オンラインはホストが試合進行を管理。観戦は見るだけ。
+        </div>
+      </div>
 
-        <div class="panel ranking-panel">
-          <div class="section-title">ランキング TOP10</div>
-          <div class="ranking-list" id="rankingList">
-            <div class="rank-item"><div class="rank-no">-</div><div>読み込み中...</div><div>0</div></div>
+      <div class="panel rank-panel">
+        <div class="section-title">ランキング TOP10</div>
+        <div id="rankingList" class="rank-list">
+          <div class="rank-item">
+            <div class="rank-no">-</div>
+            <div>読み込み中...</div>
+            <div>0</div>
           </div>
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 </div>
 
 <script>
-/* =========================
-   Firebase設定
-   ========================= */
+/* =========================================================
+   Firebase 設定
+   ========================================================= */
 const firebaseConfig = {
-  apiKey: "ここを自分の値にする",
-  authDomain: "ここを自分の値にする",
-  databaseURL: "ここを自分の値にする",
-  projectId: "ここを自分の値にする",
-  storageBucket: "ここを自分の値にする",
-  messagingSenderId: "ここを自分の値にする",
-  appId: "ここを自分の値にする"
+  apiKey: "AIzaSyDeGktS_P7lpb66TI5ZV3lZrRfvib0X3tM",
+  authDomain: "hockey-16e69.firebaseapp.com",
+  databaseURL: "https://hockey-16e69-default-rtdb.firebaseio.com",
+  projectId: "hockey-16e69",
+  storageBucket: "hockey-16e69.firebasestorage.app",
+  messagingSenderId: "215845448303",
+  appId: "1:215845448303:web:59d2492f6b8e3099c63b9a"
 };
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-/* =========================
-   ユーティリティ
-   ========================= */
+/* =========================================================
+   便利関数
+   ========================================================= */
 const $ = (id) => document.getElementById(id);
-const rand = (a, b) => Math.random() * (b - a) + a;
-const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+const rand = (a,b) => Math.random() * (b - a) + a;
 
-function makeRoomCode() {
+function makeCode(){
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let s = "";
-  for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
   return s;
 }
-
-function now() {
-  return Date.now();
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
 }
 
-/* =========================
-   状態
-   ========================= */
-const app = {
-  uid: null,
-  nickname: localStorage.getItem("hockey_nickname") || "Guest",
-  mode: "menu", // menu, cpu, online, ranking, help
-  gameState: "idle", // idle, playing, ended, paused
-  cpuLevel: 0,
-  onlineRole: null, // host, guest
-  roomCode: "",
-  roomRef: null,
-  roomListener: null,
-  roomMetaListener: null,
-  localInputY: 0,
-  localDash: false,
-  mobileHoldUp: false,
-  mobileHoldDown: false,
-  mobileHoldDash: false,
-  keys: {},
-  overlayOpen: true,
-  lastTime: 0,
-  particles: [],
-  lastOnlinePush: 0,
-  hostTickMs: 1000 / 60
+/* =========================================================
+   効果音
+   ========================================================= */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){
+    audioCtx = new AudioCtx();
+  }
+  if(audioCtx.state === "suspended") audioCtx.resume();
+}
+function beep(freq=440, duration=0.08, type="sine", gain=0.03, glideTo=null){
+  try{
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    if(glideTo){
+      osc.frequency.exponentialRampToValueAtTime(glideTo, audioCtx.currentTime + duration);
+    }
+    g.gain.setValueAtTime(gain, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    osc.connect(g);
+    g.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }catch(e){}
+}
+function sfxHit(){ beep(420,0.05,"square",0.02,320); }
+function sfxGoal(){ beep(680,0.09,"sawtooth",0.04,900); setTimeout(()=>beep(880,0.11,"triangle",0.04,1200),70); }
+function sfxLose(){ beep(220,0.15,"sawtooth",0.04,130); }
+function sfxWin(){ beep(660,0.08,"triangle",0.04,900); setTimeout(()=>beep(880,0.09,"triangle",0.04,1200),90); setTimeout(()=>beep(1320,0.12,"triangle",0.04,1500),180); }
+function sfxSkill(){ beep(300,0.08,"sawtooth",0.04,1200); setTimeout(()=>beep(1100,0.10,"square",0.03,1700),60); }
+function sfxMenu(){ beep(500,0.05,"triangle",0.02,700); }
+
+/* =========================================================
+   キャラ / ステージ
+   ========================================================= */
+const CHARACTERS = {
+  balanced:{
+    name:"BALANCED",
+    speed:8.0,
+    dash:1.35,
+    radius:34,
+    skillPower:20,
+    skillCurve:0,
+    color:"#67e8f9",
+    enemyColor:"#fb7185",
+    desc:"BALANCED: 全体的にバランス型"
+  },
+  speed:{
+    name:"SPEED",
+    speed:9.2,
+    dash:1.52,
+    radius:31,
+    skillPower:18,
+    skillCurve:0.6,
+    color:"#34d399",
+    enemyColor:"#fb7185",
+    desc:"SPEED: 移動とダッシュが速い"
+  },
+  power:{
+    name:"POWER",
+    speed:7.2,
+    dash:1.28,
+    radius:37,
+    skillPower:26,
+    skillCurve:0,
+    color:"#f97316",
+    enemyColor:"#fb7185",
+    desc:"POWER: 当たりと必殺が強い"
+  },
+  tech:{
+    name:"TECH",
+    speed:8.0,
+    dash:1.33,
+    radius:33,
+    skillPower:19,
+    skillCurve:1.2,
+    color:"#a78bfa",
+    enemyColor:"#fb7185",
+    desc:"TECH: 曲がる必殺が得意"
+  }
 };
 
-$("nicknameInput").value = app.nickname;
-$("nickLabel").textContent = app.nickname;
+const STAGES = {
+  classic:{
+    name:"CLASSIC",
+    desc:"CLASSIC: 標準ステージ",
+    bgTop:"#0c1b33",
+    bgBottom:"#07111f",
+    glowLeft:"rgba(251,113,133,.14)",
+    glowRight:"rgba(103,232,249,.14)",
+    friction:0.998
+  },
+  neon:{
+    name:"NEON",
+    desc:"NEON: 発光が強い近未来ステージ",
+    bgTop:"#120b29",
+    bgBottom:"#07111f",
+    glowLeft:"rgba(251,113,133,.22)",
+    glowRight:"rgba(167,139,250,.24)",
+    friction:0.999
+  },
+  lava:{
+    name:"LAVA",
+    desc:"LAVA: 速い展開の高熱ステージ",
+    bgTop:"#3a130a",
+    bgBottom:"#12060a",
+    glowLeft:"rgba(251,113,133,.24)",
+    glowRight:"rgba(251,191,36,.22)",
+    friction:0.9993
+  },
+  ice:{
+    name:"ICE",
+    desc:"ICE: 滑りやすい高速ステージ",
+    bgTop:"#0c2336",
+    bgBottom:"#08121a",
+    glowLeft:"rgba(96,165,250,.18)",
+    glowRight:"rgba(103,232,249,.20)",
+    friction:0.9996
+  }
+};
 
-/* =========================
-   ゲーム設定
-   ========================= */
+/* =========================================================
+   アプリ状態
+   ========================================================= */
+const APP = {
+  uid: null,
+  nickname: localStorage.getItem("hockey_nickname") || "Guest",
+  mode: "menu",        // menu cpu online ranking help watch
+  gameState: "idle",   // idle playing paused ended
+  overlayVisible: true,
+
+  roomCode: "",
+  onlineRole: null,    // host guest spectator
+  roomRef: null,
+  roomCache: null,
+
+  keys: {},
+  mobile: { up:false, down:false, dash:false, skill:false },
+  lastRoomInputPush: 0,
+  lastFrameTs: 0,
+
+  selectedChar: localStorage.getItem("hockey_char") || "balanced",
+  selectedStage: localStorage.getItem("hockey_stage") || "classic",
+  waitingRematch: false
+};
+
+$("nicknameInput").value = APP.nickname;
+$("nickLabel").textContent = APP.nickname;
+
+/* =========================================================
+   ゲーム定数
+   ========================================================= */
 const canvas = $("gameCanvas");
 const ctx = canvas.getContext("2d");
-
 const W = canvas.width;
 const H = canvas.height;
 const GOAL_H = 220;
 const WIN_SCORE = 5;
 
-const difficultyTable = [
-  { name: "EASY",   speed: 4.2, react: 0.08, dash: 1.10 },
-  { name: "NORMAL", speed: 5.6, react: 0.11, dash: 1.14 },
-  { name: "HARD",   speed: 7.2, react: 0.15, dash: 1.18 },
-  { name: "LEGEND", speed: 8.8, react: 0.21, dash: 1.24 }
+const DIFF = [
+  { name:"EASY",   speed:4.0, react:0.07, dash:1.08, skillUse:0.04 },
+  { name:"NORMAL", speed:5.3, react:0.11, dash:1.12, skillUse:0.08 },
+  { name:"HARD",   speed:6.8, react:0.16, dash:1.18, skillUse:0.13 },
+  { name:"LEGEND", speed:8.4, react:0.22, dash:1.24, skillUse:0.18 }
 ];
 
-const game = {
-  player: { x: 120, y: H / 2, r: 34, vy: 0, color: "#67e8f9", dashCooldown: 0 },
-  enemy:  { x: W - 120, y: H / 2, r: 34, vy: 0, color: "#fb7185", dashCooldown: 0 },
-  puck:   { x: W / 2, y: H / 2, r: 18, vx: 0, vy: 0, lastTouch: "none" },
+const GAME = {
+  cpuLevel: 0,
+  player: { x:120, y:H/2, r:34, vy:0, color:"#67e8f9", skillGauge:100, skillActive:0, char:"balanced" },
+  enemy:  { x:W-120, y:H/2, r:34, vy:0, color:"#fb7185", skillGauge:100, skillActive:0, char:"balanced" },
+  puck:   { x:W/2, y:H/2, r:18, vx:0, vy:0, lastTouch:"none", trail:[] },
   scorePlayer: 0,
   scoreEnemy: 0,
+  message: "START",
   countdown: 0,
   winner: null,
-  flash: 0,
-  message: "START"
+  particles: [],
+  shockwaves: [],
+  rematchVotes: { host:false, guest:false }
 };
 
-function resetPositions(direction = 1) {
-  game.player.x = 120;
-  game.player.y = H / 2;
-  game.player.vy = 0;
-  game.player.dashCooldown = 0;
-
-  game.enemy.x = W - 120;
-  game.enemy.y = H / 2;
-  game.enemy.vy = 0;
-  game.enemy.dashCooldown = 0;
-
-  game.puck.x = W / 2;
-  game.puck.y = H / 2;
-  game.puck.vx = 7 * direction;
-  game.puck.vy = rand(-3.5, 3.5);
-  game.puck.lastTouch = "none";
-
-  game.countdown = 60;
-  game.winner = null;
-  game.flash = 0;
+/* =========================================================
+   UI更新
+   ========================================================= */
+function updateScoreUI(){
+  $("scorePlayer").textContent = GAME.scorePlayer;
+  $("scoreEnemy").textContent = GAME.scoreEnemy;
 }
-
-function fullReset(direction = Math.random() < 0.5 ? -1 : 1) {
-  game.scorePlayer = 0;
-  game.scoreEnemy = 0;
-  resetPositions(direction);
-  updateScoreUI();
+function setModeLabel(v){ $("modeLabel").textContent = v; }
+function setStateLabel(v){ $("stateLabel").textContent = v; }
+function setAuthStatus(v){ $("authStatus").textContent = v; }
+function setOnlineStatus(v){ $("onlineStatus").textContent = v; }
+function updateSkillLabel(){
+  $("skillGaugeLabel").textContent = Math.round(GAME.player.skillGauge) + "%";
 }
-
-fullReset();
-
-/* =========================
-   UI
-   ========================= */
-function setAuthStatus(msg) {
-  $("authStatus").textContent = msg;
-}
-function setOnlineStatus(msg) {
-  $("onlineStatus").textContent = msg;
-}
-function setStateLabel(msg) {
-  $("stateLabel").textContent = msg;
-}
-function setModeLabel(msg) {
-  $("modeLabel").textContent = msg;
-}
-function updateScoreUI() {
-  $("scorePlayer").textContent = game.scorePlayer;
-  $("scoreEnemy").textContent = game.scoreEnemy;
-}
-
-function showOverlay(title, text, keep = true) {
-  app.overlayOpen = keep;
+function showOverlay(title,text){
+  APP.overlayVisible = true;
   $("overlay").classList.remove("hidden");
   $("overlayTitle").textContent = title;
   $("overlayText").textContent = text;
 }
-
-function hideOverlay() {
-  app.overlayOpen = false;
+function hideOverlay(){
+  APP.overlayVisible = false;
   $("overlay").classList.add("hidden");
 }
-
-function updateNicknameUI() {
-  $("nickLabel").textContent = app.nickname;
-  $("nicknameInput").value = app.nickname;
-}
-
-function setMode(mode) {
-  app.mode = mode;
+function setMode(mode){
+  APP.mode = mode;
   setModeLabel(mode.toUpperCase());
 }
+function updateCharacterUI(){
+  Object.keys(CHARACTERS).forEach(key=>{
+    document.querySelector(`[data-char="${key}"]`).classList.toggle("active", APP.selectedChar === key);
+  });
+  $("charStatus").textContent = CHARACTERS[APP.selectedChar].desc;
+  $("charLabel").textContent = CHARACTERS[APP.selectedChar].name;
+}
+function updateStageUI(){
+  Object.keys(STAGES).forEach(key=>{
+    document.querySelector(`[data-stage="${key}"]`).classList.toggle("active", APP.selectedStage === key);
+  });
+  $("stageStatus").textContent = STAGES[APP.selectedStage].desc;
+  $("stageLabel").textContent = STAGES[APP.selectedStage].name;
+}
 
-/* =========================
-   Firebase認証
-   ========================= */
+/* =========================================================
+   初期化
+   ========================================================= */
+function applyPlayerCharacter(){
+  const c = CHARACTERS[APP.selectedChar];
+  GAME.player.char = APP.selectedChar;
+  GAME.player.r = c.radius;
+  GAME.player.color = c.color;
+}
+function applyEnemyCharacter(charKey){
+  const c = CHARACTERS[charKey] || CHARACTERS.balanced;
+  GAME.enemy.char = charKey;
+  GAME.enemy.r = c.radius;
+  GAME.enemy.color = c.enemyColor || "#fb7185";
+}
+function resetPositions(dir = Math.random() < 0.5 ? -1 : 1){
+  GAME.player.y = H/2;
+  GAME.enemy.y = H/2;
+  GAME.player.vy = 0;
+  GAME.enemy.vy = 0;
+  GAME.player.skillActive = 0;
+  GAME.enemy.skillActive = 0;
+  GAME.puck.x = W/2;
+  GAME.puck.y = H/2;
+  GAME.puck.vx = 7 * dir;
+  GAME.puck.vy = rand(-3.5, 3.5);
+  GAME.puck.lastTouch = "none";
+  GAME.puck.trail = [];
+  GAME.countdown = 60;
+}
+function fullReset(){
+  applyPlayerCharacter();
+  GAME.scorePlayer = 0;
+  GAME.scoreEnemy = 0;
+  GAME.message = "START";
+  GAME.winner = null;
+  GAME.particles = [];
+  GAME.shockwaves = [];
+  GAME.player.skillGauge = 100;
+  GAME.enemy.skillGauge = 100;
+  resetPositions();
+  updateScoreUI();
+  updateSkillLabel();
+}
+
+/* =========================================================
+   Firebase 認証
+   ========================================================= */
 auth.signInAnonymously()
   .then(() => {
-    setAuthStatus("匿名認証に成功しました。");
-    $("firebaseBadge").textContent = "Firebase接続OK";
+    $("firebaseState").textContent = "OK";
   })
-  .catch((err) => {
+  .catch(err => {
     console.error(err);
-    setAuthStatus("匿名認証に失敗: Authentication の匿名認証を有効化してください。");
-    $("firebaseBadge").textContent = "認証失敗";
+    $("firebaseState").textContent = "失敗";
+    setAuthStatus("匿名認証に失敗しました。Firebase Authentication の『匿名』を有効にしてください。");
   });
 
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    app.uid = user.uid;
-    setAuthStatus(`ログイン中: ${user.uid.slice(0, 8)}...`);
-    fetchRanking();
-  }
+auth.onAuthStateChanged(user => {
+  if(!user) return;
+  APP.uid = user.uid;
+  setAuthStatus("匿名認証に成功しました。UID: " + user.uid.slice(0,8) + "...");
+  fetchRanking();
 });
 
-/* =========================
+/* =========================================================
    ランキング
-   ========================= */
-async function submitWin(modeName) {
-  if (!app.uid) return;
-  const safeName = (app.nickname || "Guest").slice(0, 16);
-  const ref = db.ref("rankings/" + app.uid);
+   ========================================================= */
+async function submitWin(modeName){
+  if(!APP.uid) return;
+  const safeName = (APP.nickname || "Guest").slice(0,16);
+  const ref = db.ref("rankings/" + APP.uid);
   const snap = await ref.once("value");
   const prev = snap.val() || {
     name: safeName,
@@ -734,7 +831,6 @@ async function submitWin(modeName) {
     onlineWins: 0,
     updatedAt: 0
   };
-
   const next = {
     name: safeName,
     score: (prev.score || 0) + 1,
@@ -745,771 +841,846 @@ async function submitWin(modeName) {
   await ref.set(next);
   fetchRanking();
 }
-
-async function fetchRanking() {
-  try {
-    const snap = await db.ref("rankings").orderByChild("score").limitToLast(10).once("value");
+async function fetchRanking(){
+  try{
+    const snap = await db.ref("rankings").once("value");
     const obj = snap.val() || {};
     const arr = Object.values(obj).sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,10);
     const list = $("rankingList");
     list.innerHTML = "";
-    if (!arr.length) {
+    if(!arr.length){
       list.innerHTML = `<div class="rank-item"><div class="rank-no">-</div><div>まだデータがありません</div><div>0</div></div>`;
       return;
     }
-    arr.forEach((item, i) => {
-      const el = document.createElement("div");
-      el.className = "rank-item";
-      el.innerHTML = `
+    arr.forEach((r,i)=>{
+      const div = document.createElement("div");
+      div.className = "rank-item";
+      div.innerHTML = `
         <div class="rank-no">${i+1}</div>
         <div>
-          <div style="font-weight:800">${escapeHtml(item.name || "Guest")}</div>
-          <div style="font-size:12px;color:#a9c4e8">CPU:${item.cpuWins||0} / ONLINE:${item.onlineWins||0}</div>
+          <div style="font-weight:900">${escapeHtml(r.name || "Guest")}</div>
+          <div style="font-size:12px;color:#b7c8f4">CPU:${r.cpuWins||0} / ONLINE:${r.onlineWins||0}</div>
         </div>
-        <div style="font-weight:900">${item.score||0}</div>
-      `;
-      list.appendChild(el);
+        <div style="font-weight:900">${r.score||0}</div>`;
+      list.appendChild(div);
     });
-  } catch (e) {
+  }catch(e){
     console.error(e);
   }
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-}
-
-/* =========================
-   メニュー系
-   ========================= */
-function goMenu() {
+/* =========================================================
+   メニュー
+   ========================================================= */
+function goMenu(){
   setMode("menu");
-  app.gameState = "idle";
+  APP.gameState = "idle";
+  APP.waitingRematch = false;
   setStateLabel("待機中");
   showOverlay(
-    "Hockey Legends v1000",
+    "Hockey Legends v2000",
 `メニューからモードを選んでください。
 
-【収録モード】
-・CPU対戦 4段階
-・オンライン対戦（ルームコード）
-・ランキング
-・操作説明
+【追加機能】
+・キャラ選択
+・必殺シュート
+・再戦
+・観戦
+・ステージ選択
+・効果音
 
-先に ${WIN_SCORE} 点取ると勝利です。`
+先に 5 点取ると勝利です。`
   );
 }
-
-function goHelp() {
+function goHelp(){
   setMode("help");
-  app.gameState = "idle";
+  APP.gameState = "idle";
   showOverlay(
     "操作説明",
 `【PC】
-W / S : 上下移動
+W / S または ↑ / ↓ : 移動
 D : ダッシュ
+F : 必殺シュート
 Space : 開始 / 再開
 
 【スマホ】
-▲ / ▼ : 上下移動
+▲ / ▼ : 移動
 DASH : ダッシュ
-START : 試合開始
+SKILL : 必殺
+START : 開始
 
 【ルール】
-・先に ${WIN_SCORE} 点で勝利
-・ゴール中央にパックを入れると得点
-・オンラインはホストが物理演算を管理`
+・先に 5 点で勝利
+・中央のゴールにパックを入れると得点
+・オンラインはホストが試合進行を管理
+・観戦は見るだけです`
   );
 }
-
-function goRanking() {
+function goRanking(){
   setMode("ranking");
-  app.gameState = "idle";
+  APP.gameState = "idle";
   fetchRanking();
   showOverlay(
     "ランキング",
-`右下にランキング一覧が表示されています。
+`右下にランキング一覧が出ています。
 
-勝利数に応じてランキングへ反映されます。
-CPU勝利もオンライン勝利も記録されます。`
+CPU勝利・オンライン勝利ともに記録されます。`
   );
 }
-
-function startCpu(level) {
-  app.cpuLevel = level;
+function goWatchInfo(){
+  setMode("watch");
+  APP.gameState = "idle";
+  showOverlay("観戦", "左の観戦コード入力欄にルームコードを入れて観戦してください。");
+}
+function startCPU(level){
+  leaveRoomSilently();
+  GAME.cpuLevel = level;
+  applyEnemyCharacter("balanced");
   setMode("cpu");
-  app.onlineRole = null;
-  app.roomCode = "";
+  APP.gameState = "playing";
+  APP.waitingRematch = false;
+  setStateLabel("CPU対戦 " + DIFF[level].name);
+  fullReset();
+  hideOverlay();
+  sfxMenu();
+}
+
+/* =========================================================
+   オンライン部屋
+   ========================================================= */
+function detachRoom(){
+  if(APP.roomRef) APP.roomRef.off();
+  APP.roomRef = null;
+  APP.roomCache = null;
+}
+function leaveRoomSilently(){
+  if(APP.roomRef) APP.roomRef.off();
+  APP.roomRef = null;
+  APP.roomCache = null;
+  APP.roomCode = "";
+  APP.onlineRole = null;
   $("currentRoomCode").value = "";
-  app.gameState = "playing";
-  setStateLabel(`CPU対戦 ${difficultyTable[level].name}`);
-  fullReset(Math.random() < 0.5 ? -1 : 1);
-  hideOverlay();
 }
-
-function startOnlineHost(code) {
-  setMode("online");
-  app.onlineRole = "host";
-  app.roomCode = code;
-  $("currentRoomCode").value = code;
-  app.gameState = "playing";
-  setStateLabel("オンライン対戦 ホスト");
-  fullReset(Math.random() < 0.5 ? -1 : 1);
-  hideOverlay();
-}
-
-function startOnlineGuest(code) {
-  setMode("online");
-  app.onlineRole = "guest";
-  app.roomCode = code;
-  $("currentRoomCode").value = code;
-  app.gameState = "playing";
-  setStateLabel("オンライン対戦 ゲスト");
-  hideOverlay();
-}
-
-/* =========================
-   オンライン対戦
-   ホストが試合進行を管理
-   ========================= */
-function cleanupRoomListeners() {
-  if (app.roomRef) {
-    app.roomRef.off();
-  }
-  app.roomRef = null;
-}
-
-async function createRoom() {
-  if (!app.uid) {
+async function createRoom(){
+  if(!APP.uid){
     setOnlineStatus("まだFirebase認証中です。少し待ってください。");
     return;
   }
-
-  let code = makeRoomCode();
-  let ref = db.ref("rooms/" + code);
-  let snap = await ref.once("value");
-  while (snap.exists()) {
-    code = makeRoomCode();
-    ref = db.ref("rooms/" + code);
-    snap = await ref.once("value");
+  leaveRoomSilently();
+  let code = makeCode();
+  let snap = await db.ref("rooms/" + code).once("value");
+  while(snap.exists()){
+    code = makeCode();
+    snap = await db.ref("rooms/" + code).once("value");
   }
-
-  const payload = {
+  const ref = db.ref("rooms/" + code);
+  await ref.set({
     code,
-    hostUid: app.uid,
-    hostName: app.nickname,
-    guestUid: null,
-    guestName: null,
-    status: "waiting",
-    createdAt: firebase.database.ServerValue.TIMESTAMP,
-    hostInputY: H / 2,
-    guestInputY: H / 2,
-    hostDash: false,
-    guestDash: false,
-    game: {
-      playerY: H / 2,
-      enemyY: H / 2,
-      puckX: W / 2,
-      puckY: H / 2,
-      puckVX: 6,
-      puckVY: 2,
-      scorePlayer: 0,
-      scoreEnemy: 0,
-      winner: "",
-      message: "READY"
-    }
-  };
+    status:"waiting",
+    hostUid:APP.uid,
+    hostName:APP.nickname,
+    guestUid:null,
+    guestName:null,
+    hostChar:APP.selectedChar,
+    guestChar:"balanced",
+    stage:APP.selectedStage,
+    hostInput:{ y:H/2, dash:false, skill:false },
+    guestInput:{ y:H/2, dash:false, skill:false },
+    rematchVotes:{ host:false, guest:false },
+    game:{
+      playerY:H/2,
+      enemyY:H/2,
+      puckX:W/2,
+      puckY:H/2,
+      puckVX:7,
+      puckVY:0,
+      scorePlayer:0,
+      scoreEnemy:0,
+      countdown:60,
+      message:"READY",
+      winner:"",
+      playerSkillGauge:100,
+      enemySkillGauge:100
+    },
+    updatedAt:firebase.database.ServerValue.TIMESTAMP
+  });
 
-  await ref.set(payload);
-  cleanupRoomListeners();
-  app.roomRef = ref;
-  bindRoomListeners();
-  startOnlineHost(code);
-  setOnlineStatus(`ルーム作成完了: ${code}　相手を待っています。`);
+  APP.roomCode = code;
+  APP.onlineRole = "host";
+  APP.roomRef = ref;
+  $("currentRoomCode").value = code;
+  bindRoomListener();
+
+  setMode("online");
+  APP.gameState = "playing";
+  APP.waitingRematch = false;
+  setStateLabel("オンライン対戦 HOST");
+  applyEnemyCharacter("balanced");
+  fullReset();
+  setOnlineStatus("ルームを作成しました。コード: " + code + " / 相手待ち");
+  hideOverlay();
+  sfxMenu();
 }
-
-async function joinRoom(code) {
-  if (!app.uid) {
+async function joinRoom(code){
+  if(!APP.uid){
     setOnlineStatus("まだFirebase認証中です。少し待ってください。");
     return;
   }
-  code = (code || "").toUpperCase().trim();
-  if (code.length !== 6) {
+  code = String(code || "").trim().toUpperCase();
+  if(code.length !== 6){
     setOnlineStatus("ルームコードは6文字です。");
     return;
   }
+  leaveRoomSilently();
 
   const ref = db.ref("rooms/" + code);
   const snap = await ref.once("value");
-  if (!snap.exists()) {
+  if(!snap.exists()){
+    setOnlineStatus("そのルームは存在しません。");
+    return;
+  }
+  const room = snap.val();
+  if(room.guestUid && room.guestUid !== APP.uid){
+    setOnlineStatus("そのルームは満員です。");
+    return;
+  }
+  await ref.update({
+    guestUid:APP.uid,
+    guestName:APP.nickname,
+    guestChar:APP.selectedChar,
+    status:"playing",
+    stage: room.stage || APP.selectedStage,
+    updatedAt:firebase.database.ServerValue.TIMESTAMP
+  });
+
+  APP.roomCode = code;
+  APP.onlineRole = "guest";
+  APP.roomRef = ref;
+  $("currentRoomCode").value = code;
+  bindRoomListener();
+
+  setMode("online");
+  APP.gameState = "playing";
+  APP.waitingRematch = false;
+  setStateLabel("オンライン対戦 GUEST");
+  setOnlineStatus("ルーム " + code + " に参加しました。");
+  hideOverlay();
+  sfxMenu();
+}
+async function watchRoom(code){
+  code = String(code || "").trim().toUpperCase();
+  if(code.length !== 6){
+    setOnlineStatus("観戦コードは6文字です。");
+    return;
+  }
+  leaveRoomSilently();
+  const ref = db.ref("rooms/" + code);
+  const snap = await ref.once("value");
+  if(!snap.exists()){
     setOnlineStatus("そのルームは存在しません。");
     return;
   }
 
-  const room = snap.val();
-  if (room.status === "playing" && room.guestUid && room.guestUid !== app.uid) {
-    setOnlineStatus("そのルームは満員です。");
-    return;
-  }
+  APP.roomCode = code;
+  APP.onlineRole = "spectator";
+  APP.roomRef = ref;
+  $("currentRoomCode").value = code;
+  bindRoomListener();
 
-  await ref.update({
-    guestUid: app.uid,
-    guestName: app.nickname,
-    status: "playing"
-  });
-
-  cleanupRoomListeners();
-  app.roomRef = ref;
-  bindRoomListeners();
-  startOnlineGuest(code);
-  setOnlineStatus(`ルーム ${code} に参加しました。`);
+  setMode("watch");
+  APP.gameState = "playing";
+  setStateLabel("観戦中");
+  setOnlineStatus("ルーム " + code + " を観戦中です。");
+  hideOverlay();
+  sfxMenu();
 }
-
-function leaveRoom() {
-  if (!app.roomCode) {
+async function leaveRoom(){
+  if(!APP.roomCode){
     setOnlineStatus("退出するルームがありません。");
     return;
   }
+  const ref = db.ref("rooms/" + APP.roomCode);
+  const snap = await ref.once("value");
+  const room = snap.val();
 
-  const code = app.roomCode;
-  const ref = db.ref("rooms/" + code);
-
-  ref.once("value").then(async snap => {
-    const room = snap.val();
-    if (!room) return;
-
-    if (app.onlineRole === "host") {
+  if(room){
+    if(APP.onlineRole === "host"){
       await ref.remove();
-    } else if (app.onlineRole === "guest") {
+    }else if(APP.onlineRole === "guest"){
       await ref.update({
-        guestUid: null,
-        guestName: null,
-        status: "waiting"
+        guestUid:null,
+        guestName:null,
+        guestChar:"balanced",
+        status:"waiting",
+        rematchVotes:{ host:false, guest:false },
+        updatedAt:firebase.database.ServerValue.TIMESTAMP
       });
     }
-
-    cleanupRoomListeners();
-    app.onlineRole = null;
-    app.roomCode = "";
-    $("currentRoomCode").value = "";
-    setOnlineStatus("ルームを退出しました。");
-    goMenu();
-  });
+  }
+  detachRoom();
+  APP.roomCode = "";
+  APP.onlineRole = null;
+  $("currentRoomCode").value = "";
+  setOnlineStatus("ルームを退出しました。");
+  goMenu();
 }
+function bindRoomListener(){
+  if(!APP.roomRef) return;
 
-function bindRoomListeners() {
-  if (!app.roomRef) return;
-
-  app.roomRef.on("value", snap => {
+  APP.roomRef.on("value", snap => {
     const room = snap.val();
-    if (!room) {
+    APP.roomCache = room;
+
+    if(!room){
       setOnlineStatus("ルームが削除されました。");
-      cleanupRoomListeners();
-      app.onlineRole = null;
-      app.roomCode = "";
+      detachRoom();
+      APP.roomCode = "";
+      APP.onlineRole = null;
       $("currentRoomCode").value = "";
       goMenu();
       return;
     }
 
-    if (app.onlineRole === "host") {
-      if (room.guestUid) {
-        setOnlineStatus(`ゲスト参加: ${room.guestName || "Guest"} / コード: ${room.code}`);
-      } else {
-        setOnlineStatus(`ルームコード ${room.code} / 相手待ち`);
-      }
-    } else if (app.onlineRole === "guest") {
-      setOnlineStatus(`ルーム ${room.code} / ホスト: ${room.hostName || "Host"}`);
+    if(room.stage){
+      APP.selectedStage = room.stage;
+      updateStageUI();
     }
 
-    if (room.game) {
-      if (app.onlineRole === "guest") {
-        game.player.y = room.game.playerY ?? H/2;
-        game.enemy.y = room.game.enemyY ?? H/2;
-        game.puck.x = room.game.puckX ?? W/2;
-        game.puck.y = room.game.puckY ?? H/2;
-        game.puck.vx = room.game.puckVX ?? 0;
-        game.puck.vy = room.game.puckVY ?? 0;
-        game.scorePlayer = room.game.scorePlayer ?? 0;
-        game.scoreEnemy = room.game.scoreEnemy ?? 0;
-        game.winner = room.game.winner || null;
-        game.message = room.game.message || "";
+    if(APP.onlineRole === "host"){
+      if(room.guestUid){
+        setOnlineStatus("ゲスト参加: " + (room.guestName || "Guest") + " / コード: " + room.code);
+      }else{
+        setOnlineStatus("コード: " + room.code + " / 相手待ち");
+      }
+    }else if(APP.onlineRole === "guest"){
+      setOnlineStatus("ホスト: " + (room.hostName || "Host") + " / コード: " + room.code);
+    }else if(APP.onlineRole === "spectator"){
+      setOnlineStatus("観戦中: " + room.code + " / " + (room.hostName || "Host") + " vs " + (room.guestName || "Guest"));
+    }
+
+    if(room.hostChar && room.guestChar){
+      if(APP.onlineRole === "host"){
+        applyEnemyCharacter(room.guestChar);
+      }else if(APP.onlineRole === "guest"){
+        applyEnemyCharacter(room.hostChar);
+      }else{
+        applyEnemyCharacter(room.guestChar);
+      }
+    }
+
+    if(room.game){
+      if(APP.onlineRole === "guest" || APP.onlineRole === "spectator"){
+        GAME.player.y = room.game.playerY ?? H/2;
+        GAME.enemy.y = room.game.enemyY ?? H/2;
+        GAME.puck.x = room.game.puckX ?? W/2;
+        GAME.puck.y = room.game.puckY ?? H/2;
+        GAME.puck.vx = room.game.puckVX ?? 0;
+        GAME.puck.vy = room.game.puckVY ?? 0;
+        GAME.scorePlayer = room.game.scorePlayer ?? 0;
+        GAME.scoreEnemy = room.game.scoreEnemy ?? 0;
+        GAME.countdown = room.game.countdown ?? 0;
+        GAME.message = room.game.message || "";
+        GAME.winner = room.game.winner || null;
+        GAME.player.skillGauge = room.game.playerSkillGauge ?? 100;
+        GAME.enemy.skillGauge = room.game.enemySkillGauge ?? 100;
         updateScoreUI();
+        updateSkillLabel();
       }
     }
 
-    if (room.status === "waiting" && app.onlineRole === "guest") {
-      showOverlay("接続待ち", "ホストがいないか、部屋の状態が待機中です。");
+    if(room.rematchVotes){
+      if(room.rematchVotes.host && room.rematchVotes.guest){
+        APP.waitingRematch = false;
+      }
     }
   });
 }
+async function requestRematch(){
+  if(APP.mode === "cpu"){
+    startCPU(GAME.cpuLevel);
+    return;
+  }
+  if(APP.mode !== "online") return;
+  if(!APP.roomRef || !APP.onlineRole || APP.onlineRole === "spectator") return;
 
-function pushGuestInput() {
-  if (!app.roomRef || app.onlineRole !== "guest") return;
-  const t = performance.now();
-  if (t - app.lastOnlinePush < 30) return;
-  app.lastOnlinePush = t;
-
-  app.roomRef.update({
-    guestInputY: app.localInputY,
-    guestDash: !!app.localDash
-  });
+  APP.waitingRematch = true;
+  const key = APP.onlineRole === "host" ? "host" : "guest";
+  await APP.roomRef.child("rematchVotes/" + key).set(true);
+  showOverlay("再戦申請", "相手の再戦待ちです。両者が再戦すると新しい試合を始めます。");
 }
 
-/* =========================
+/* =========================================================
    入力
-   ========================= */
+   ========================================================= */
 window.addEventListener("keydown", (e) => {
-  app.keys[e.key.toLowerCase()] = true;
-  if (e.code === "Space") {
+  APP.keys[e.key.toLowerCase()] = true;
+  if(e.code === "Space"){
     e.preventDefault();
-    if (app.mode === "cpu" || app.mode === "online") {
-      if (app.gameState === "paused") app.gameState = "playing";
-      else if (app.gameState === "idle") app.gameState = "playing";
+    if(APP.mode === "cpu" || APP.mode === "online" || APP.mode === "watch"){
+      if(APP.gameState === "paused" || APP.gameState === "idle"){
+        APP.gameState = "playing";
+      }
       hideOverlay();
+      ensureAudio();
     }
   }
+  if(e.key.toLowerCase() === "f"){
+    APP.keys["skill"] = true;
+    ensureAudio();
+  }
 });
-
 window.addEventListener("keyup", (e) => {
-  app.keys[e.key.toLowerCase()] = false;
+  APP.keys[e.key.toLowerCase()] = false;
+  if(e.key.toLowerCase() === "f"){
+    APP.keys["skill"] = false;
+  }
 });
-
-function bindHoldButton(id, onStart, onEnd) {
+function bindHold(id, start, end){
   const el = $(id);
-  const start = (e) => { e.preventDefault(); onStart(); };
-  const end = (e) => { e.preventDefault(); onEnd(); };
-  ["touchstart","mousedown"].forEach(ev => el.addEventListener(ev, start, {passive:false}));
-  ["touchend","touchcancel","mouseup","mouseleave"].forEach(ev => el.addEventListener(ev, end, {passive:false}));
+  const s = (e) => { e.preventDefault(); ensureAudio(); start(); };
+  const t = (e) => { e.preventDefault(); end(); };
+  ["touchstart","mousedown"].forEach(ev => el.addEventListener(ev, s, {passive:false}));
+  ["touchend","touchcancel","mouseup","mouseleave"].forEach(ev => el.addEventListener(ev, t, {passive:false}));
 }
+bindHold("touchUp", ()=>APP.mobile.up=true, ()=>APP.mobile.up=false);
+bindHold("touchDown", ()=>APP.mobile.down=true, ()=>APP.mobile.down=false);
+bindHold("touchDash", ()=>APP.mobile.dash=true, ()=>APP.mobile.dash=false);
+bindHold("touchSkill", ()=>APP.mobile.skill=true, ()=>APP.mobile.skill=false);
 
-bindHoldButton("touchUp",
-  () => app.mobileHoldUp = true,
-  () => app.mobileHoldUp = false
-);
-bindHoldButton("touchDown",
-  () => app.mobileHoldDown = true,
-  () => app.mobileHoldDown = false
-);
-bindHoldButton("touchDash",
-  () => app.mobileHoldDash = true,
-  () => app.mobileHoldDash = false
-);
-
-$("touchStart").addEventListener("click", () => {
-  if (app.mode === "cpu" || app.mode === "online") {
-    app.gameState = "playing";
+$("touchStart").onclick = () => {
+  ensureAudio();
+  if(APP.mode === "cpu" || APP.mode === "online" || APP.mode === "watch"){
+    APP.gameState = "playing";
     hideOverlay();
   }
-});
-$("touchPause").addEventListener("click", () => {
-  app.gameState = "paused";
-  showOverlay("PAUSE", "一時停止中です。STARTまたはSpaceで再開できます。");
-});
-
-/* =========================
-   ボタンイベント
-   ========================= */
-$("saveNickBtn").onclick = () => {
-  const v = $("nicknameInput").value.trim().slice(0,16) || "Guest";
-  app.nickname = v;
-  localStorage.setItem("hockey_nickname", v);
-  updateNicknameUI();
-  setAuthStatus(`ニックネーム保存: ${v}`);
+};
+$("touchPause").onclick = () => {
+  APP.gameState = "paused";
+  showOverlay("PAUSE", "一時停止中です。START または Space で再開できます。");
 };
 
-$("menuCpuBtn").onclick = () => {
-  showOverlay("CPU対戦", "左側のCPUボタンから難易度を選んでください。");
-  setMode("cpu");
-};
-
-$("menuOnlineBtn").onclick = () => {
-  setMode("online");
-  showOverlay("オンライン対戦", "ルームを作成するか、ルームコードを入力して参加してください。");
-};
-
-$("menuRankBtn").onclick = goRanking;
-$("menuHelpBtn").onclick = goHelp;
-
-$("overlayCpuBtn").onclick = () => {
-  setMode("cpu");
-  showOverlay("CPU対戦", "左側のEASY/NORMAL/HARD/LEGENDから難易度を選んでください。");
-};
-$("overlayOnlineBtn").onclick = () => {
-  setMode("online");
-  showOverlay("オンライン対戦", "ルームを作成するか、コードを入力して参加してください。");
-};
-$("overlayRankBtn").onclick = goRanking;
-$("overlayHelpBtn").onclick = goHelp;
-
-document.querySelectorAll("[data-diff]").forEach(btn => {
-  btn.onclick = () => startCpu(Number(btn.dataset.diff));
-});
-
-$("createRoomBtn").onclick = createRoom;
-$("joinRoomBtn").onclick = () => joinRoom($("roomCodeInput").value);
-$("copyRoomBtn").onclick = async () => {
-  const code = $("currentRoomCode").value.trim();
-  if (!code) return;
-  try {
-    await navigator.clipboard.writeText(code);
-    setOnlineStatus(`ルームコード ${code} をコピーしました。`);
-  } catch {
-    setOnlineStatus(`コピーできませんでした。手動で ${code} を共有してください。`);
-  }
-};
-
-$("backMenuBtn").onclick = goMenu;
-$("leaveRoomBtn").onclick = leaveRoom;
-$("resetOverlayBtn").onclick = hideOverlay;
-
-/* =========================
-   物理・ゲーム進行
-   ========================= */
-function getInputAxis() {
-  let y = 0;
-  if (app.keys["w"] || app.keys["arrowup"] || app.mobileHoldUp) y -= 1;
-  if (app.keys["s"] || app.keys["arrowdown"] || app.mobileHoldDown) y += 1;
-  return y;
+function getAxis(){
+  if(APP.onlineRole === "spectator") return 0;
+  let a = 0;
+  if(APP.keys["w"] || APP.keys["arrowup"] || APP.mobile.up) a -= 1;
+  if(APP.keys["s"] || APP.keys["arrowdown"] || APP.mobile.down) a += 1;
+  return a;
+}
+function getDash(){
+  return !!(APP.keys["d"] || APP.mobile.dash);
+}
+function getSkillPressed(){
+  return !!(APP.keys["skill"] || APP.mobile.skill);
 }
 
-function getDashPressed() {
-  return !!(app.keys["d"] || app.mobileHoldDash);
+/* =========================================================
+   ゲーム物理 / 必殺
+   ========================================================= */
+function currentPlayerChar(){
+  return CHARACTERS[APP.selectedChar];
 }
-
-function movePlayer(p, axis, speed, dashMul = 1) {
+function currentEnemyChar(){
+  return CHARACTERS[GAME.enemy.char] || CHARACTERS.balanced;
+}
+function currentStage(){
+  return STAGES[APP.selectedStage];
+}
+function movePaddle(p, axis, speed, dashMul){
   p.vy = axis * speed * dashMul;
   p.y += p.vy;
   p.y = clamp(p.y, 60 + p.r, H - 60 - p.r);
 }
-
-function updateCpu() {
-  const diff = difficultyTable[app.cpuLevel];
-  const targetY = game.puck.y + (game.puck.vy * 5);
-  const dy = targetY - game.enemy.y;
-  const axis = clamp(dy * diff.react / 10, -1, 1);
-  const dash = Math.abs(dy) > 120 ? diff.dash : 1;
-  movePlayer(game.enemy, axis, diff.speed, dash);
+function updateSkillGauge(p, gain=0.045){
+  p.skillGauge = clamp(p.skillGauge + gain, 0, 100);
 }
+function spawnHit(x,y,color,count=8,speed=3.5){
+  for(let i=0;i<count;i++){
+    GAME.particles.push({
+      x,y,
+      vx: rand(-speed,speed),
+      vy: rand(-speed,speed),
+      life: rand(16,34),
+      color
+    });
+  }
+}
+function spawnShockwave(x,y,color){
+  GAME.shockwaves.push({ x,y,r:8,life:18,color });
+}
+function circleBounce(p){
+  const dx = GAME.puck.x - p.x;
+  const dy = GAME.puck.y - p.y;
+  const dist = Math.hypot(dx,dy);
+  const minDist = GAME.puck.r + p.r;
 
-function circleBounce(playerObj) {
-  const dx = game.puck.x - playerObj.x;
-  const dy = game.puck.y - playerObj.y;
-  const dist = Math.hypot(dx, dy);
-  const minDist = game.puck.r + playerObj.r;
-  if (dist < minDist) {
+  if(dist < minDist){
     const nx = dx / (dist || 1);
     const ny = dy / (dist || 1);
     const overlap = minDist - dist;
 
-    game.puck.x += nx * overlap;
-    game.puck.y += ny * overlap;
+    GAME.puck.x += nx * overlap;
+    GAME.puck.y += ny * overlap;
 
-    const relativeVx = game.puck.vx;
-    const relativeVy = game.puck.vy - playerObj.vy * 0.45;
-    const speed = Math.hypot(relativeVx, relativeVy) + 1.6;
+    const char = p === GAME.player ? currentPlayerChar() : currentEnemyChar();
+    const activeBonus = p.skillActive > 0 ? char.skillPower * 0.35 : 0;
+    const baseSpeed = Math.hypot(GAME.puck.vx, GAME.puck.vy) + 1.5 + activeBonus * 0.06;
 
-    game.puck.vx = nx * speed + (playerObj === game.player ? 1.2 : -1.2);
-    game.puck.vy = ny * speed + playerObj.vy * 0.25;
+    GAME.puck.vx = nx * baseSpeed + (p === GAME.player ? 1.4 : -1.4);
+    GAME.puck.vy = ny * baseSpeed + p.vy * 0.25 + (p.skillActive > 0 ? char.skillCurve * 0.8 : 0);
 
-    if (playerObj === game.player) game.puck.lastTouch = "player";
-    else game.puck.lastTouch = "enemy";
-
-    spawnHit(game.puck.x, game.puck.y, playerObj.color);
-  }
-}
-
-function updatePuck() {
-  if (game.countdown > 0) {
-    game.countdown--;
-    return;
-  }
-
-  game.puck.x += game.puck.vx;
-  game.puck.y += game.puck.vy;
-
-  game.puck.vx *= 0.998;
-  game.puck.vy *= 0.998;
-
-  if (Math.abs(game.puck.vx) > 18) game.puck.vx *= 0.98;
-  if (Math.abs(game.puck.vy) > 18) game.puck.vy *= 0.98;
-
-  if (game.puck.y - game.puck.r <= 34) {
-    game.puck.y = 34 + game.puck.r;
-    game.puck.vy *= -1;
-    spawnHit(game.puck.x, game.puck.y, "#67e8f9");
-  }
-  if (game.puck.y + game.puck.r >= H - 34) {
-    game.puck.y = H - 34 - game.puck.r;
-    game.puck.vy *= -1;
-    spawnHit(game.puck.x, game.puck.y, "#67e8f9");
-  }
-
-  const inGoalZone = game.puck.y > H/2 - GOAL_H/2 && game.puck.y < H/2 + GOAL_H/2;
-
-  if (game.puck.x - game.puck.r <= 18) {
-    if (inGoalZone) {
-      scoreGoal("enemy");
-    } else {
-      game.puck.x = 18 + game.puck.r;
-      game.puck.vx *= -1;
-      spawnHit(game.puck.x, game.puck.y, "#fb7185");
+    GAME.puck.lastTouch = (p === GAME.player) ? "player" : "enemy";
+    spawnHit(GAME.puck.x, GAME.puck.y, p.color, p.skillActive > 0 ? 18 : 8, p.skillActive > 0 ? 6 : 3.5);
+    if(p.skillActive > 0){
+      spawnShockwave(GAME.puck.x, GAME.puck.y, p.color);
+      sfxSkill();
+    }else{
+      sfxHit();
     }
   }
-  if (game.puck.x + game.puck.r >= W - 18) {
-    if (inGoalZone) {
-      scoreGoal("player");
-    } else {
-      game.puck.x = W - 18 - game.puck.r;
-      game.puck.vx *= -1;
-      spawnHit(game.puck.x, game.puck.y, "#67e8f9");
-    }
-  }
-
-  circleBounce(game.player);
-  circleBounce(game.enemy);
 }
+function activateSkillFor(p){
+  if(p.skillGauge < 100) return false;
+  p.skillGauge = 0;
+  p.skillActive = 45;
+  spawnShockwave(p.x, p.y, p.color);
+  sfxSkill();
+  return true;
+}
+function cpuMove(){
+  const diff = DIFF[GAME.cpuLevel];
+  const targetY = GAME.puck.y + GAME.puck.vy * 5;
+  const dy = targetY - GAME.enemy.y;
+  const axis = clamp(dy * diff.react / 10, -1, 1);
+  const dash = Math.abs(dy) > 120 ? diff.dash : 1;
+  movePaddle(GAME.enemy, axis, diff.speed, dash);
 
-function scoreGoal(side) {
-  if (side === "player") {
-    game.scorePlayer++;
-    game.message = "GOAL!";
-    spawnGoalBurst(W - 80, H / 2, "#67e8f9");
+  updateSkillGauge(GAME.enemy, 0.05 + diff.skillUse * 0.12);
+  if(GAME.enemy.skillGauge >= 100 && Math.random() < diff.skillUse){
+    activateSkillFor(GAME.enemy);
+  }
+}
+function goalBurst(x,y,color){
+  spawnHit(x,y,color,36,7);
+  spawnShockwave(x,y,color);
+}
+function scoreGoal(side){
+  if(side === "player"){
+    GAME.scorePlayer++;
+    GAME.message = "GOAL!";
+    goalBurst(W-80,H/2,GAME.player.color);
+    sfxGoal();
     resetPositions(-1);
-  } else {
-    game.scoreEnemy++;
-    game.message = "LOST POINT";
-    spawnGoalBurst(80, H / 2, "#fb7185");
+  }else{
+    GAME.scoreEnemy++;
+    GAME.message = "LOST POINT";
+    goalBurst(80,H/2,GAME.enemy.color);
+    sfxGoal();
     resetPositions(1);
   }
   updateScoreUI();
 
-  if (game.scorePlayer >= WIN_SCORE || game.scoreEnemy >= WIN_SCORE) {
-    finishGame(game.scorePlayer >= WIN_SCORE ? "player" : "enemy");
+  if(GAME.scorePlayer >= WIN_SCORE || GAME.scoreEnemy >= WIN_SCORE){
+    finishGame(GAME.scorePlayer >= WIN_SCORE ? "player" : "enemy");
   }
 }
+function finishGame(winner){
+  APP.gameState = "ended";
+  GAME.winner = winner;
 
-function finishGame(winner) {
-  app.gameState = "ended";
-  game.winner = winner;
-  const playerWin = winner === "player";
-  game.message = playerWin ? "YOU WIN!" : "YOU LOSE!";
-  showOverlay(
-    playerWin ? "🎉 YOU WIN!" : "💥 YOU LOSE!",
-    playerWin
-      ? "試合に勝利しました。\nランキングへ記録します。"
-      : "今回は敗北です。\nもう一度挑戦してください。"
-  );
-
-  if (playerWin) {
-    submitWin(app.mode === "online" ? "online" : "cpu");
+  if(winner === "player"){
+    GAME.message = "YOU WIN!";
+    sfxWin();
+    showOverlay("🎉 YOU WIN!", "試合に勝利しました。\n再戦ボタンでもう一度遊べます。");
+    if(APP.mode === "cpu" || APP.mode === "online"){
+      submitWin(APP.mode === "online" ? "online" : "cpu");
+    }
+  }else{
+    GAME.message = "YOU LOSE!";
+    sfxLose();
+    showOverlay("💥 YOU LOSE!", "今回は敗北です。\n再戦ボタンでもう一度挑戦できます。");
   }
 }
-
-function updateCpuMode() {
-  const axis = getInputAxis();
-  const dash = getDashPressed() ? 1.35 : 1;
-  movePlayer(game.player, axis, 8, dash);
-  updateCpu();
-  updatePuck();
-}
-
-function updateOnlineHost(roomData) {
-  const hostInputY = roomData?.hostInputY ?? game.player.y;
-  const guestInputY = roomData?.guestInputY ?? game.enemy.y;
-  const hostDash = !!roomData?.hostDash;
-  const guestDash = !!roomData?.guestDash;
-
-  const axisHost = clamp((hostInputY - game.player.y) / 25, -1, 1);
-  const axisGuest = clamp((guestInputY - game.enemy.y) / 25, -1, 1);
-
-  movePlayer(game.player, axisHost, 8, hostDash ? 1.35 : 1);
-  movePlayer(game.enemy, axisGuest, 8, guestDash ? 1.35 : 1);
-  updatePuck();
-
-  if (app.roomRef) {
-    app.roomRef.child("game").set({
-      playerY: game.player.y,
-      enemyY: game.enemy.y,
-      puckX: game.puck.x,
-      puckY: game.puck.y,
-      puckVX: game.puck.vx,
-      puckVY: game.puck.vy,
-      scorePlayer: game.scorePlayer,
-      scoreEnemy: game.scoreEnemy,
-      winner: game.winner || "",
-      message: game.message || ""
-    });
+function updatePuck(){
+  if(GAME.countdown > 0){
+    GAME.countdown--;
+    return;
   }
-}
 
-function updateOnlineGuestLocalInput() {
-  const axis = getInputAxis();
-  const dash = getDashPressed();
-  app.localInputY = clamp(game.enemy.y + axis * 14, 60 + game.enemy.r, H - 60 - game.enemy.r);
-  app.localDash = dash;
-  pushGuestInput();
-}
+  GAME.puck.trail.push({ x:GAME.puck.x, y:GAME.puck.y, life:10 });
+  if(GAME.puck.trail.length > 12) GAME.puck.trail.shift();
 
-function updateOnlineHostLocalInput() {
-  const axis = getInputAxis();
-  const dash = getDashPressed();
-  const hostY = clamp(game.player.y + axis * 14, 60 + game.player.r, H - 60 - game.player.r);
-  if (app.roomRef) {
-    app.roomRef.update({
-      hostInputY: hostY,
-      hostDash: dash
-    });
+  GAME.puck.x += GAME.puck.vx;
+  GAME.puck.y += GAME.puck.vy;
+
+  const friction = currentStage().friction;
+  GAME.puck.vx *= friction;
+  GAME.puck.vy *= friction;
+
+  if(GAME.player.skillActive > 0) GAME.player.skillActive--;
+  if(GAME.enemy.skillActive > 0) GAME.enemy.skillActive--;
+
+  if(Math.abs(GAME.puck.vx) > 24) GAME.puck.vx *= 0.992;
+  if(Math.abs(GAME.puck.vy) > 24) GAME.puck.vy *= 0.992;
+
+  if(GAME.puck.y - GAME.puck.r <= 34){
+    GAME.puck.y = 34 + GAME.puck.r;
+    GAME.puck.vy *= -1;
+    spawnHit(GAME.puck.x,GAME.puck.y,"#67e8f9");
+    sfxHit();
   }
-}
-
-/* =========================
-   演出
-   ========================= */
-function spawnHit(x, y, color) {
-  for (let i = 0; i < 8; i++) {
-    app.particles.push({
-      x, y,
-      vx: rand(-3.5, 3.5),
-      vy: rand(-3.5, 3.5),
-      life: rand(16, 30),
-      color
-    });
+  if(GAME.puck.y + GAME.puck.r >= H - 34){
+    GAME.puck.y = H - 34 - GAME.puck.r;
+    GAME.puck.vy *= -1;
+    spawnHit(GAME.puck.x,GAME.puck.y,"#67e8f9");
+    sfxHit();
   }
-}
 
-function spawnGoalBurst(x, y, color) {
-  for (let i = 0; i < 34; i++) {
-    app.particles.push({
-      x, y,
-      vx: rand(-7, 7),
-      vy: rand(-7, 7),
-      life: rand(24, 54),
-      color
-    });
+  const inGoal = GAME.puck.y > H/2 - GOAL_H/2 && GAME.puck.y < H/2 + GOAL_H/2;
+
+  if(GAME.puck.x - GAME.puck.r <= 18){
+    if(inGoal) scoreGoal("enemy");
+    else{
+      GAME.puck.x = 18 + GAME.puck.r;
+      GAME.puck.vx *= -1;
+      spawnHit(GAME.puck.x,GAME.puck.y,GAME.enemy.color);
+      sfxHit();
+    }
   }
-}
+  if(GAME.puck.x + GAME.puck.r >= W - 18){
+    if(inGoal) scoreGoal("player");
+    else{
+      GAME.puck.x = W - 18 - GAME.puck.r;
+      GAME.puck.vx *= -1;
+      spawnHit(GAME.puck.x,GAME.puck.y,GAME.player.color);
+      sfxHit();
+    }
+  }
 
-function updateParticles() {
-  for (let i = app.particles.length - 1; i >= 0; i--) {
-    const p = app.particles[i];
+  circleBounce(GAME.player);
+  circleBounce(GAME.enemy);
+}
+function updateParticles(){
+  for(let i=GAME.particles.length-1;i>=0;i--){
+    const p = GAME.particles[i];
     p.x += p.vx;
     p.y += p.vy;
     p.vx *= 0.98;
     p.vy *= 0.98;
     p.life--;
-    if (p.life <= 0) app.particles.splice(i, 1);
+    if(p.life <= 0) GAME.particles.splice(i,1);
+  }
+  for(let i=GAME.shockwaves.length-1;i>=0;i--){
+    const s = GAME.shockwaves[i];
+    s.r += 8;
+    s.life--;
+    if(s.life <= 0) GAME.shockwaves.splice(i,1);
+  }
+  GAME.puck.trail.forEach(t=>t.life--);
+  GAME.puck.trail = GAME.puck.trail.filter(t=>t.life>0);
+}
+
+/* =========================================================
+   モード更新
+   ========================================================= */
+function updateCpuMode(){
+  const char = currentPlayerChar();
+  const axis = getAxis();
+  const dash = getDash() ? char.dash : 1;
+  movePaddle(GAME.player, axis, char.speed, dash);
+  updateSkillGauge(GAME.player);
+  updateSkillLabel();
+
+  if(getSkillPressed()){
+    activateSkillFor(GAME.player);
+  }
+
+  cpuMove();
+  updatePuck();
+}
+function pushGuestInput(){
+  if(!APP.roomRef || APP.onlineRole !== "guest") return;
+  const t = performance.now();
+  if(t - APP.lastRoomInputPush < 30) return;
+  APP.lastRoomInputPush = t;
+
+  const char = currentPlayerChar();
+  const axis = getAxis();
+  const nextY = clamp(GAME.enemy.y + axis * (char.speed + 5), 60 + GAME.enemy.r, H - 60 - GAME.enemy.r);
+
+  APP.roomRef.child("guestInput").set({
+    y: nextY,
+    dash: getDash(),
+    skill: getSkillPressed()
+  });
+}
+function pushHostInput(){
+  if(!APP.roomRef || APP.onlineRole !== "host") return;
+  const char = currentPlayerChar();
+  const axis = getAxis();
+  const nextY = clamp(GAME.player.y + axis * (char.speed + 5), 60 + GAME.player.r, H - 60 - GAME.player.r);
+
+  APP.roomRef.child("hostInput").set({
+    y: nextY,
+    dash: getDash(),
+    skill: getSkillPressed()
+  });
+}
+function hostSimulate(room){
+  if(!room) return;
+
+  applyEnemyCharacter(room.guestChar || "balanced");
+
+  const hostChar = CHARACTERS[room.hostChar || APP.selectedChar] || CHARACTERS.balanced;
+  const guestChar = CHARACTERS[room.guestChar || "balanced"] || CHARACTERS.balanced;
+
+  const hi = room.hostInput || { y:H/2, dash:false, skill:false };
+  const gi = room.guestInput || { y:H/2, dash:false, skill:false };
+
+  const axisHost = clamp((hi.y - GAME.player.y) / 25, -1, 1);
+  const axisGuest = clamp((gi.y - GAME.enemy.y) / 25, -1, 1);
+
+  movePaddle(GAME.player, axisHost, hostChar.speed, hi.dash ? hostChar.dash : 1);
+  movePaddle(GAME.enemy, axisGuest, guestChar.speed, gi.dash ? guestChar.dash : 1);
+
+  updateSkillGauge(GAME.player);
+  updateSkillGauge(GAME.enemy);
+
+  if(hi.skill) activateSkillFor(GAME.player);
+  if(gi.skill) activateSkillFor(GAME.enemy);
+
+  updatePuck();
+
+  APP.roomRef.child("game").set({
+    playerY:GAME.player.y,
+    enemyY:GAME.enemy.y,
+    puckX:GAME.puck.x,
+    puckY:GAME.puck.y,
+    puckVX:GAME.puck.vx,
+    puckVY:GAME.puck.vy,
+    scorePlayer:GAME.scorePlayer,
+    scoreEnemy:GAME.scoreEnemy,
+    countdown:GAME.countdown,
+    message:GAME.message || "",
+    winner:GAME.winner || "",
+    playerSkillGauge:GAME.player.skillGauge,
+    enemySkillGauge:GAME.enemy.skillGauge
+  });
+
+  if(room.rematchVotes && room.rematchVotes.host && room.rematchVotes.guest){
+    APP.roomRef.update({
+      rematchVotes:{ host:false, guest:false },
+      game:{
+        playerY:H/2,
+        enemyY:H/2,
+        puckX:W/2,
+        puckY:H/2,
+        puckVX:7 * (Math.random()<0.5 ? -1 : 1),
+        puckVY:rand(-3.5,3.5),
+        scorePlayer:0,
+        scoreEnemy:0,
+        countdown:60,
+        message:"REMATCH!",
+        winner:"",
+        playerSkillGauge:100,
+        enemySkillGauge:100
+      }
+    });
+    applyEnemyCharacter(room.guestChar || "balanced");
+    GAME.scorePlayer = 0;
+    GAME.scoreEnemy = 0;
+    GAME.player.skillGauge = 100;
+    GAME.enemy.skillGauge = 100;
+    GAME.winner = null;
+    GAME.message = "REMATCH!";
+    updateScoreUI();
+    updateSkillLabel();
+    APP.gameState = "playing";
+    hideOverlay();
+  }
+}
+function updateOnlineMode(){
+  if(APP.onlineRole === "host"){
+    pushHostInput();
+    hostSimulate(APP.roomCache);
+  }else if(APP.onlineRole === "guest"){
+    pushGuestInput();
+    updateSkillLabel();
+  }else if(APP.onlineRole === "spectator"){
+    // 観戦は受信のみ
   }
 }
 
-/* =========================
+/* =========================================================
    描画
-   ========================= */
-function drawArena() {
-  ctx.clearRect(0,0,W,H);
+   ========================================================= */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function drawStageBackground(){
+  const st = currentStage();
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0, st.bgTop);
+  bg.addColorStop(1, st.bgBottom);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
 
-  // 背景グリッド
   ctx.save();
   ctx.strokeStyle = "rgba(255,255,255,.05)";
   ctx.lineWidth = 1;
-  for (let x = 0; x <= W; x += 48) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, H);
-    ctx.stroke();
-  }
-  for (let y = 0; y <= H; y += 48) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(W, y);
-    ctx.stroke();
-  }
+  for(let x=0;x<=W;x+=48){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for(let y=0;y<=H;y+=48){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
   ctx.restore();
 
-  // 枠
   ctx.save();
   ctx.strokeStyle = "rgba(255,255,255,.18)";
   ctx.lineWidth = 10;
-  roundRect(ctx, 18, 18, W - 36, H - 36, 24);
+  roundRect(ctx,18,18,W-36,H-36,24);
   ctx.stroke();
 
-  // センターライン
-  ctx.strokeStyle = "rgba(255,255,255,.18)";
   ctx.lineWidth = 4;
   ctx.beginPath();
-  ctx.moveTo(W / 2, 34);
-  ctx.lineTo(W / 2, H - 34);
-  ctx.stroke();
+  ctx.moveTo(W/2,34); ctx.lineTo(W/2,H-34); ctx.stroke();
 
-  // センターサークル
   ctx.beginPath();
-  ctx.arc(W / 2, H / 2, 96, 0, Math.PI * 2);
+  ctx.arc(W/2,H/2,96,0,Math.PI*2);
   ctx.stroke();
 
-  // ゴール
-  ctx.strokeStyle = "rgba(255,255,255,.26)";
   ctx.lineWidth = 6;
-  ctx.strokeRect(0, H/2 - GOAL_H/2, 22, GOAL_H);
-  ctx.strokeRect(W - 22, H/2 - GOAL_H/2, 22, GOAL_H);
-
+  ctx.strokeRect(0,H/2-GOAL_H/2,22,GOAL_H);
+  ctx.strokeRect(W-22,H/2-GOAL_H/2,22,GOAL_H);
   ctx.restore();
 
-  // ゴールゾーンの発光
-  glowRect(0, H/2 - GOAL_H/2, 40, GOAL_H, "rgba(251,113,133,.16)");
-  glowRect(W - 40, H/2 - GOAL_H/2, 40, GOAL_H, "rgba(103,232,249,.16)");
-
-  // プレイヤー
-  drawPaddle(game.player.x, game.player.y, game.player.r, "#67e8f9", true);
-  drawPaddle(game.enemy.x, game.enemy.y, game.enemy.r, "#fb7185", false);
-
-  // パック
-  drawPuck();
-
-  // パーティクル
-  app.particles.forEach(p => {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, p.life / 40);
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  });
-
-  // メッセージ
-  if (app.gameState === "playing" || app.gameState === "ended") {
-    ctx.save();
-    ctx.textAlign = "center";
-    ctx.font = "900 52px Segoe UI";
-    ctx.fillStyle = "rgba(255,255,255,.9)";
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "rgba(103,232,249,.55)";
-    const msg = game.countdown > 0 ? String(Math.ceil(game.countdown / 20)) : (game.message || "");
-    if (msg) ctx.fillText(msg, W/2, 74);
-    ctx.restore();
-  }
-
-  // モード名
   ctx.save();
-  ctx.font = "800 22px Segoe UI";
-  ctx.fillStyle = "rgba(255,255,255,.85)";
-  ctx.fillText(app.mode.toUpperCase(), 28, 42);
+  ctx.fillStyle = st.glowLeft;
+  ctx.shadowBlur = 24;
+  ctx.shadowColor = st.glowLeft;
+  ctx.fillRect(0,H/2-GOAL_H/2,40,GOAL_H);
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = st.glowRight;
+  ctx.shadowBlur = 24;
+  ctx.shadowColor = st.glowRight;
+  ctx.fillRect(W-40,H/2-GOAL_H/2,40,GOAL_H);
   ctx.restore();
 }
-
-function drawPaddle(x, y, r, color, left) {
+function drawPaddle(x,y,r,color,label,skillActive){
   ctx.save();
-  const grad = ctx.createRadialGradient(x - 10, y - 10, 6, x, y, r + 14);
-  grad.addColorStop(0, "rgba(255,255,255,.95)");
-  grad.addColorStop(.16, color);
-  grad.addColorStop(1, "rgba(8,14,28,1)");
-  ctx.fillStyle = grad;
-  ctx.shadowBlur = 30;
+  const g = ctx.createRadialGradient(x-10,y-10,6,x,y,r+14);
+  g.addColorStop(0,"rgba(255,255,255,.96)");
+  g.addColorStop(.18,color);
+  g.addColorStop(1,"rgba(8,14,28,1)");
+  ctx.fillStyle = g;
+  ctx.shadowBlur = skillActive > 0 ? 40 : 28;
   ctx.shadowColor = color;
   ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.arc(x,y,r,0,Math.PI*2);
   ctx.fill();
 
   ctx.shadowBlur = 0;
@@ -1517,93 +1688,267 @@ function drawPaddle(x, y, r, color, left) {
   ctx.strokeStyle = "rgba(255,255,255,.35)";
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(255,255,255,.2)";
+  if(skillActive > 0){
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "rgba(255,255,255,.7)";
+    ctx.beginPath();
+    ctx.arc(x,y,r+8,0,Math.PI*2);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "rgba(255,255,255,.22)";
   ctx.beginPath();
-  ctx.arc(x - 10, y - 12, r * .35, 0, Math.PI * 2);
+  ctx.arc(x-10,y-12,r*.35,0,Math.PI*2);
   ctx.fill();
 
-  ctx.font = "800 15px Segoe UI";
-  ctx.fillStyle = "rgba(255,255,255,.9)";
   ctx.textAlign = "center";
-  ctx.fillText(left ? "YOU" : "RIVAL", x, y + 5);
+  ctx.font = "800 15px Segoe UI";
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  ctx.fillText(label,x,y+5);
   ctx.restore();
 }
+function drawPuck(){
+  GAME.puck.trail.forEach(t=>{
+    ctx.save();
+    ctx.globalAlpha = t.life / 10 * 0.35;
+    ctx.fillStyle = "#cfe7ff";
+    ctx.beginPath();
+    ctx.arc(t.x,t.y,10 - (10-t.life)*0.4,0,Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
 
-function drawPuck() {
-  const x = game.puck.x, y = game.puck.y, r = game.puck.r;
+  const x = GAME.puck.x, y = GAME.puck.y, r = GAME.puck.r;
   ctx.save();
-  const grad = ctx.createRadialGradient(x - 4, y - 4, 3, x, y, r + 10);
-  grad.addColorStop(0, "#ffffff");
-  grad.addColorStop(.25, "#dbeafe");
-  grad.addColorStop(1, "#60a5fa");
-  ctx.fillStyle = grad;
-  ctx.shadowBlur = 24;
+  const g = ctx.createRadialGradient(x-4,y-4,3,x,y,r+10);
+  g.addColorStop(0,"#ffffff");
+  g.addColorStop(.24,"#dbeafe");
+  g.addColorStop(1,"#60a5fa");
+  ctx.fillStyle = g;
+  ctx.shadowBlur = 26;
   ctx.shadowColor = "rgba(103,232,249,.6)";
   ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.arc(x,y,r,0,Math.PI*2);
   ctx.fill();
   ctx.restore();
 }
-
-function glowRect(x, y, w, h, color) {
+function drawGaugeBar(x,y,w,h,value,color){
   ctx.save();
+  ctx.fillStyle = "rgba(255,255,255,.08)";
+  ctx.fillRect(x,y,w,h);
   ctx.fillStyle = color;
-  ctx.shadowBlur = 24;
-  ctx.shadowColor = color;
-  ctx.fillRect(x, y, w, h);
+  ctx.fillRect(x,y,w*(value/100),h);
+  ctx.strokeStyle = "rgba(255,255,255,.2)";
+  ctx.strokeRect(x,y,w,h);
+  ctx.restore();
+}
+function drawArena(){
+  ctx.clearRect(0,0,W,H);
+  drawStageBackground();
+
+  drawPaddle(GAME.player.x,GAME.player.y,GAME.player.r,GAME.player.color, APP.onlineRole === "spectator" ? "P1" : "YOU", GAME.player.skillActive);
+  drawPaddle(GAME.enemy.x,GAME.enemy.y,GAME.enemy.r,GAME.enemy.color, APP.mode === "cpu" ? "CPU" : (APP.onlineRole === "spectator" ? "P2" : "RIVAL"), GAME.enemy.skillActive);
+  drawPuck();
+
+  GAME.particles.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0,p.life/40);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  GAME.shockwaves.forEach(s=>{
+    ctx.save();
+    ctx.globalAlpha = s.life / 18 * 0.6;
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.font = "900 52px Segoe UI";
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  ctx.shadowBlur = 18;
+  ctx.shadowColor = "rgba(103,232,249,.5)";
+  const msg = GAME.countdown > 0 ? String(Math.ceil(GAME.countdown / 20)) : (GAME.message || "");
+  if(msg) ctx.fillText(msg,W/2,76);
+  ctx.restore();
+
+  ctx.save();
+  ctx.font = "800 22px Segoe UI";
+  ctx.fillStyle = "rgba(255,255,255,.85)";
+  ctx.fillText(APP.mode.toUpperCase(),28,42);
+  ctx.restore();
+
+  drawGaugeBar(40,H-40,220,14,GAME.player.skillGauge,GAME.player.color);
+  drawGaugeBar(W-260,H-40,220,14,GAME.enemy.skillGauge,GAME.enemy.color);
+
+  ctx.save();
+  ctx.font = "700 14px Segoe UI";
+  ctx.fillStyle = "rgba(255,255,255,.9)";
+  ctx.fillText("SKILL", 40, H-48);
+  ctx.fillText("SKILL", W-260, H-48);
   ctx.restore();
 }
 
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
+/* =========================================================
+   ボタンイベント
+   ========================================================= */
+$("saveNickBtn").onclick = () => {
+  ensureAudio();
+  const name = $("nicknameInput").value.trim().slice(0,16) || "Guest";
+  APP.nickname = name;
+  $("nickLabel").textContent = name;
+  localStorage.setItem("hockey_nickname", name);
+  setAuthStatus("ニックネームを保存しました: " + name);
+  sfxMenu();
+};
 
-/* =========================
+document.querySelectorAll("[data-char]").forEach(btn=>{
+  btn.onclick = () => {
+    ensureAudio();
+    APP.selectedChar = btn.dataset.char;
+    localStorage.setItem("hockey_char", APP.selectedChar);
+    updateCharacterUI();
+    applyPlayerCharacter();
+    sfxMenu();
+  };
+});
+
+document.querySelectorAll("[data-stage]").forEach(btn=>{
+  btn.onclick = () => {
+    ensureAudio();
+    APP.selectedStage = btn.dataset.stage;
+    localStorage.setItem("hockey_stage", APP.selectedStage);
+    updateStageUI();
+    sfxMenu();
+  };
+});
+
+$("menuCpuBtn").onclick = () => {
+  ensureAudio();
+  setMode("cpu");
+  showOverlay("CPU対戦", "左の EASY / NORMAL / HARD / LEGEND から難易度を選んでください。");
+  sfxMenu();
+};
+$("menuOnlineBtn").onclick = () => {
+  ensureAudio();
+  setMode("online");
+  showOverlay("オンライン対戦", "ルームを作成するか、ルームコード6文字を入れて参加してください。");
+  sfxMenu();
+};
+$("menuWatchBtn").onclick = () => {
+  ensureAudio();
+  goWatchInfo();
+  sfxMenu();
+};
+$("menuRankBtn").onclick = () => {
+  ensureAudio();
+  goRanking();
+  sfxMenu();
+};
+$("menuHelpBtn").onclick = () => {
+  ensureAudio();
+  goHelp();
+  sfxMenu();
+};
+
+$("overlayCpuBtn").onclick = () => {
+  ensureAudio();
+  setMode("cpu");
+  showOverlay("CPU対戦", "左の難易度ボタンから開始してください。");
+  sfxMenu();
+};
+$("overlayOnlineBtn").onclick = () => {
+  ensureAudio();
+  setMode("online");
+  showOverlay("オンライン対戦", "ルーム作成またはルーム参加を行ってください。");
+  sfxMenu();
+};
+$("overlayWatchBtn").onclick = () => {
+  ensureAudio();
+  goWatchInfo();
+  sfxMenu();
+};
+$("overlayRankBtn").onclick = () => {
+  ensureAudio();
+  goRanking();
+  sfxMenu();
+};
+$("overlayHelpBtn").onclick = () => {
+  ensureAudio();
+  goHelp();
+  sfxMenu();
+};
+
+document.querySelectorAll(".diffBtn").forEach(btn => {
+  btn.onclick = () => {
+    ensureAudio();
+    startCPU(Number(btn.dataset.diff));
+  };
+});
+
+$("createRoomBtn").onclick = () => { ensureAudio(); createRoom(); };
+$("joinRoomBtn").onclick = () => { ensureAudio(); joinRoom($("roomCodeInput").value); };
+$("watchRoomBtn").onclick = () => { ensureAudio(); watchRoom($("watchCodeInput").value); };
+$("copyRoomBtn").onclick = async () => {
+  ensureAudio();
+  const code = $("currentRoomCode").value.trim();
+  if(!code){
+    setOnlineStatus("コピーするコードがありません。");
+    return;
+  }
+  try{
+    await navigator.clipboard.writeText(code);
+    setOnlineStatus("ルームコードをコピーしました: " + code);
+  }catch{
+    setOnlineStatus("コピー失敗。手動で共有してください: " + code);
+  }
+  sfxMenu();
+};
+$("backMenuBtn").onclick = () => { ensureAudio(); goMenu(); sfxMenu(); };
+$("leaveRoomBtn").onclick = () => { ensureAudio(); leaveRoom(); sfxMenu(); };
+$("closeOverlayBtn").onclick = () => { ensureAudio(); hideOverlay(); sfxMenu(); };
+$("rematchBtn").onclick = () => { ensureAudio(); requestRematch(); };
+
+/* =========================================================
    メインループ
-   ========================= */
-function tick(ts) {
-  requestAnimationFrame(tick);
-
-  const dt = Math.min(32, ts - (app.lastTime || ts));
-  app.lastTime = ts;
+   ========================================================= */
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(!APP.lastFrameTs) APP.lastFrameTs = ts;
+  APP.lastFrameTs = ts;
 
   updateParticles();
 
-  if (app.mode === "cpu" && app.gameState === "playing") {
-    updateCpuMode();
-  }
-
-  if (app.mode === "online" && app.gameState === "playing") {
-    if (app.onlineRole === "host") {
-      updateOnlineHostLocalInput();
-      if (app.roomRef) {
-        app.roomRef.once("value").then(snap => {
-          const room = snap.val();
-          if (room) updateOnlineHost(room);
-        });
-      }
-    } else if (app.onlineRole === "guest") {
-      updateOnlineGuestLocalInput();
+  if(APP.gameState === "playing"){
+    if(APP.mode === "cpu"){
+      updateCpuMode();
+    }else if(APP.mode === "online" || APP.mode === "watch"){
+      updateOnlineMode();
     }
   }
 
   drawArena();
+  updateSkillLabel();
 }
 
-requestAnimationFrame(tick);
-
-/* =========================
-   起動時
-   ========================= */
+/* =========================================================
+   起動
+   ========================================================= */
+updateCharacterUI();
+updateStageUI();
+fullReset();
 goMenu();
-updateScoreUI();
 fetchRanking();
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>
