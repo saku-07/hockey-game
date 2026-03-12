@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-  <title>Hockey Legends v3000</title>
+  <title>Hockey Legends v3000 Fixed</title>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -14,7 +14,7 @@
     :root{
       --bg0:#06101f;
       --bg1:#0d1d38;
-      --panel:rgba(10,18,38,.88);
+      --panel:rgba(10,18,38,.92);
       --line:rgba(255,255,255,.10);
       --text:#eef5ff;
       --muted:#b9c8ef;
@@ -27,7 +27,12 @@
       --orange:#fb923c;
       --shadow:0 18px 60px rgba(0,0,0,.45);
     }
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
     html,body{
       margin:0;
       width:100%;
@@ -42,8 +47,16 @@
         linear-gradient(160deg,var(--bg0),var(--bg1));
       user-select:none;
     }
-    .hidden{display:none!important}
-    .screen{width:100%;height:100%}
+
+    .screen{
+      width:100%;
+      height:100%;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
     .panel{
       background:var(--panel);
       border:1px solid var(--line);
@@ -51,12 +64,14 @@
       box-shadow:var(--shadow);
       backdrop-filter:blur(12px);
     }
+
     button,input{
       font:inherit;
       border:none;
       outline:none;
       border-radius:14px;
     }
+
     input{
       width:100%;
       padding:12px 14px;
@@ -64,6 +79,7 @@
       color:var(--text);
       border:1px solid rgba(255,255,255,.08);
     }
+
     button{
       padding:12px 14px;
       color:#fff;
@@ -71,17 +87,27 @@
       cursor:pointer;
       min-height:46px;
       transition:.14s transform,.14s filter;
+      pointer-events:auto;
     }
-    button:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    button:active{transform:translateY(1px) scale(.985)}
+
+    button:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.06);
+    }
+
+    button:active{
+      transform:translateY(1px) scale(.985);
+    }
+
     .btn-main{background:linear-gradient(135deg,var(--blue),var(--violet))}
     .btn-cpu{background:linear-gradient(135deg,#16a34a,#22c55e)}
     .btn-online{background:linear-gradient(135deg,#0284c7,#06b6d4)}
     .btn-rank{background:linear-gradient(135deg,#ca8a04,#f59e0b)}
-    .btn-sub{background:rgba(255,255,255,.08)}
+    .btn-sub{background:rgba(255,255,255,.10)}
     .btn-danger{background:linear-gradient(135deg,#dc2626,#fb7185)}
     .btn-copy{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
     .btn-tour{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+
     .status{
       min-height:44px;
       padding:10px 12px;
@@ -92,14 +118,29 @@
       font-size:13px;
       line-height:1.6;
     }
+
     .label{
       font-size:12px;
       color:var(--muted);
       margin-bottom:8px;
     }
-    .row{display:flex;gap:8px;align-items:center}
-    .wrap{flex-wrap:wrap}
-    .col{display:flex;flex-direction:column;gap:8px}
+
+    .row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .wrap{
+      flex-wrap:wrap;
+    }
+
+    .col{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
     .section-title{
       font-size:15px;
       font-weight:900;
@@ -112,20 +153,29 @@
       display:grid;
       grid-template-columns:380px 1fr;
       gap:12px;
+      position:relative;
+      z-index:2;
     }
-    .menu-left{padding:14px;overflow:auto}
+
+    .menu-left{
+      padding:14px;
+      overflow:auto;
+    }
+
     .title{
       font-size:30px;
       font-weight:900;
       margin:0 0 8px;
       letter-spacing:.03em;
     }
+
     .sub{
       color:var(--muted);
       font-size:13px;
       line-height:1.7;
       margin-bottom:14px;
     }
+
     .card{
       background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.08);
@@ -133,6 +183,7 @@
       padding:12px;
       margin-bottom:12px;
     }
+
     .menu-main{
       display:grid;
       grid-template-rows:auto 1fr auto;
@@ -140,7 +191,11 @@
       min-width:0;
       min-height:0;
     }
-    .hero{padding:14px}
+
+    .hero{
+      padding:14px;
+    }
+
     .hero-grid{
       display:grid;
       grid-template-columns:1.2fr 1fr;
@@ -148,46 +203,68 @@
       min-height:0;
       height:100%;
     }
-    .hero-card,.list-card{padding:14px;min-height:0;overflow:auto}
+
+    .hero-card,.list-card{
+      padding:14px;
+      min-height:0;
+      overflow:auto;
+    }
+
     .hero-title{
       font-size:38px;
       font-weight:900;
       line-height:1.15;
       margin:0 0 10px;
     }
+
     .hero-text{
       color:var(--muted);
       line-height:1.8;
       font-size:14px;
       margin-bottom:14px;
     }
+
     .menu-buttons{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
     }
+
     .grid2{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:8px;
     }
+
     .pick-btn{
       min-height:66px;
       text-align:left;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.1);
     }
+
     .pick-btn.active{
       outline:2px solid rgba(103,232,249,.8);
       background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(167,139,250,.22));
     }
-    .pick-name{font-size:14px;font-weight:900}
-    .pick-meta{font-size:11px;color:#d7e4ff;opacity:.88}
+
+    .pick-name{
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .pick-meta{
+      font-size:11px;
+      color:#d7e4ff;
+      opacity:.88;
+    }
+
     .bottom-menu{
       display:grid;
       grid-template-columns:1fr 1fr 1fr;
       gap:12px;
     }
+
     .list{
       display:flex;
       flex-direction:column;
@@ -195,6 +272,7 @@
       max-height:260px;
       overflow:auto;
     }
+
     .item{
       display:grid;
       grid-template-columns:1fr auto;
@@ -206,7 +284,11 @@
       border:1px solid rgba(255,255,255,.08);
       font-size:13px;
     }
-    .meta{font-size:12px;color:var(--muted)}
+
+    .meta{
+      font-size:12px;
+      color:var(--muted);
+    }
 
     /* battle */
     #battleScreen{
@@ -214,7 +296,10 @@
       display:grid;
       grid-template-rows:auto 1fr auto;
       gap:12px;
+      position:relative;
+      z-index:1;
     }
+
     .topbar{
       padding:12px 14px;
       display:flex;
@@ -223,12 +308,14 @@
       flex-wrap:wrap;
       align-items:center;
     }
+
     .pill-wrap{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       align-items:center;
     }
+
     .pill{
       padding:8px 12px;
       border-radius:999px;
@@ -236,11 +323,13 @@
       border:1px solid rgba(255,255,255,.08);
       font-size:13px;
     }
+
     .arena-panel{
       position:relative;
       padding:12px;
       min-height:0;
     }
+
     .arena-card{
       width:100%;
       height:100%;
@@ -250,12 +339,14 @@
       background:#07111f;
       position:relative;
     }
+
     canvas{
       width:100%;
       height:100%;
       display:block;
       touch-action:none;
     }
+
     .overlay{
       position:absolute;
       inset:0;
@@ -264,7 +355,14 @@
       justify-content:center;
       padding:16px;
       background:rgba(0,0,0,.18);
+      z-index:5;
     }
+
+    .overlay.hidden{
+      display:none !important;
+      pointer-events:none !important;
+    }
+
     .overlay-box{
       width:min(860px,96%);
       border-radius:24px;
@@ -274,65 +372,99 @@
       box-shadow:var(--shadow);
       text-align:center;
     }
+
     .overlay-title{
       font-size:30px;
       font-weight:900;
       margin-bottom:10px;
     }
+
     .overlay-text{
       white-space:pre-line;
       color:var(--muted);
       line-height:1.8;
       margin-bottom:16px;
     }
+
     .battle-bottom{
       display:grid;
       grid-template-columns:1.3fr .9fr .9fr;
       gap:12px;
     }
-    .control-panel,.watch-panel,.rank-panel{padding:12px;min-height:172px}
+
+    .control-panel,.watch-panel,.rank-panel{
+      padding:12px;
+      min-height:172px;
+    }
+
     .control-grid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
       gap:8px;
       max-width:620px;
     }
+
     .touch{
       min-height:58px;
       font-size:18px;
       background:linear-gradient(135deg,rgba(96,165,250,.24),rgba(167,139,250,.22));
       border:1px solid rgba(255,255,255,.12);
     }
+
     .touch.fire{
       background:linear-gradient(135deg,rgba(251,191,36,.26),rgba(251,113,133,.22));
     }
-    .touch.hiddenbtn{visibility:hidden}
+
+    .touch.hiddenbtn{
+      visibility:hidden;
+    }
+
     .note{
       color:var(--muted);
       font-size:12px;
       line-height:1.7;
       margin-top:10px;
     }
+
     .devicePc .pcOnly{display:block}
     .devicePc .mobileOnly{display:none}
     .devicePc #touchWrap{display:none!important}
+
     .deviceMobile .pcOnly{display:none}
     .deviceMobile .mobileOnly{display:block}
     .deviceMobile #touchWrap{display:block!important}
 
     @media (max-width:1100px){
-      #menuScreen{grid-template-columns:1fr;grid-template-rows:auto 1fr}
-      .hero-grid{grid-template-columns:1fr}
-      .bottom-menu{grid-template-columns:1fr}
-      .battle-bottom{grid-template-columns:1fr}
+      #menuScreen{
+        grid-template-columns:1fr;
+        grid-template-rows:auto 1fr;
+      }
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+      .bottom-menu{
+        grid-template-columns:1fr;
+      }
+      .battle-bottom{
+        grid-template-columns:1fr;
+      }
     }
+
     @media (max-width:720px){
       .title{font-size:24px}
       .hero-title{font-size:28px}
       .menu-buttons{grid-template-columns:1fr}
-      .control-grid{grid-template-columns:repeat(4,1fr);max-width:none}
-      .touch{min-height:64px;font-size:18px}
-      .overlay-title{font-size:24px}
+      .control-grid{
+        grid-template-columns:repeat(4,1fr);
+        max-width:none;
+      }
+      .touch{
+        min-height:64px;
+        font-size:18px;
+      }
+      .overlay-title{
+        font-size:24px;
+      }
     }
   </style>
 </head>
@@ -341,14 +473,14 @@
     <aside class="panel menu-left">
       <h1 class="title">🏒 Hockey Legends v3000</h1>
       <div class="sub">
-        前のアプリと同じく <b>index.html 1枚</b> 構成。<br>
-        Firebase Auth + Realtime Database + Firestore 使用。
+        ボタン修正版。<br>
+        index.html 1枚でそのまま使える版。
       </div>
 
       <div class="card">
         <div class="label">Firebase設定</div>
         <div class="status">
-          下の <b>firebaseConfig</b> だけ自分の前アプリと同じ値に置き換えて使う。
+          下の <b>firebaseConfig</b> を自分の値に変えて使う
         </div>
       </div>
 
@@ -356,7 +488,7 @@
         <div class="label">プレイヤー情報</div>
         <div class="col">
           <input id="nicknameInput" maxlength="16" placeholder="ニックネームを入力" />
-          <button id="saveNickBtn" class="btn-main">ニックネーム保存</button>
+          <button type="button" id="saveNickBtn" class="btn-main">ニックネーム保存</button>
         </div>
         <div style="height:8px"></div>
         <div class="status" id="authStatus">Firebase初期化中...</div>
@@ -365,18 +497,18 @@
       <div class="card">
         <div class="label">オンライン入室 / 観戦</div>
         <div class="col">
-          <button id="createRoomBtn" class="btn-online">ルーム作成</button>
+          <button type="button" id="createRoomBtn" class="btn-online">ルーム作成</button>
           <div class="row">
             <input id="roomCodeInput" maxlength="6" placeholder="対戦ルームコード6文字" />
-            <button id="joinRoomBtn" class="btn-online">参加</button>
+            <button type="button" id="joinRoomBtn" class="btn-online">参加</button>
           </div>
           <div class="row">
             <input id="watchCodeInput" maxlength="6" placeholder="観戦コード6文字" />
-            <button id="watchRoomBtn" class="btn-online">観戦</button>
+            <button type="button" id="watchRoomBtn" class="btn-online">観戦</button>
           </div>
           <div class="row">
             <input id="currentRoomCode" readonly placeholder="作成されたルームコード" />
-            <button id="copyRoomBtn" class="btn-copy">コピー</button>
+            <button type="button" id="copyRoomBtn" class="btn-copy">コピー</button>
           </div>
         </div>
         <div style="height:8px"></div>
@@ -386,19 +518,19 @@
       <div class="card">
         <div class="label">CPU対戦</div>
         <div class="row wrap">
-          <button class="btn-cpu diffBtn" data-diff="0">EASY</button>
-          <button class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
-          <button class="btn-cpu diffBtn" data-diff="2">HARD</button>
-          <button class="btn-cpu diffBtn" data-diff="3">LEGEND</button>
+          <button type="button" class="btn-cpu diffBtn" data-diff="0">EASY</button>
+          <button type="button" class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
+          <button type="button" class="btn-cpu diffBtn" data-diff="2">HARD</button>
+          <button type="button" class="btn-cpu diffBtn" data-diff="3">LEGEND</button>
         </div>
       </div>
 
       <div class="card">
         <div class="label">メニュー</div>
         <div class="row wrap">
-          <button id="gotoHelpBtn" class="btn-sub">操作説明</button>
-          <button id="gotoRankingBtn" class="btn-rank">ランキング</button>
-          <button id="gotoTournamentBtn" class="btn-tour">トーナメント</button>
+          <button type="button" id="gotoHelpBtn" class="btn-sub">操作説明</button>
+          <button type="button" id="gotoRankingBtn" class="btn-rank">ランキング</button>
+          <button type="button" id="gotoTournamentBtn" class="btn-tour">トーナメント</button>
         </div>
       </div>
     </aside>
@@ -407,18 +539,16 @@
       <div class="panel hero">
         <div class="hero-grid">
           <div class="hero-card">
-            <div class="hero-title">ホッケーアプリ版<br>全部コピペ用</div>
+            <div class="hero-title">ホッケーアプリ版<br>ボタン修正版</div>
             <div class="hero-text">
-              メニュー画面と対戦画面を分離。<br>
-              PC版 / スマホ版で操作表記を切替。<br>
-              前後左右移動、必殺シュート、HP制演出、観戦、観戦者一覧、ルーム一覧、トーナメント、ランキング入り。<br>
-              パックが遅すぎる不具合は最低速度維持で修正済み。
+              メニュー画面と対戦画面を完全分離。<br>
+              前後左右移動、必殺シュート、HP制演出、観戦、観戦者一覧、ルーム一覧、トーナメント、ランキング入り。
             </div>
             <div class="menu-buttons">
-              <button id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
-              <button id="menuOnlineBtn" class="btn-online">オンライン対戦へ</button>
-              <button id="menuWatchBtn" class="btn-online">観戦へ</button>
-              <button id="menuTournamentBtn" class="btn-tour">トーナメント開始</button>
+              <button type="button" id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
+              <button type="button" id="menuOnlineBtn" class="btn-online">オンライン対戦へ</button>
+              <button type="button" id="menuWatchBtn" class="btn-online">観戦へ</button>
+              <button type="button" id="menuTournamentBtn" class="btn-tour">トーナメント開始</button>
             </div>
           </div>
 
@@ -435,19 +565,19 @@
         <div class="panel hero-card">
           <div class="section-title">キャラ選択</div>
           <div class="grid2">
-            <button class="pick-btn charBtn active" data-char="balanced">
+            <button type="button" class="pick-btn charBtn active" data-char="balanced">
               <div class="pick-name">🛡️ BALANCED</div>
               <div class="pick-meta">標準HP / 標準速度</div>
             </button>
-            <button class="pick-btn charBtn" data-char="speed">
+            <button type="button" class="pick-btn charBtn" data-char="speed">
               <div class="pick-name">⚡ SPEED</div>
               <div class="pick-meta">低HP / 高速移動</div>
             </button>
-            <button class="pick-btn charBtn" data-char="power">
+            <button type="button" class="pick-btn charBtn" data-char="power">
               <div class="pick-name">💥 POWER</div>
               <div class="pick-meta">高HP / 強い当たり</div>
             </button>
-            <button class="pick-btn charBtn" data-char="tech">
+            <button type="button" class="pick-btn charBtn" data-char="tech">
               <div class="pick-name">🌀 TECH</div>
               <div class="pick-meta">変化球必殺</div>
             </button>
@@ -459,10 +589,10 @@
         <div class="panel hero-card">
           <div class="section-title">ステージ選択</div>
           <div class="grid2">
-            <button class="pick-btn stageBtn active" data-stage="classic">CLASSIC</button>
-            <button class="pick-btn stageBtn" data-stage="neon">NEON</button>
-            <button class="pick-btn stageBtn" data-stage="lava">LAVA</button>
-            <button class="pick-btn stageBtn" data-stage="ice">ICE</button>
+            <button type="button" class="pick-btn stageBtn active" data-stage="classic">CLASSIC</button>
+            <button type="button" class="pick-btn stageBtn" data-stage="neon">NEON</button>
+            <button type="button" class="pick-btn stageBtn" data-stage="lava">LAVA</button>
+            <button type="button" class="pick-btn stageBtn" data-stage="ice">ICE</button>
           </div>
           <div style="height:8px"></div>
           <div class="status" id="stageStatus">CLASSIC: 標準ステージ</div>
@@ -499,14 +629,14 @@
       <div class="arena-card">
         <canvas id="gameCanvas" width="1280" height="720"></canvas>
 
-        <div id="overlay" class="overlay">
+        <div id="overlay" class="overlay hidden">
           <div class="overlay-box">
             <div id="overlayTitle" class="overlay-title">Hockey Legends v3000</div>
             <div id="overlayText" class="overlay-text">準備完了です。</div>
             <div class="row wrap" style="justify-content:center">
-              <button id="overlayStartBtn" class="btn-main">試合開始</button>
-              <button id="overlayRematchBtn" class="btn-main">再戦</button>
-              <button id="overlayMenuBtn" class="btn-sub">メニューへ戻る</button>
+              <button type="button" id="overlayStartBtn" class="btn-main">試合開始</button>
+              <button type="button" id="overlayRematchBtn" class="btn-main">再戦</button>
+              <button type="button" id="overlayMenuBtn" class="btn-sub">メニューへ戻る</button>
             </div>
           </div>
         </div>
@@ -536,29 +666,24 @@
 
         <div id="touchWrap" style="margin-top:12px;">
           <div class="control-grid">
-            <button class="touch hiddenbtn"></button>
-            <button class="touch" id="touchUp">↑</button>
-            <button class="touch hiddenbtn"></button>
-            <button class="touch fire" id="touchSkill">SKILL</button>
-            <button class="touch fire" id="touchStart">START</button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch" id="touchUp">↑</button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch fire" id="touchSkill">SKILL</button>
+            <button type="button" class="touch fire" id="touchStart">START</button>
 
-            <button class="touch" id="touchLeft">←</button>
-            <button class="touch hiddenbtn"></button>
-            <button class="touch" id="touchRight">→</button>
-            <button class="touch" id="touchDash">DASH</button>
-            <button class="touch" id="touchPause">PAUSE</button>
+            <button type="button" class="touch" id="touchLeft">←</button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch" id="touchRight">→</button>
+            <button type="button" class="touch" id="touchDash">DASH</button>
+            <button type="button" class="touch" id="touchPause">PAUSE</button>
 
-            <button class="touch hiddenbtn"></button>
-            <button class="touch" id="touchDown">↓</button>
-            <button class="touch hiddenbtn"></button>
-            <button class="touch hiddenbtn"></button>
-            <button class="touch hiddenbtn"></button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch" id="touchDown">↓</button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch hiddenbtn"></button>
           </div>
-        </div>
-
-        <div class="note">
-          HPが0でも敗北。先に5点でも勝利。<br>
-          パック最低速度維持あり。
         </div>
       </div>
 
@@ -570,9 +695,9 @@
         <div style="height:10px"></div>
         <div class="section-title">ルーム管理</div>
         <div class="row wrap">
-          <button id="battleBackMenuBtn" class="btn-sub">メニューへ</button>
-          <button id="leaveRoomBtn" class="btn-danger">退出</button>
-          <button id="rematchBtn" class="btn-main">再戦</button>
+          <button type="button" id="battleBackMenuBtn" class="btn-sub">メニューへ</button>
+          <button type="button" id="leaveRoomBtn" class="btn-danger">退出</button>
+          <button type="button" id="rematchBtn" class="btn-main">再戦</button>
         </div>
       </div>
 
@@ -587,13 +712,13 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "ここを前アプリと同じ値にする",
-      authDomain: "ここを前アプリと同じ値にする",
-      databaseURL: "ここを前アプリと同じ値にする",
-      projectId: "ここを前アプリと同じ値にする",
-      storageBucket: "ここを前アプリと同じ値にする",
-      messagingSenderId: "ここを前アプリと同じ値にする",
-      appId: "ここを前アプリと同じ値にする"
+      apiKey: "ここを自分の値にする",
+      authDomain: "ここを自分の値にする",
+      databaseURL: "ここを自分の値にする",
+      projectId: "ここを自分の値にする",
+      storageBucket: "ここを自分の値にする",
+      messagingSenderId: "ここを自分の値にする",
+      appId: "ここを自分の値にする"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -640,12 +765,14 @@
       power:{ name:"POWER", icon:"💥", speed:7.0, dash:1.24, radius:37, skillPower:28, skillCurve:0, hp:118, color:"#fb923c", desc:"POWER: 高HP / 強い当たり" },
       tech:{ name:"TECH", icon:"🌀", speed:7.9, dash:1.33, radius:33, skillPower:20, skillCurve:1.5, hp:95, color:"#a78bfa", desc:"TECH: 変化球必殺" }
     };
+
     const STAGES = {
       classic:{ name:"CLASSIC", desc:"CLASSIC: 標準ステージ", bgTop:"#0c1b33", bgBottom:"#07111f", glowLeft:"rgba(251,113,133,.14)", glowRight:"rgba(103,232,249,.14)", friction:0.9988 },
       neon:{ name:"NEON", desc:"NEON: 発光が強い近未来ステージ", bgTop:"#120b29", bgBottom:"#07111f", glowLeft:"rgba(251,113,133,.22)", glowRight:"rgba(167,139,250,.24)", friction:0.9992 },
       lava:{ name:"LAVA", desc:"LAVA: 高速ステージ", bgTop:"#3a130a", bgBottom:"#12060a", glowLeft:"rgba(251,113,133,.24)", glowRight:"rgba(251,191,36,.22)", friction:0.9994 },
       ice:{ name:"ICE", desc:"ICE: 滑りやすい高速ステージ", bgTop:"#0c2336", bgBottom:"#08121a", glowLeft:"rgba(96,165,250,.18)", glowRight:"rgba(103,232,249,.20)", friction:0.9996 }
     };
+
     const DIFF = [
       { name:"EASY", speed:4.0, react:0.07, dash:1.08, skillUse:0.05 },
       { name:"NORMAL", speed:5.3, react:0.11, dash:1.12, skillUse:0.08 },
@@ -661,7 +788,7 @@
       mode:"menu",
       gameState:"idle",
       roomCode:"",
-      onlineRole:null, // host guest spectator
+      onlineRole:null,
       roomRef:null,
       roomCache:null,
       keys:{},
@@ -698,25 +825,33 @@
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
       }[m]));
     }
+
     function makeCode(){
       const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
       let s = "";
       for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
       return s;
     }
+
     function setScreen(name){
       $("menuScreen").classList.toggle("hidden", name !== "menu");
       $("battleScreen").classList.toggle("hidden", name !== "battle");
     }
+
     function setAuthStatus(v){ $("authStatus").textContent = v; }
     function setOnlineStatus(v){ $("onlineStatus").textContent = v; }
     function setModeLabel(v){ $("modeLabel").textContent = v; }
     function setStateLabel(v){ $("stateLabel").textContent = v; }
+
     function updateScoreUI(){
       $("scorePlayer").textContent = GAME.scorePlayer;
       $("scoreEnemy").textContent = GAME.scoreEnemy;
     }
-    function updateSkillLabel(){ $("skillGaugeLabel").textContent = Math.round(GAME.player.skillGauge) + "%"; }
+
+    function updateSkillLabel(){
+      $("skillGaugeLabel").textContent = Math.round(GAME.player.skillGauge) + "%";
+    }
+
     function updateCharacterUI(){
       document.querySelectorAll(".charBtn").forEach(btn=>{
         btn.classList.toggle("active", btn.dataset.char === APP.selectedChar);
@@ -724,6 +859,7 @@
       $("charStatus").textContent = CHARACTERS[APP.selectedChar].desc;
       $("charLabel").textContent = CHARACTERS[APP.selectedChar].name;
     }
+
     function updateStageUI(){
       document.querySelectorAll(".stageBtn").forEach(btn=>{
         btn.classList.toggle("active", btn.dataset.stage === APP.selectedStage);
@@ -731,12 +867,16 @@
       $("stageStatus").textContent = STAGES[APP.selectedStage].desc;
       $("stageLabel").textContent = STAGES[APP.selectedStage].name;
     }
+
     function showOverlay(title,text){
-      $("overlay").classList.remove("hidden");
       $("overlayTitle").textContent = title;
       $("overlayText").textContent = text;
+      $("overlay").classList.remove("hidden");
     }
-    function hideOverlay(){ $("overlay").classList.add("hidden"); }
+
+    function hideOverlay(){
+      $("overlay").classList.add("hidden");
+    }
 
     function applyCharacterTo(obj, charKey){
       const c = CHARACTERS[charKey] || CHARACTERS.balanced;
@@ -748,6 +888,7 @@
       obj.skillGauge = 100;
       obj.skillActive = 0;
     }
+
     function resetPositions(dir = Math.random()<0.5 ? -1 : 1){
       GAME.player.x = 180;
       GAME.player.y = H/2;
@@ -763,6 +904,7 @@
       GAME.puck.trail = [];
       GAME.countdown = 60;
     }
+
     function fullReset(enemyChar = "balanced"){
       applyCharacterTo(GAME.player, APP.selectedChar);
       applyCharacterTo(GAME.enemy, enemyChar);
@@ -776,7 +918,10 @@
       updateScoreUI();
       updateSkillLabel();
     }
-    function currentStage(){ return STAGES[APP.selectedStage]; }
+
+    function currentStage(){
+      return STAGES[APP.selectedStage];
+    }
 
     auth.signInAnonymously()
       .then(()=>{ $("firebaseState").textContent = "OK"; })
@@ -809,6 +954,7 @@
       }, {merge:true});
       fetchRanking();
     }
+
     async function fetchRanking(){
       try{
         const snap = await fdb.collection("ranking").orderBy("score","desc").limit(10).get();
@@ -850,8 +996,8 @@
               <div class="meta">状態:${escapeHtml(room.status || "waiting")} / 観戦:${watcherCount} / ステージ:${escapeHtml(room.stage || "classic")}</div>
             </div>
             <div class="row">
-              <button class="btn-online" data-join="${escapeHtml(room.code || "")}">参加</button>
-              <button class="btn-sub" data-watch="${escapeHtml(room.code || "")}">観戦</button>
+              <button type="button" class="btn-online" data-join="${escapeHtml(room.code || "")}">参加</button>
+              <button type="button" class="btn-sub" data-watch="${escapeHtml(room.code || "")}">観戦</button>
             </div>
           `;
           list.appendChild(div);
@@ -875,6 +1021,7 @@
         list.appendChild(div);
       });
     }
+
     function startTournament(){
       APP.tournament = {
         active:true,
@@ -896,6 +1043,7 @@
       fullReset("power");
       showOverlay("トーナメント", "1回戦を開始します。試合開始を押してください。");
     }
+
     function progressTournament(playerWon){
       if(!APP.tournament || !APP.tournament.active) return;
       const m = APP.tournament.matches[APP.tournament.current];
@@ -1080,6 +1228,7 @@
         setScreen("menu");
         return;
       }
+
       const ref = rtdb.ref("rooms/" + APP.roomCode);
       const snap = await ref.once("value");
       const room = snap.val();
@@ -1100,6 +1249,7 @@
           await ref.child("watchers/" + APP.uid).remove();
         }
       }
+
       detachRoom();
       APP.roomCode = "";
       APP.onlineRole = null;
@@ -1115,6 +1265,7 @@
       APP.roomRef.on("value", snap=>{
         const room = snap.val();
         APP.roomCache = room;
+
         if(!room){
           setOnlineStatus("ルームが削除されました。");
           APP.roomCode = "";
@@ -1127,6 +1278,7 @@
           APP.selectedStage = room.stage;
           updateStageUI();
         }
+
         updateWatcherList(room);
 
         if(APP.onlineRole === "host"){
@@ -1170,11 +1322,13 @@
         showOverlay("再戦", "試合開始を押してください。");
         return;
       }
+
       if(APP.mode === "tournament"){
         APP.gameState = "idle";
         showOverlay("次の試合", "試合開始を押してください。");
         return;
       }
+
       if(APP.mode !== "online" || !APP.roomRef || APP.onlineRole === "spectator") return;
 
       const key = APP.onlineRole === "host" ? "host" : "guest";
@@ -1197,6 +1351,7 @@
         ensureAudio();
       }
     });
+
     window.addEventListener("keyup", e=>{
       APP.keys[e.key.toLowerCase()] = false;
       if(e.key.toLowerCase() === "f") APP.keys.skill = false;
@@ -1209,12 +1364,14 @@
       ["touchstart","mousedown"].forEach(ev=>el.addEventListener(ev,on,{passive:false}));
       ["touchend","touchcancel","mouseup","mouseleave"].forEach(ev=>el.addEventListener(ev,off,{passive:false}));
     }
+
     bindHold("touchUp","up");
     bindHold("touchDown","down");
     bindHold("touchLeft","left");
     bindHold("touchRight","right");
     bindHold("touchDash","dash");
     bindHold("touchSkill","skill");
+
     $("touchStart").onclick = ()=>{ ensureAudio(); APP.gameState = "playing"; hideOverlay(); };
     $("touchPause").onclick = ()=>{ APP.gameState = "paused"; showOverlay("PAUSE","START または Space で再開できます。"); };
 
@@ -1225,6 +1382,7 @@
       if(APP.keys["s"] || APP.keys["arrowdown"] || APP.mobile.down) a += 1;
       return a;
     }
+
     function getAxisX(){
       if(APP.onlineRole === "spectator") return 0;
       let a = 0;
@@ -1232,12 +1390,14 @@
       if(APP.keys["d"] || APP.keys["arrowright"] || APP.mobile.right) a += 1;
       return a;
     }
+
     function getDash(){ return !!(APP.keys["shift"] || APP.mobile.dash); }
     function getSkill(){ return !!(APP.keys.skill || APP.mobile.skill); }
 
     function updateSkillGauge(obj, gain=0.055){
       obj.skillGauge = clamp(obj.skillGauge + gain, 0, 100);
     }
+
     function activateSkill(obj){
       if(obj.skillGauge < 100) return false;
       obj.skillGauge = 0;
@@ -1246,20 +1406,24 @@
       sfxSkill();
       return true;
     }
+
     function spawnHit(x,y,color,count=8,speed=3.5){
       for(let i=0;i<count;i++){
         GAME.particles.push({ x,y, vx:rand(-speed,speed), vy:rand(-speed,speed), life:rand(16,34), color });
       }
     }
+
     function spawnShockwave(x,y,color){
       GAME.shockwaves.push({ x,y,r:8,life:18,color });
     }
+
     function playerBounds(isLeft, r){
       if(isLeft){
         return { minX: 60 + r, maxX: W/2 - 80 - r, minY: 60 + r, maxY: H - 60 - r };
       }
       return { minX: W/2 + 80 + r, maxX: W - 60 - r, minY: 60 + r, maxY: H - 60 - r };
     }
+
     function movePaddle(obj, axisX, axisY, speed, dashMul, isLeft){
       obj.vx = axisX * speed * dashMul;
       obj.vy = axisY * speed * dashMul;
@@ -1269,12 +1433,14 @@
       obj.x = clamp(obj.x, b.minX, b.maxX);
       obj.y = clamp(obj.y, b.minY, b.maxY);
     }
+
     function damageEnemy(target, amount){
       target.hp = clamp(target.hp - amount, 0, target.hpMax);
       if(target.hp <= 0){
         finishGame(target === GAME.enemy ? "player" : "enemy");
       }
     }
+
     function circleBounce(p, target, isPlayer){
       const dx = GAME.puck.x - p.x;
       const dy = GAME.puck.y - p.y;
@@ -1301,6 +1467,7 @@
         sfxHit();
       }
     }
+
     function enforceMinPuckSpeed(){
       if(GAME.countdown > 0) return;
       const speed = Math.hypot(GAME.puck.vx, GAME.puck.vy);
@@ -1311,6 +1478,7 @@
         GAME.puck.vy = Math.sin(angle) * minSpeed;
       }
     }
+
     function scoreGoal(side){
       if(side === "player"){
         GAME.scorePlayer++;
@@ -1329,6 +1497,7 @@
       if(GAME.scorePlayer >= WIN_SCORE) finishGame("player");
       if(GAME.scoreEnemy >= WIN_SCORE) finishGame("enemy");
     }
+
     function finishGame(winner){
       if(APP.gameState === "ended") return;
       APP.gameState = "ended";
@@ -1346,6 +1515,7 @@
         showOverlay("💥 YOU LOSE!", "再戦するかメニューへ戻ってください。");
       }
     }
+
     function updatePuck(){
       if(GAME.countdown > 0){
         GAME.countdown--;
@@ -1401,6 +1571,7 @@
       circleBounce(GAME.enemy, GAME.player, false);
       enforceMinPuckSpeed();
     }
+
     function updateParticles(){
       for(let i=GAME.particles.length-1;i>=0;i--){
         const p = GAME.particles[i];
@@ -1442,6 +1613,7 @@
       const ny = clamp(GAME.player.y + getAxisY()*(char.speed+4), 60 + GAME.player.r, H - 60 - GAME.player.r);
       APP.roomRef.child("hostInput").set({ x:nx, y:ny, dash:getDash(), skill:getSkill() });
     }
+
     function pushGuestInput(){
       if(!APP.roomRef) return;
       const char = CHARACTERS[APP.selectedChar];
@@ -1449,8 +1621,10 @@
       const ny = clamp(GAME.enemy.y + getAxisY()*(char.speed+4), 60 + GAME.enemy.r, H - 60 - GAME.enemy.r);
       APP.roomRef.child("guestInput").set({ x:nx, y:ny, dash:getDash(), skill:getSkill() });
     }
+
     function hostSimulate(room){
       if(!room) return;
+
       const hostChar = CHARACTERS[room.hostChar || APP.selectedChar] || CHARACTERS.balanced;
       const guestChar = CHARACTERS[room.guestChar || "balanced"] || CHARACTERS.balanced;
       applyCharacterTo(GAME.enemy, room.guestChar || "balanced");
@@ -1469,6 +1643,7 @@
 
       updateSkillGauge(GAME.player);
       updateSkillGauge(GAME.enemy);
+
       if(hi.skill) activateSkill(GAME.player);
       if(gi.skill) activateSkill(GAME.enemy);
 
@@ -1503,6 +1678,7 @@
         showOverlay("再戦", "試合開始を押してください。");
       }
     }
+
     function updateOnlineMode(){
       if(APP.onlineRole === "host"){
         pushHostInput();
@@ -1521,6 +1697,7 @@
       ctx.arcTo(x,y,x+w,y,r);
       ctx.closePath();
     }
+
     function drawStageBackground(){
       const st = currentStage();
       const bg = ctx.createLinearGradient(0,0,0,H);
@@ -1566,6 +1743,7 @@
       ctx.fillRect(W-40,H/2-GOAL_H/2,40,GOAL_H);
       ctx.restore();
     }
+
     function drawPortrait(x, y, obj, label){
       ctx.save();
       const g = ctx.createRadialGradient(x-10,y-10,6,x,y,obj.r+14);
@@ -1606,6 +1784,7 @@
       ctx.fillText(label, x, y + obj.r + 24);
       ctx.restore();
     }
+
     function drawPuck(){
       GAME.puck.trail.forEach(t=>{
         ctx.save();
@@ -1631,6 +1810,7 @@
       ctx.fill();
       ctx.restore();
     }
+
     function drawBar(x,y,w,h,val,max,color,bg="rgba(255,255,255,.08)"){
       ctx.save();
       ctx.fillStyle = bg;
@@ -1641,6 +1821,7 @@
       ctx.strokeRect(x,y,w,h);
       ctx.restore();
     }
+
     function drawArena(){
       ctx.clearRect(0,0,W,H);
       drawStageBackground();
@@ -1657,6 +1838,7 @@
         ctx.fill();
         ctx.restore();
       });
+
       GAME.shockwaves.forEach(s=>{
         ctx.save();
         ctx.globalAlpha = s.life / 18 * .6;
@@ -1705,6 +1887,7 @@
       fullReset("balanced");
       showOverlay("CPU対戦", "試合開始を押してください。");
     }
+
     function showHelp(){
       alert(
 `【PC版】
@@ -1721,11 +1904,13 @@ SKILL : 必殺
 START : 開始`
       );
     }
+
     function startMatchFromOverlay(){
       ensureAudio();
       APP.gameState = "playing";
       hideOverlay();
     }
+
     function backToMenuFromBattle(){
       APP.gameState = "idle";
       if(APP.onlineRole){
@@ -1744,6 +1929,7 @@ START : 開始`
       setAuthStatus("ニックネームを保存しました: " + APP.nickname);
       sfxMenu();
     };
+
     document.querySelectorAll(".charBtn").forEach(btn=>{
       btn.onclick = ()=>{
         ensureAudio();
@@ -1753,6 +1939,7 @@ START : 開始`
         sfxMenu();
       };
     });
+
     document.querySelectorAll(".stageBtn").forEach(btn=>{
       btn.onclick = ()=>{
         ensureAudio();
@@ -1762,6 +1949,7 @@ START : 開始`
         sfxMenu();
       };
     });
+
     document.querySelectorAll(".diffBtn").forEach(btn=>{
       btn.onclick = ()=>{ ensureAudio(); startCpuMatch(Number(btn.dataset.diff)); };
     });
@@ -1799,6 +1987,7 @@ START : 開始`
     function loop(){
       requestAnimationFrame(loop);
       updateParticles();
+
       if(APP.gameState === "playing"){
         if(APP.mode === "cpu" || APP.mode === "tournament"){
           updateCpuMode();
@@ -1806,7 +1995,11 @@ START : 開始`
           updateOnlineMode();
         }
       }
-      drawArena();
+
+      if(!$("battleScreen").classList.contains("hidden")){
+        drawArena();
+      }
+
       updateScoreUI();
       updateSkillLabel();
     }
@@ -1817,7 +2010,7 @@ START : 開始`
     fullReset("balanced");
     fetchRanking();
     setScreen("menu");
-    showOverlay("Hockey Legends v3000", "準備完了です。");
+    hideOverlay();
   </script>
 </body>
 </html>
