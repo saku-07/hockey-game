@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
   />
-  <title>Hockey Legends Online Mobile Fix+</title>
+  <title>Hockey Legends Online Fixed</title>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -26,7 +26,6 @@
       --violet:#8b5cf6;
       --red:#ef4444;
       --gray:#334155;
-      --cyan:#67e8f9;
     }
 
     *{
@@ -115,13 +114,12 @@
     .col{ display:flex; flex-direction:column; gap:8px; }
     .wrap{ flex-wrap:wrap; }
 
-    /* ===== MENU ===== */
     #menuScreen{
       padding:12px;
       overflow:auto;
       -webkit-overflow-scrolling:touch;
-      height:auto;
       min-height:100dvh;
+      height:auto;
     }
 
     .menuWrap{
@@ -190,10 +188,9 @@
 
     .diffBtn.active{
       outline:2px solid #7dd3fc;
-      box-shadow:0 0 0 2px rgba(125,211,252,.18) inset;
+      box-shadow:0 0 0 2px rgba(125,211,252,.15) inset;
     }
 
-    /* ===== BATTLE ===== */
     #battleScreen{
       padding:8px;
       display:grid;
@@ -268,9 +265,7 @@
       padding:14px;
     }
 
-    .battleOverlay.hidden{
-      display:none !important;
-    }
+    .battleOverlay.hidden{ display:none !important; }
 
     .battleOverlayBox{
       width:min(720px, 96%);
@@ -318,15 +313,11 @@
     .touch{
       min-height:56px;
       background:#334155;
+      touch-action:none;
     }
 
-    .touch.fire{
-      background:#8b5cf6;
-    }
-
-    .touch.blank{
-      visibility:hidden;
-    }
+    .touch.fire{ background:#8b5cf6; }
+    .touch.blank{ visibility:hidden; }
 
     .note{
       color:var(--muted);
@@ -365,15 +356,9 @@
       padding:12px;
     }
 
-    .mobileQuickMenu.show{
-      display:block;
-    }
+    .mobileQuickMenu.show{ display:block; }
+    .mobileQuickMenu .col button{ width:100%; }
 
-    .mobileQuickMenu .col button{
-      width:100%;
-    }
-
-    /* ランキングモーダル */
     .rankingModal{
       position:fixed;
       inset:0;
@@ -385,9 +370,7 @@
       padding:16px;
     }
 
-    .rankingModal.hidden{
-      display:none !important;
-    }
+    .rankingModal.hidden{ display:none !important; }
 
     .rankingBox{
       width:min(560px, 96vw);
@@ -427,17 +410,9 @@
         grid-template-rows:auto auto auto;
       }
 
-      .menuHero h1{
-        font-size:28px;
-      }
-
-      .menuButtons{
-        grid-template-columns:1fr;
-      }
-
-      .diffGrid{
-        grid-template-columns:1fr 1fr;
-      }
+      .menuHero h1{ font-size:28px; }
+      .menuButtons{ grid-template-columns:1fr; }
+      .diffGrid{ grid-template-columns:1fr 1fr; }
 
       #battleScreen{
         grid-template-rows:auto minmax(0,1fr) auto;
@@ -450,9 +425,7 @@
         gap:6px;
       }
 
-      .pillWrap{
-        gap:4px;
-      }
+      .pillWrap{ gap:4px; }
 
       .pill{
         padding:5px 8px;
@@ -467,9 +440,7 @@
       .mobileOnly{ display:block; }
       #touchWrap{ display:block; }
 
-      .controlPanel{
-        padding:8px;
-      }
+      .controlPanel{ padding:8px; }
 
       .controlGrid{
         grid-template-columns:repeat(5,1fr);
@@ -483,13 +454,8 @@
         font-size:14px;
       }
 
-      .sidePanel{
-        display:none;
-      }
-
-      .mobileQuickBtn{
-        display:block;
-      }
+      .sidePanel{ display:none; }
+      .mobileQuickBtn{ display:block; }
 
       .note{
         font-size:10px;
@@ -513,17 +479,9 @@
         font-size:12px;
       }
 
-      .battleOverlayTitle{
-        font-size:22px;
-      }
-
-      .battleOverlayText{
-        font-size:12px;
-      }
-
-      .rankingTitle{
-        font-size:22px;
-      }
+      .battleOverlayTitle{ font-size:22px; }
+      .battleOverlayText{ font-size:12px; }
+      .rankingTitle{ font-size:22px; }
     }
   </style>
 </head>
@@ -534,9 +492,8 @@
       <div class="panel menuHero">
         <h1>🏒 Hockey Legends</h1>
         <p>
-          CPUの強さを選んでから対戦開始できます。<br>
-          ランキング更新を押すとランキング画面が開き、上位10名まで表示します。<br>
-          ルームは試合終了時または退出時に削除されます。
+          オンラインのスマホ操作とCPU角ハマりを修正版にしています。<br>
+          CPUは先に強さを選んでから開始してください。ランキングは上位10名表示です。
         </p>
       </div>
 
@@ -581,7 +538,7 @@
 
       <div class="menuCol">
         <div class="panel menuCard">
-          <div class="label">CPU難易度（先に選んでください）</div>
+          <div class="label">CPU難易度（先に選ぶ）</div>
           <div class="diffGrid">
             <button type="button" class="btn-cpu diffBtn active" data-diff="0">EASY</button>
             <button type="button" class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
@@ -740,6 +697,7 @@
     const $ = (id) => document.getElementById(id);
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
     const rand = (a,b)=>Math.random()*(b-a)+a;
+    const dist = (x1,y1,x2,y2)=>Math.hypot(x2-x1,y2-y1);
     const WIN_SCORE = 10;
 
     const CHARACTERS = {
@@ -750,12 +708,12 @@
     };
 
     const CPU = [
-      { name:"EASY",   speed:4.2, react:0.06 },
-      { name:"NORMAL", speed:5.6, react:0.09 },
-      { name:"HARD",   speed:7.2, react:0.14 },
-      { name:"EXPERT", speed:8.6, react:0.18 },
-      { name:"MASTER", speed:10.0, react:0.24 },
-      { name:"GOD",    speed:12.0, react:0.30 }
+      { name:"EASY",   speed:4.2, react:0.06, pressure:0.10 },
+      { name:"NORMAL", speed:5.6, react:0.09, pressure:0.18 },
+      { name:"HARD",   speed:7.2, react:0.14, pressure:0.28 },
+      { name:"EXPERT", speed:8.6, react:0.18, pressure:0.40 },
+      { name:"MASTER", speed:10.0, react:0.24, pressure:0.56 },
+      { name:"GOD",    speed:12.0, react:0.30, pressure:0.72 }
     ];
 
     const STAGES = {
@@ -781,7 +739,8 @@
       onlineRole:null,
       guestInput:{ax:0, ay:0, dash:false, skill:false},
       started:false,
-      localResultShown:false
+      localResultShown:false,
+      lastGuestInputSent:0
     };
 
     const canvas = $("gameCanvas");
@@ -796,7 +755,10 @@
       scoreHost:0,
       scoreGuest:0,
       countdown:0,
-      message:"START"
+      message:"START",
+      stallCounter:0,
+      lastPuckX:W/2,
+      lastPuckY:H/2
     };
 
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -923,20 +885,9 @@
       GAME.puck.vx = 8 * dir;
       GAME.puck.vy = rand(-3,3);
       GAME.countdown = 60;
-    }
-
-    function resetOnlineMatch(guestChar="balanced"){
-      applyCharacter(GAME.host, APP.onlineRole === "guest" ? "balanced" : APP.selectedChar, "#67e8f9");
-      applyCharacter(GAME.guest, guestChar, "#fb7185");
-      GAME.scoreHost = 0;
-      GAME.scoreGuest = 0;
-      GAME.message = "START";
-      GAME.host.skill = 100;
-      GAME.guest.skill = 100;
-      APP.localResultShown = false;
-      resetRound(Math.random() < 0.5 ? -1 : 1);
-      updateScoreUI();
-      updateSkillUI();
+      GAME.stallCounter = 0;
+      GAME.lastPuckX = GAME.puck.x;
+      GAME.lastPuckY = GAME.puck.y;
     }
 
     function resetCpuMatch(){
@@ -975,6 +926,7 @@
       APP.roomCode = code;
       APP.started = false;
       APP.localResultShown = false;
+      APP.lastGuestInputSent = 0;
       setModeLabel("ONLINE");
       setStateLabel(role === "host" ? "オンライン HOST" : "オンライン GUEST");
       setScreen("battle");
@@ -1047,6 +999,7 @@
       const mult = dash ? 1.35 : 1;
       unit.x += axisX * speed * mult;
       unit.y += axisY * speed * mult;
+
       if(leftSide){
         unit.x = clamp(unit.x, 60 + unit.r, W/2 - 80 - unit.r);
       }else{
@@ -1153,6 +1106,40 @@
       }
     }
 
+    function resolvePuckStall(){
+      const moveAmount = dist(GAME.puck.x, GAME.puck.y, GAME.lastPuckX, GAME.lastPuckY);
+      const speed = Math.hypot(GAME.puck.vx, GAME.puck.vy);
+
+      const nearCorner =
+        (GAME.puck.x < 80 && GAME.puck.y < 80) ||
+        (GAME.puck.x > W-80 && GAME.puck.y < 80) ||
+        (GAME.puck.x < 80 && GAME.puck.y > H-80) ||
+        (GAME.puck.x > W-80 && GAME.puck.y > H-80);
+
+      const nearWall =
+        GAME.puck.x < 55 || GAME.puck.x > W-55 || GAME.puck.y < 55 || GAME.puck.y > H-55;
+
+      if(moveAmount < 0.35 && speed < 4.0){
+        GAME.stallCounter++;
+      } else {
+        GAME.stallCounter = 0;
+      }
+
+      if((GAME.stallCounter > 18 && nearWall) || (GAME.stallCounter > 10 && nearCorner)){
+        const toCenterX = W/2 - GAME.puck.x;
+        const toCenterY = H/2 - GAME.puck.y;
+        const len = Math.hypot(toCenterX, toCenterY) || 1;
+        GAME.puck.vx = (toCenterX / len) * 9;
+        GAME.puck.vy = (toCenterY / len) * 9;
+        GAME.puck.x += GAME.puck.vx * 0.4;
+        GAME.puck.y += GAME.puck.vy * 0.4;
+        GAME.stallCounter = 0;
+      }
+
+      GAME.lastPuckX = GAME.puck.x;
+      GAME.lastPuckY = GAME.puck.y;
+    }
+
     async function updatePuck(){
       if(GAME.countdown > 0){
         GAME.countdown--;
@@ -1174,11 +1161,11 @@
 
       if(GAME.puck.y - GAME.puck.r <= 34){
         GAME.puck.y = 34 + GAME.puck.r;
-        GAME.puck.vy *= -1;
+        GAME.puck.vy = Math.abs(GAME.puck.vy);
       }
       if(GAME.puck.y + GAME.puck.r >= H - 34){
         GAME.puck.y = H - 34 - GAME.puck.r;
-        GAME.puck.vy *= -1;
+        GAME.puck.vy = -Math.abs(GAME.puck.vy);
       }
 
       const inGoal = GAME.puck.y > H/2 - 110 && GAME.puck.y < H/2 + 110;
@@ -1188,7 +1175,7 @@
           await handleGoal(true);
         }else{
           GAME.puck.x = 18 + GAME.puck.r;
-          GAME.puck.vx *= -1;
+          GAME.puck.vx = Math.abs(GAME.puck.vx);
         }
       }
 
@@ -1197,11 +1184,11 @@
           await handleGoal(false);
         }else{
           GAME.puck.x = W - 18 - GAME.puck.r;
-          GAME.puck.vx *= -1;
+          GAME.puck.vx = -Math.abs(GAME.puck.vx);
         }
       }
 
-      const dh = Math.hypot(GAME.host.x - GAME.puck.x, GAME.host.y - GAME.puck.y);
+      const dh = dist(GAME.host.x, GAME.host.y, GAME.puck.x, GAME.puck.y);
       if(dh < GAME.host.r + GAME.puck.r){
         const nx = (GAME.puck.x - GAME.host.x) / (dh || 1);
         const ny = (GAME.puck.y - GAME.host.y) / (dh || 1);
@@ -1217,20 +1204,46 @@
         GAME.puck.vy = ny * (7 + boost);
       }
 
-      const dg = Math.hypot(GAME.guest.x - GAME.puck.x, GAME.guest.y - GAME.puck.y);
+      const dg = dist(GAME.guest.x, GAME.guest.y, GAME.puck.x, GAME.puck.y);
       if(dg < GAME.guest.r + GAME.puck.r){
         const nx = (GAME.puck.x - GAME.guest.x) / (dg || 1);
         const ny = (GAME.puck.y - GAME.guest.y) / (dg || 1);
         GAME.puck.vx = nx * 10;
         GAME.puck.vy = ny * 10;
       }
+
+      resolvePuckStall();
     }
 
     function updateCpuEnemy(){
       const cpu = CPU[APP.cpuLevel];
-      const ax = clamp((GAME.puck.x - GAME.guest.x) * cpu.react / 20, -1, 1);
-      const ay = clamp((GAME.puck.y - GAME.guest.y) * cpu.react / 20, -1, 1);
+
+      let targetX = GAME.puck.x;
+      let targetY = GAME.puck.y;
+
+      const puckNearRightCorner =
+        (GAME.puck.x > W - 130 && GAME.puck.y < 120) ||
+        (GAME.puck.x > W - 130 && GAME.puck.y > H - 120);
+
+      const puckNearBottom = GAME.puck.y > H - 120;
+      const puckNearTop = GAME.puck.y < 120;
+
+      if(puckNearRightCorner){
+        targetX = GAME.puck.x - 36;
+        targetY = GAME.puck.y < H/2 ? GAME.puck.y + 26 : GAME.puck.y - 26;
+      } else {
+        targetX = GAME.puck.x - 22 - (cpu.pressure * 40);
+        targetY = GAME.puck.y + (GAME.puck.vy * 2.4);
+      }
+
+      if(puckNearTop) targetY += 18;
+      if(puckNearBottom) targetY -= 18;
+
+      const ax = clamp((targetX - GAME.guest.x) * cpu.react / 18, -1, 1);
+      const ay = clamp((targetY - GAME.guest.y) * cpu.react / 18, -1, 1);
+
       moveUnit(GAME.guest, ax, ay, cpu.speed, Math.abs(ax)+Math.abs(ay) > 0.8, false);
+      GAME.guest.skill = clamp(GAME.guest.skill + 0.08, 0, 100);
     }
 
     function pushHostState(){
@@ -1248,13 +1261,18 @@
       });
     }
 
-    function pushGuestInput(){
+    function pushGuestInput(force=false){
       if(!APP.roomRef) return;
+      const now = performance.now();
+      if(!force && now - APP.lastGuestInputSent < 28) return;
+      APP.lastGuestInputSent = now;
+
       APP.roomRef.child("guestInput").set({
         ax: getAxisX(),
         ay: getAxisY(),
         dash: getDash(),
-        skill: getSkill()
+        skill: getSkill(),
+        ts: Date.now()
       });
     }
 
@@ -1264,7 +1282,7 @@
       GAME.host.skill = clamp(GAME.host.skill + 0.08, 0, 100);
 
       const gi = APP.guestInput || {ax:0, ay:0, dash:false, skill:false};
-      moveUnit(GAME.guest, gi.ax, gi.ay, CPU[APP.cpuLevel].speed || 7.6, gi.dash, false);
+      moveUnit(GAME.guest, gi.ax, gi.ay, CHARACTERS.balanced.speed, gi.dash, false);
       GAME.guest.skill = clamp(GAME.guest.skill + 0.08, 0, 100);
 
       await updatePuck();
@@ -1424,7 +1442,7 @@
         started: false,
         finished: false,
         winner: "",
-        guestInput: {ax:0, ay:0, dash:false, skill:false},
+        guestInput: {ax:0, ay:0, dash:false, skill:false, ts:0},
         state: null,
         createdAt: firebase.database.ServerValue.TIMESTAMP
       });
@@ -1459,7 +1477,8 @@
         guestUid: APP.uid,
         guestName: APP.nickname,
         guestChar: APP.selectedChar,
-        guestReady: false
+        guestReady: false,
+        guestInput: {ax:0, ay:0, dash:false, skill:false, ts:Date.now()}
       });
 
       setOnlineStatus("ルーム " + code + " に参加しました。");
@@ -1683,6 +1702,7 @@
           }
         } else if(APP.onlineRole === "guest"){
           await APP.roomRef.update({ guestReady: true });
+          pushGuestInput(true);
           const snap = await APP.roomRef.once("value");
           const room = snap.val();
           if(room && room.hostReady && room.guestReady && room.started){
@@ -1714,7 +1734,7 @@
             finished:false,
             winner:"",
             state:null,
-            guestInput:{ax:0, ay:0, dash:false, skill:false}
+            guestInput:{ax:0, ay:0, dash:false, skill:false, ts:0}
           });
           APP.started = false;
           APP.gameState = "idle";
@@ -1774,6 +1794,19 @@
       showBattleOverlay("PAUSE", "OK で再開できます。");
     };
 
+    // モバイルのズームやダブルタップ対策
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", (e)=>{
+      const now = Date.now();
+      if(now - lastTouchEnd <= 300){
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive:false });
+
+    document.addEventListener("gesturestart", (e)=>e.preventDefault());
+    document.addEventListener("dblclick", (e)=>e.preventDefault());
+
     window.addEventListener("keydown", e=>{
       APP.keys[e.key.toLowerCase()] = true;
       if(e.code === "Space"){
@@ -1818,11 +1851,18 @@
           await updatePuck();
         } else if(APP.mode === "online"){
           if(APP.onlineRole === "host" && APP.started){
+            const me = CHARACTERS[APP.selectedChar];
+            moveUnit(GAME.host, getAxisX(), getAxisY(), me.speed, getDash(), true);
+            GAME.host.skill = clamp(GAME.host.skill + 0.08, 0, 100);
             await updateOnlineBattleAsHost();
           } else if(APP.onlineRole === "guest" && APP.started){
+            // モバイルでも確実に入力送信
             pushGuestInput();
           }
         }
+      } else if(APP.mode === "online" && APP.onlineRole === "guest" && APP.roomRef){
+        // 開始前も入力状態を少し送る
+        pushGuestInput();
       }
 
       if(!$("battleScreen").classList.contains("hidden")){
