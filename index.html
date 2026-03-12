@@ -2,8 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <title>Hockey Legends Online Fix</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <title>Hockey Legends Online Stable</title>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -25,19 +28,41 @@
       --gray:#334155;
       --cyan:#67e8f9;
     }
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+      -webkit-touch-callout:none;
+      user-select:none;
+    }
+
     html,body{
       margin:0;
       width:100%;
       height:100%;
       overflow:hidden;
+      overscroll-behavior:none;
+      touch-action:manipulation;
       font-family:"Segoe UI","Yu Gothic UI","Meiryo",sans-serif;
       background:linear-gradient(160deg,var(--bg1),var(--bg2));
       color:var(--text);
     }
-    .hidden{display:none !important}
-    .screen{width:100%;height:100%}
-    button,input{font:inherit}
+
+    body{
+      height:100dvh;
+    }
+
+    .hidden{display:none !important;}
+    .screen{
+      width:100%;
+      height:100dvh;
+    }
+
+    button,input{
+      font:inherit;
+      touch-action:manipulation;
+    }
+
     button{
       border:none;
       border-radius:14px;
@@ -45,8 +70,13 @@
       font-weight:800;
       color:#fff;
       cursor:pointer;
+      min-height:48px;
     }
-    button:active{transform:scale(.98)}
+
+    button:active{
+      transform:scale(.98);
+    }
+
     input{
       border:none;
       outline:none;
@@ -56,20 +86,21 @@
       background:rgba(255,255,255,.08);
       color:#fff;
     }
+
     .btn-main{background:var(--blue)}
     .btn-cpu{background:var(--green)}
     .btn-online{background:#06b6d4}
     .btn-rank{background:var(--yellow)}
-    .btn-tour{background:var(--violet)}
     .btn-sub{background:var(--gray)}
     .btn-danger{background:var(--red)}
 
     .panel{
-      background:rgba(11,24,48,.95);
+      background:rgba(11,24,48,.96);
       border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:0 12px 30px rgba(0,0,0,.3);
+      border-radius:20px;
+      box-shadow:0 12px 30px rgba(0,0,0,.28);
     }
+
     .status{
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.08);
@@ -79,67 +110,93 @@
       font-size:13px;
       line-height:1.6;
     }
+
     .label{
       font-size:12px;
       color:var(--muted);
       margin-bottom:8px;
     }
+
     .row{display:flex;gap:8px;align-items:center}
     .col{display:flex;flex-direction:column;gap:8px}
     .wrap{flex-wrap:wrap}
 
-    /* menu */
+    /* ===== MENU ===== */
     #menuScreen{
-      padding:18px;
-      overflow:auto;
+      padding:12px;
+      overflow:hidden;
     }
+
     .menuWrap{
-      max-width:1120px;
+      width:100%;
+      max-width:1180px;
+      height:calc(100dvh - 24px);
       margin:0 auto;
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:16px;
+      gap:12px;
     }
+
     .menuHero{
-      padding:20px;
       grid-column:1 / -1;
+      padding:16px;
     }
+
     .menuHero h1{
       margin:0 0 10px;
-      font-size:42px;
-      line-height:1.1;
+      font-size:36px;
+      line-height:1.08;
     }
+
     .menuHero p{
       margin:0;
       color:var(--muted);
-      line-height:1.8;
-      font-size:15px;
+      line-height:1.7;
+      font-size:14px;
     }
-    .menuCard{padding:16px}
+
+    .menuCol{
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+      gap:12px;
+      min-height:0;
+    }
+
+    .menuCard{
+      padding:14px;
+    }
+
     .menuButtons{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
+
     .pickGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
+
     .pickBtn{
       background:#1e293b;
       border:2px solid transparent;
       text-align:left;
-      min-height:66px;
+      min-height:62px;
     }
-    .pickBtn.active{border-color:#7dd3fc}
+
+    .pickBtn.active{
+      border-color:#7dd3fc;
+    }
+
     .list{
       display:flex;
       flex-direction:column;
       gap:8px;
-      max-height:240px;
       overflow:auto;
+      min-height:0;
     }
+
     .listItem{
       display:grid;
       grid-template-columns:1fr auto;
@@ -152,48 +209,54 @@
       font-size:13px;
     }
 
-    /* battle */
+    /* ===== BATTLE ===== */
     #battleScreen{
-      padding:12px;
+      padding:10px;
       display:grid;
       grid-template-rows:auto 1fr auto;
-      gap:12px;
-      height:100%;
+      gap:10px;
+      overflow:hidden;
     }
+
     .topbar{
-      padding:12px 14px;
+      padding:10px 12px;
       display:flex;
       justify-content:space-between;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
       align-items:center;
     }
+
     .pillWrap{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
     }
+
     .pill{
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
       border-radius:999px;
       padding:8px 12px;
-      font-size:13px;
+      font-size:12px;
     }
+
     .arenaPanel{
-      padding:12px;
+      padding:10px;
       min-height:0;
     }
+
     .arena{
       width:100%;
-      height:min(64vh, 720px);
-      min-height:360px;
-      border-radius:24px;
+      height:100%;
+      min-height:260px;
+      border-radius:22px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.1);
       background:#0b1a30;
       position:relative;
     }
+
     canvas{
       width:100%;
       height:100%;
@@ -201,75 +264,111 @@
       background:#0b1a30;
       touch-action:none;
     }
+
     .battleOverlay{
       position:absolute;
       inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:rgba(0,0,0,.3);
+      background:rgba(0,0,0,.36);
       z-index:5;
+      padding:14px;
     }
-    .battleOverlay.hidden{display:none !important}
+
+    .battleOverlay.hidden{
+      display:none !important;
+    }
+
     .battleOverlayBox{
-      width:min(760px,92%);
+      width:min(720px, 96%);
       background:rgba(9,24,44,.98);
       border:1px solid rgba(255,255,255,.12);
-      border-radius:22px;
-      padding:24px;
+      border-radius:20px;
+      padding:20px;
       text-align:center;
     }
+
     .battleOverlayTitle{
-      font-size:30px;
+      font-size:28px;
       font-weight:900;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
+
     .battleOverlayText{
       color:var(--muted);
       line-height:1.8;
       white-space:pre-line;
       margin-bottom:14px;
+      font-size:14px;
     }
+
     .bottomBar{
       display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:12px;
+      grid-template-columns:1.15fr .85fr;
+      gap:10px;
+      min-height:0;
     }
-    .controlPanel,.sidePanel{padding:14px}
+
+    .controlPanel,.sidePanel{
+      padding:12px;
+      min-height:0;
+    }
+
     .controlGrid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
       gap:8px;
       max-width:620px;
     }
+
     .touch{
-      min-height:58px;
+      min-height:56px;
       background:#334155;
     }
-    .touch.fire{background:#8b5cf6}
-    .touch.blank{visibility:hidden}
+
+    .touch.fire{
+      background:#8b5cf6;
+    }
+
+    .touch.blank{
+      visibility:hidden;
+    }
+
     .note{
       color:var(--muted);
       font-size:12px;
-      line-height:1.7;
+      line-height:1.6;
       margin-top:10px;
     }
+
     .mobileOnly{display:none}
     #touchWrap{display:none}
 
-    @media (max-width:900px){
-      .menuWrap{grid-template-columns:1fr}
-      .menuButtons{grid-template-columns:1fr}
-      .bottomBar{grid-template-columns:1fr}
+    @media (max-width:920px){
+      .menuWrap{
+        grid-template-columns:1fr;
+        grid-template-rows:auto 1fr 1fr;
+      }
+
+      .menuHero h1{
+        font-size:28px;
+      }
+
+      .menuButtons{
+        grid-template-columns:1fr;
+      }
+
+      .bottomBar{
+        grid-template-columns:1fr;
+      }
+
       .mobileOnly{display:block}
       #touchWrap{display:block}
+
       .controlGrid{
         grid-template-columns:repeat(4,1fr);
         max-width:none;
-      }
-      .arena{
-        height:52vh;
-        min-height:300px;
       }
     }
   </style>
@@ -281,90 +380,85 @@
       <div class="panel menuHero">
         <h1>🏒 Hockey Legends</h1>
         <p>
-          オンライン修正版。<br>
-          ルーム作成は1つだけ、盤面は必ず表示、スマホ操作も有効、10点先取です。
+          オンライン対戦は、ホストがルーム作成 → コード共有 → 参加者がコード入力 → 相手参加表示 → 両者が OK を押して開始、という流れです。<br>
+          10点先取。スマホ画面でもスクロールなしで収まる設計にしています。
         </p>
       </div>
 
-      <div class="panel menuCard">
-        <div class="label">プレイヤー情報</div>
-        <div class="col">
-          <input id="nicknameInput" maxlength="16" placeholder="ニックネームを入力" />
-          <button type="button" id="saveNickBtn" class="btn-main">ニックネーム保存</button>
-        </div>
-        <div style="height:8px"></div>
-        <div id="authStatus" class="status">Firebase初期化中...</div>
-      </div>
-
-      <div class="panel menuCard">
-        <div class="label">メニュー</div>
-        <div class="menuButtons">
-          <button type="button" id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
-          <button type="button" id="menuTournamentBtn" class="btn-tour">トーナメント開始</button>
-          <button type="button" id="gotoHelpBtn" class="btn-sub">操作説明</button>
-          <button type="button" id="gotoRankingBtn" class="btn-rank">ランキング更新</button>
-        </div>
-      </div>
-
-      <div class="panel menuCard">
-        <div class="label">CPU難易度</div>
-        <div class="row wrap">
-          <button type="button" class="btn-cpu diffBtn" data-diff="0">EASY</button>
-          <button type="button" class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
-          <button type="button" class="btn-cpu diffBtn" data-diff="2">HARD</button>
-          <button type="button" class="btn-cpu diffBtn" data-diff="3">LEGEND</button>
-        </div>
-      </div>
-
-      <div class="panel menuCard">
-        <div class="label">オンライン</div>
-        <div class="col">
-          <button type="button" id="createRoomBtn" class="btn-online">ルーム作成</button>
-          <div class="row">
-            <input id="roomCodeInput" maxlength="6" placeholder="ルームコード6文字" />
-            <button type="button" id="joinRoomBtn" class="btn-online">参加</button>
+      <div class="menuCol">
+        <div class="panel menuCard">
+          <div class="label">プレイヤー情報</div>
+          <div class="col">
+            <input id="nicknameInput" maxlength="16" placeholder="ニックネームを入力" />
+            <button type="button" id="saveNickBtn" class="btn-main">ニックネーム保存</button>
           </div>
-          <div class="row">
-            <input id="watchCodeInput" maxlength="6" placeholder="観戦コード6文字" />
-            <button type="button" id="watchRoomBtn" class="btn-online">観戦</button>
-          </div>
-          <div class="row">
-            <input id="currentRoomCode" readonly placeholder="作成したコード" />
-            <button type="button" id="copyRoomBtn" class="btn-sub">コピー</button>
+          <div style="height:8px"></div>
+          <div id="authStatus" class="status">Firebase初期化中...</div>
+        </div>
+
+        <div class="panel menuCard">
+          <div class="label">メニュー</div>
+          <div class="menuButtons">
+            <button type="button" id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
+            <button type="button" id="gotoHelpBtn" class="btn-sub">操作説明</button>
+            <button type="button" id="gotoRankingBtn" class="btn-rank">ランキング更新</button>
+            <button type="button" id="menuRefreshRoomsBtn" class="btn-sub">ルーム一覧更新</button>
           </div>
         </div>
-        <div style="height:8px"></div>
-        <div id="onlineStatus" class="status">まだルームに入っていません。</div>
-      </div>
 
-      <div class="panel menuCard">
-        <div class="label">キャラ選択</div>
-        <div class="pickGrid">
-          <button type="button" class="pickBtn charBtn active" data-char="balanced">🛡️ BALANCED</button>
-          <button type="button" class="pickBtn charBtn" data-char="speed">⚡ SPEED</button>
-          <button type="button" class="pickBtn charBtn" data-char="power">💥 POWER</button>
-          <button type="button" class="pickBtn charBtn" data-char="tech">🌀 TECH</button>
+        <div class="panel menuCard" style="min-height:0;">
+          <div class="label">公開ルーム一覧</div>
+          <div id="roomList" class="list">
+            <div class="listItem"><div>読み込み中...</div><div>-</div></div>
+          </div>
         </div>
-        <div style="height:8px"></div>
-        <div id="charStatus" class="status">BALANCED: バランス型</div>
       </div>
 
-      <div class="panel menuCard">
-        <div class="label">ステージ選択</div>
-        <div class="pickGrid">
-          <button type="button" class="pickBtn stageBtn active" data-stage="classic">CLASSIC</button>
-          <button type="button" class="pickBtn stageBtn" data-stage="neon">NEON</button>
-          <button type="button" class="pickBtn stageBtn" data-stage="lava">LAVA</button>
-          <button type="button" class="pickBtn stageBtn" data-stage="ice">ICE</button>
+      <div class="menuCol">
+        <div class="panel menuCard">
+          <div class="label">オンライン</div>
+          <div class="col">
+            <button type="button" id="createRoomBtn" class="btn-online">ルーム作成</button>
+            <div class="row">
+              <input id="roomCodeInput" maxlength="6" placeholder="ルームコード6文字" />
+              <button type="button" id="joinRoomBtn" class="btn-online">参加</button>
+            </div>
+            <div class="row">
+              <input id="currentRoomCode" readonly placeholder="作成したコード" />
+              <button type="button" id="copyRoomBtn" class="btn-sub">コピー</button>
+            </div>
+          </div>
+          <div style="height:8px"></div>
+          <div id="onlineStatus" class="status">まだルームに入っていません。</div>
         </div>
-        <div style="height:8px"></div>
-        <div id="stageStatus" class="status">CLASSIC: 標準ステージ</div>
-      </div>
 
-      <div class="panel menuCard">
-        <div class="label">公開ルーム一覧</div>
-        <div id="roomList" class="list">
-          <div class="listItem"><div>読み込み中...</div><div>-</div></div>
+        <div class="panel menuCard">
+          <div class="label">CPU難易度</div>
+          <div class="row wrap">
+            <button type="button" class="btn-cpu diffBtn" data-diff="0">EASY</button>
+            <button type="button" class="btn-cpu diffBtn" data-diff="1">NORMAL</button>
+            <button type="button" class="btn-cpu diffBtn" data-diff="2">HARD</button>
+            <button type="button" class="btn-cpu diffBtn" data-diff="3">LEGEND</button>
+          </div>
+        </div>
+
+        <div class="panel menuCard" style="min-height:0;">
+          <div class="label">キャラ / ステージ</div>
+          <div class="pickGrid" style="margin-bottom:10px;">
+            <button type="button" class="pickBtn charBtn active" data-char="balanced">🛡️ BALANCED</button>
+            <button type="button" class="pickBtn charBtn" data-char="speed">⚡ SPEED</button>
+            <button type="button" class="pickBtn charBtn" data-char="power">💥 POWER</button>
+            <button type="button" class="pickBtn charBtn" data-char="tech">🌀 TECH</button>
+          </div>
+          <div id="charStatus" class="status" style="margin-bottom:10px;">BALANCED: バランス型</div>
+
+          <div class="pickGrid">
+            <button type="button" class="pickBtn stageBtn active" data-stage="classic">CLASSIC</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="neon">NEON</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="lava">LAVA</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="ice">ICE</button>
+          </div>
+          <div id="stageStatus" class="status" style="margin-top:10px;">CLASSIC: 標準ステージ</div>
         </div>
       </div>
     </div>
@@ -396,7 +490,7 @@
             <div id="battleOverlayTitle" class="battleOverlayTitle">試合準備</div>
             <div id="battleOverlayText" class="battleOverlayText">試合開始を押してください。</div>
             <div class="row wrap" style="justify-content:center">
-              <button type="button" id="startBattleBtn" class="btn-main">試合開始</button>
+              <button type="button" id="startBattleBtn" class="btn-main">OK / 開始</button>
               <button type="button" id="rematchBattleBtn" class="btn-main">再戦</button>
               <button type="button" id="backMenuBtn" class="btn-sub">メニューへ戻る</button>
             </div>
@@ -419,7 +513,7 @@
             <button type="button" class="touch" id="touchUp">↑</button>
             <button type="button" class="touch blank"></button>
             <button type="button" class="touch fire" id="touchSkill">SKILL</button>
-            <button type="button" class="touch fire" id="touchStart">START</button>
+            <button type="button" class="touch fire" id="touchStart">OK</button>
 
             <button type="button" class="touch" id="touchLeft">←</button>
             <button type="button" class="touch blank"></button>
@@ -437,7 +531,9 @@
       </div>
 
       <div class="panel sidePanel">
-        <div class="label">バトル管理 / ランキング</div>
+        <div class="label">接続 / ランキング</div>
+        <div id="battleStatus" class="status">接続待機中...</div>
+        <div style="height:10px"></div>
         <div class="row wrap">
           <button type="button" id="leaveBattleBtn" class="btn-danger">メニューへ戻る</button>
           <button type="button" id="updateRankBtn" class="btn-rank">ランキング更新</button>
@@ -471,10 +567,10 @@
     const WIN_SCORE = 10;
 
     const CHARACTERS = {
-      balanced:{ name:"BALANCED", icon:"🛡️", speed:7.8, dash:1.3, radius:34, color:"#67e8f9", desc:"BALANCED: バランス型" },
-      speed:{ name:"SPEED", icon:"⚡", speed:9.2, dash:1.5, radius:31, color:"#34d399", desc:"SPEED: 高速型" },
-      power:{ name:"POWER", icon:"💥", speed:7.0, dash:1.2, radius:37, color:"#fb923c", desc:"POWER: パワー型" },
-      tech:{ name:"TECH", icon:"🌀", speed:8.0, dash:1.32, radius:33, color:"#8b5cf6", desc:"TECH: テクニック型" }
+      balanced:{ name:"BALANCED", icon:"🛡️", speed:7.8, dash:1.30, radius:34, color:"#67e8f9", desc:"BALANCED: バランス型" },
+      speed:{ name:"SPEED", icon:"⚡", speed:9.0, dash:1.48, radius:31, color:"#34d399", desc:"SPEED: 高速型" },
+      power:{ name:"POWER", icon:"💥", speed:7.1, dash:1.22, radius:37, color:"#fb923c", desc:"POWER: パワー型" },
+      tech:{ name:"TECH", icon:"🌀", speed:8.0, dash:1.34, radius:33, color:"#8b5cf6", desc:"TECH: テクニック型" }
     };
 
     const STAGES = {
@@ -485,10 +581,10 @@
     };
 
     const CPU = [
-      { name:"EASY", speed:4.2, react:0.06, skill:0.03 },
-      { name:"NORMAL", speed:5.5, react:0.09, skill:0.06 },
-      { name:"HARD", speed:7.0, react:0.14, skill:0.12 },
-      { name:"LEGEND", speed:8.6, react:0.20, skill:0.18 }
+      { name:"EASY", speed:4.2, react:0.06 },
+      { name:"NORMAL", speed:5.5, react:0.09 },
+      { name:"HARD", speed:7.0, react:0.14 },
+      { name:"LEGEND", speed:8.6, react:0.20 }
     ];
 
     const APP = {
@@ -505,7 +601,8 @@
       keys:{},
       mobile:{up:false,down:false,left:false,right:false,dash:false,skill:false},
       onlineRole:null,
-      guestInput:{ax:0, ay:0, dash:false, skill:false}
+      guestInput:{ax:0, ay:0, dash:false, skill:false},
+      started:false
     };
 
     const canvas = $("gameCanvas");
@@ -557,6 +654,10 @@
       $("battleScreen").classList.toggle("hidden", name !== "battle");
     }
 
+    function setBattleStatus(text){
+      $("battleStatus").textContent = text;
+    }
+
     function showBattleOverlay(title,text){
       $("battleOverlayTitle").textContent = title;
       $("battleOverlayText").textContent = text;
@@ -597,11 +698,11 @@
       $("stageLabel").textContent = STAGES[APP.selectedStage].name;
     }
 
-    function applyCharacter(target, key, enemyColorOverride=null){
+    function applyCharacter(target, key, overrideColor=null){
       const c = CHARACTERS[key];
       target.char = key;
       target.r = c.radius;
-      target.color = enemyColorOverride || c.color;
+      target.color = overrideColor || c.color;
       target.skill = 100;
     }
 
@@ -623,6 +724,8 @@
       GAME.scorePlayer = 0;
       GAME.scoreEnemy = 0;
       GAME.message = "START";
+      GAME.player.skill = 100;
+      GAME.enemy.skill = 100;
       resetRound(Math.random() < 0.5 ? -1 : 1);
       updateScoreUI();
       updateSkillUI();
@@ -633,11 +736,13 @@
       APP.mode = "cpu";
       APP.gameState = "idle";
       APP.onlineRole = null;
+      APP.started = false;
       setModeLabel("CPU");
       setStateLabel("CPU対戦 " + CPU[level].name);
+      setBattleStatus("CPU対戦の準備完了。OKで開始。");
       setScreen("battle");
       resetMatch("balanced");
-      showBattleOverlay("CPU対戦", "10点先取です。\n試合開始を押してください。");
+      showBattleOverlay("CPU対戦", "10点先取です。\nOK / 開始 を押してください。");
     }
 
     function startOnlineBattle(role, code){
@@ -645,30 +750,12 @@
       APP.gameState = "idle";
       APP.onlineRole = role;
       APP.roomCode = code;
-      setModeLabel(role === "spectator" ? "WATCH" : "ONLINE");
-      setStateLabel(role === "host" ? "オンライン HOST" : role === "guest" ? "オンライン GUEST" : "観戦");
+      APP.started = false;
+      setModeLabel("ONLINE");
+      setStateLabel(role === "host" ? "オンライン HOST" : "オンライン GUEST");
       setScreen("battle");
       resetMatch("balanced");
-      showBattleOverlay(role === "spectator" ? "観戦" : "オンライン", "10点先取です。\n試合開始を押してください。");
-    }
-
-    function startTournamentBattle(){
-      APP.mode = "tournament";
-      APP.gameState = "idle";
-      APP.onlineRole = null;
-      setModeLabel("TOURNAMENT");
-      setStateLabel("トーナメント");
-      setScreen("battle");
-      resetMatch("power");
-      showBattleOverlay("トーナメント", "10点先取です。\n試合開始を押してください。");
-    }
-
-    function detachRoomListener(){
-      if(APP.roomRef && APP.roomListener){
-        APP.roomRef.off("value", APP.roomListener);
-      }
-      APP.roomRef = null;
-      APP.roomListener = null;
+      showBattleOverlay("オンライン待機", "相手が参加し、両者が OK を押すと開始します。");
     }
 
     async function cleanupRoomOnLeave(){
@@ -677,13 +764,18 @@
         if(APP.onlineRole === "host"){
           await APP.roomRef.remove();
         } else if(APP.onlineRole === "guest"){
-          await APP.roomRef.update({
-            guestUid: null,
-            guestName: null,
-            guestChar: null,
-            guestInput: {ax:0, ay:0, dash:false, skill:false},
-            state: null
-          });
+          const snap = await APP.roomRef.once("value");
+          if(snap.exists()){
+            await APP.roomRef.update({
+              guestUid: null,
+              guestName: null,
+              guestChar: null,
+              guestInput: {ax:0, ay:0, dash:false, skill:false},
+              guestReady: false,
+              started: false,
+              state: null
+            });
+          }
         }
       } catch(e){
         console.error(e);
@@ -697,8 +789,17 @@
       APP.gameState = "idle";
       APP.roomCode = "";
       APP.onlineRole = null;
+      APP.started = false;
       setScreen("menu");
       hideBattleOverlay();
+    }
+
+    function detachRoomListener(){
+      if(APP.roomRef && APP.roomListener){
+        APP.roomRef.off("value", APP.roomListener);
+      }
+      APP.roomRef = null;
+      APP.roomListener = null;
     }
 
     function getAxisX(){
@@ -744,7 +845,10 @@
       }else{
         beep(220,0.12,"sawtooth",0.03);
       }
-      showBattleOverlay(winner === "player" ? "🎉 YOU WIN!" : "💥 YOU LOSE!", "10点先取でした。\n再戦するかメニューへ戻ってください。");
+      showBattleOverlay(
+        winner === "player" ? "🎉 YOU WIN!" : "💥 YOU LOSE!",
+        "10点先取でした。\n再戦するかメニューへ戻ってください。"
+      );
     }
 
     function updatePuck(){
@@ -870,16 +974,16 @@
     }
 
     function updateBattle(){
-      if(APP.mode === "cpu" || APP.mode === "tournament"){
+      if(APP.mode === "cpu"){
         const me = CHARACTERS[APP.selectedChar];
         moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
         GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
         updateCpuEnemy();
         updatePuck();
       } else if(APP.mode === "online"){
-        if(APP.onlineRole === "host"){
+        if(APP.onlineRole === "host" && APP.started){
           updateOnlineBattleAsHost();
-        } else if(APP.onlineRole === "guest"){
+        } else if(APP.onlineRole === "guest" && APP.started){
           pushGuestInput();
         }
       }
@@ -996,12 +1100,13 @@
           return;
         }
         arr.forEach(room=>{
+          const joined = room.guestName ? ` / ${room.guestName}` : " / 募集中";
           const div = document.createElement("div");
           div.className = "listItem";
           div.innerHTML = `
             <div>
               <div><b>${room.code || "------"}</b></div>
-              <div>${room.hostName || "Host"} vs ${room.guestName || "Guest"}</div>
+              <div>${room.hostName || "Host"}${joined}</div>
             </div>
             <div class="row">
               <button type="button" class="btn-online joinRoomListBtn" data-code="${room.code || ""}">参加</button>
@@ -1020,8 +1125,15 @@
         setOnlineStatus("まだFirebase認証中です。");
         return;
       }
-      const code = makeCode();
-      const ref = rtdb.ref("rooms/" + code);
+      let code = makeCode();
+      let ref = rtdb.ref("rooms/" + code);
+      let snap = await ref.once("value");
+      while(snap.exists()){
+        code = makeCode();
+        ref = rtdb.ref("rooms/" + code);
+        snap = await ref.once("value");
+      }
+
       await ref.set({
         code,
         hostUid: APP.uid,
@@ -1030,12 +1142,16 @@
         guestUid: null,
         guestName: null,
         guestChar: null,
+        hostReady: false,
+        guestReady: false,
+        started: false,
         guestInput: {ax:0, ay:0, dash:false, skill:false},
         state: null,
         createdAt: firebase.database.ServerValue.TIMESTAMP
       });
+
       $("currentRoomCode").value = code;
-      setOnlineStatus("ルームを作成しました: " + code);
+      setOnlineStatus("ルームを作成しました。コード: " + code);
       attachHostRoom(ref);
       startOnlineBattle("host", code);
     }
@@ -1046,50 +1162,68 @@
         setOnlineStatus("ルームコードは6文字です。");
         return;
       }
+
       const ref = rtdb.ref("rooms/" + code);
       const snap = await ref.once("value");
       if(!snap.exists()){
         setOnlineStatus("そのルームは存在しません。");
         return;
       }
+
       const room = snap.val();
       if(room.guestUid && room.guestUid !== APP.uid){
         setOnlineStatus("そのルームは満員です。");
         return;
       }
+
       await ref.update({
         guestUid: APP.uid,
         guestName: APP.nickname,
-        guestChar: APP.selectedChar
+        guestChar: APP.selectedChar,
+        guestReady: false
       });
+
       setOnlineStatus("ルーム " + code + " に参加しました。");
       attachGuestRoom(ref);
       startOnlineBattle("guest", code);
-    }
-
-    async function watchRoom(code){
-      code = String(code || "").trim().toUpperCase();
-      if(code.length !== 6){
-        setOnlineStatus("観戦コードは6文字です。");
-        return;
-      }
-      const ref = rtdb.ref("rooms/" + code);
-      const snap = await ref.once("value");
-      if(!snap.exists()){
-        setOnlineStatus("そのルームは存在しません。");
-        return;
-      }
-      attachSpectatorRoom(ref);
-      setOnlineStatus("ルーム " + code + " を観戦中です。");
-      startOnlineBattle("spectator", code);
     }
 
     function attachHostRoom(ref){
       detachRoomListener();
       APP.roomRef = ref;
       APP.roomListener = snap=>{
-        const room = snap.val() || {};
+        const room = snap.val();
+        if(!room){
+          setBattleStatus("ルームが閉じられました。");
+          return;
+        }
+
         APP.guestInput = room.guestInput || {ax:0, ay:0, dash:false, skill:false};
+
+        if(!room.guestUid){
+          setBattleStatus(`コード ${room.code} を共有してください。相手参加待ちです。`);
+          showBattleOverlay("相手待ち", `ルームコード: ${room.code}\n参加者がコードを入力するまで待ってください。`);
+          APP.started = false;
+          APP.gameState = "idle";
+          return;
+        }
+
+        if(room.guestUid && !room.started){
+          setBattleStatus(`相手が参加しました: ${room.guestName || "Guest"}\n両者が OK を押すと開始します。`);
+          if(room.hostReady && !room.guestReady){
+            showBattleOverlay("相手が参加しました", `${room.guestName || "Guest"} が参加しました。\nあなたは OK 済みです。相手の OK 待ちです。`);
+          } else if(!room.hostReady){
+            showBattleOverlay("相手が参加しました", `${room.guestName || "Guest"} が参加しました。\nOK / 開始 を押してください。`);
+          } else if(room.hostReady && room.guestReady){
+            showBattleOverlay("開始準備完了", "両者の OK を確認しました。まもなく開始します。");
+          }
+        }
+
+        if(room.started && room.state){
+          APP.started = true;
+          hideBattleOverlay();
+          setBattleStatus(`オンライン対戦中: ${room.hostName} vs ${room.guestName}`);
+        }
       };
       ref.on("value", APP.roomListener);
     }
@@ -1098,44 +1232,42 @@
       detachRoomListener();
       APP.roomRef = ref;
       APP.roomListener = snap=>{
-        const room = snap.val() || {};
-        const state = room.state;
-        if(!state) return;
-        if(room.hostChar){
-          GAME.player.char = room.hostChar;
+        const room = snap.val();
+        if(!room){
+          setBattleStatus("ルームが閉じられました。");
+          return;
         }
-        if(room.guestChar){
-          GAME.enemy.char = room.guestChar;
-        }
-        GAME.player = state.player || GAME.player;
-        GAME.enemy = state.enemy || GAME.enemy;
-        GAME.puck = state.puck || GAME.puck;
-        GAME.scorePlayer = state.scorePlayer || 0;
-        GAME.scoreEnemy = state.scoreEnemy || 0;
-        GAME.countdown = state.countdown || 0;
-        GAME.message = state.message || "";
-        updateScoreUI();
-        updateSkillUI();
-      };
-      ref.on("value", APP.roomListener);
-    }
 
-    function attachSpectatorRoom(ref){
-      detachRoomListener();
-      APP.roomRef = ref;
-      APP.roomListener = snap=>{
-        const room = snap.val() || {};
-        const state = room.state;
-        if(!state) return;
-        GAME.player = state.player || GAME.player;
-        GAME.enemy = state.enemy || GAME.enemy;
-        GAME.puck = state.puck || GAME.puck;
-        GAME.scorePlayer = state.scorePlayer || 0;
-        GAME.scoreEnemy = state.scoreEnemy || 0;
-        GAME.countdown = state.countdown || 0;
-        GAME.message = state.message || "";
-        updateScoreUI();
-        updateSkillUI();
+        if(!room.started){
+          if(!room.hostReady && !room.guestReady){
+            showBattleOverlay("参加完了", `${room.hostName || "Host"} のルームに参加しました。\nOK / 開始 を押してください。`);
+            setBattleStatus("参加しました。あなたの OK 待ちです。");
+          } else if(room.guestReady && !room.hostReady){
+            showBattleOverlay("待機中", "あなたは OK 済みです。\nホストの OK を待っています。");
+            setBattleStatus("あなたは OK 済み。ホスト待ちです。");
+          } else if(room.hostReady && !room.guestReady){
+            showBattleOverlay("ホスト準備完了", "ホストが OK を押しました。\nあなたも OK を押してください。");
+            setBattleStatus("ホストが OK 済みです。");
+          } else if(room.hostReady && room.guestReady){
+            showBattleOverlay("開始準備完了", "両者の OK を確認しました。まもなく開始します。");
+            setBattleStatus("開始準備完了。");
+          }
+        }
+
+        if(room.started && room.state){
+          APP.started = true;
+          GAME.player = room.state.player || GAME.player;
+          GAME.enemy = room.state.enemy || GAME.enemy;
+          GAME.puck = room.state.puck || GAME.puck;
+          GAME.scorePlayer = room.state.scorePlayer || 0;
+          GAME.scoreEnemy = room.state.scoreEnemy || 0;
+          GAME.countdown = room.state.countdown || 0;
+          GAME.message = room.state.message || "";
+          updateScoreUI();
+          updateSkillUI();
+          hideBattleOverlay();
+          setBattleStatus(`オンライン対戦中: ${room.hostName} vs ${room.guestName}`);
+        }
       };
       ref.on("value", APP.roomListener);
     }
@@ -1188,19 +1320,14 @@
     });
 
     $("menuCpuBtn").onclick = ()=>startCpuBattle(1);
-    $("menuTournamentBtn").onclick = ()=>startTournamentBattle();
+    $("gotoHelpBtn").onclick = ()=>{
+      alert("PC: W/S/A/D または 矢印, Shift, F, Space\nスマホ: 下のボタン\nオンラインは両者 OK で開始\n10点先取です。");
+    };
+    $("gotoRankingBtn").onclick = ()=>fetchRanking();
+    $("menuRefreshRoomsBtn").onclick = ()=>subscribeRoomList();
 
     $("createRoomBtn").onclick = ()=>createRoom();
-    $("menuOnlineBtn").onclick = ()=>createRoom();
-
     $("joinRoomBtn").onclick = ()=>joinRoom($("roomCodeInput").value);
-
-    $("watchRoomBtn").onclick = ()=>watchRoom($("watchCodeInput").value);
-    $("menuWatchBtn").onclick = ()=>{
-      const code = $("watchCodeInput").value.trim();
-      if(code) watchRoom(code);
-      else alert("観戦コード欄に6文字入れてください。");
-    };
 
     $("copyRoomBtn").onclick = async ()=>{
       const code = $("currentRoomCode").value.trim();
@@ -1213,32 +1340,98 @@
       }
     };
 
-    $("gotoHelpBtn").onclick = ()=>{
-      alert("PC: W/S/A/D または 矢印, Shift, F, Space\nスマホ: 下のボタン\n10点先取です。");
-    };
+    $("startBattleBtn").onclick = async ()=>{
+      ensureAudio();
 
-    $("gotoRankingBtn").onclick = ()=>fetchRanking();
-    $("startBattleBtn").onclick = ()=>{
+      if(APP.mode === "online" && APP.roomRef){
+        if(APP.onlineRole === "host"){
+          await APP.roomRef.update({ hostReady: true });
+          const snap = await APP.roomRef.once("value");
+          const room = snap.val();
+          if(room && room.hostReady && room.guestReady && !room.started){
+            resetMatch(room.guestChar || "balanced");
+            await APP.roomRef.update({
+              started: true,
+              state: {
+                player: GAME.player,
+                enemy: GAME.enemy,
+                puck: GAME.puck,
+                scorePlayer: GAME.scorePlayer,
+                scoreEnemy: GAME.scoreEnemy,
+                countdown: GAME.countdown,
+                message: GAME.message,
+                updatedAt: firebase.database.ServerValue.TIMESTAMP
+              }
+            });
+            APP.started = true;
+            APP.gameState = "playing";
+            hideBattleOverlay();
+            setBattleStatus("試合開始しました。");
+          }
+        } else if(APP.onlineRole === "guest"){
+          await APP.roomRef.update({ guestReady: true });
+          const snap = await APP.roomRef.once("value");
+          const room = snap.val();
+          if(room && room.hostReady && room.guestReady && room.started){
+            APP.started = true;
+            APP.gameState = "playing";
+            hideBattleOverlay();
+          }
+        }
+        return;
+      }
+
       APP.gameState = "playing";
       hideBattleOverlay();
     };
-    $("rematchBattleBtn").onclick = ()=>{
+
+    $("rematchBattleBtn").onclick = async ()=>{
+      if(APP.mode === "online" && APP.roomRef){
+        if(APP.onlineRole === "host"){
+          resetMatch("balanced");
+          await APP.roomRef.update({
+            hostReady:false,
+            guestReady:false,
+            started:false,
+            state:null,
+            guestInput:{ax:0, ay:0, dash:false, skill:false}
+          });
+          APP.started = false;
+          APP.gameState = "idle";
+          showBattleOverlay("再戦待機", "相手が参加しましたら、両者 OK で再開します。");
+        } else if(APP.onlineRole === "guest"){
+          await APP.roomRef.update({
+            guestReady:false,
+            started:false,
+            state:null
+          });
+          APP.started = false;
+          APP.gameState = "idle";
+          showBattleOverlay("再戦待機", "ホストが再戦準備中です。");
+        }
+        return;
+      }
+
       resetMatch("balanced");
       APP.gameState = "idle";
-      showBattleOverlay("再戦", "10点先取です。\n試合開始を押してください。");
+      showBattleOverlay("再戦", "OK / 開始 を押してください。");
     };
+
     $("backMenuBtn").onclick = ()=>backToMenu();
     $("leaveBattleBtn").onclick = ()=>backToMenu();
     $("updateRankBtn").onclick = ()=>fetchRanking();
 
     function bindHold(id, key){
       const el = $(id);
-
       const on = (e)=>{ e.preventDefault(); APP.mobile[key] = true; };
       const off = (e)=>{ e.preventDefault(); APP.mobile[key] = false; };
 
-      ["pointerdown","touchstart","mousedown"].forEach(ev=>el.addEventListener(ev,on,{passive:false}));
-      ["pointerup","pointercancel","touchend","touchcancel","mouseup","mouseleave"].forEach(ev=>el.addEventListener(ev,off,{passive:false}));
+      ["pointerdown","touchstart","mousedown"].forEach(ev=>{
+        el.addEventListener(ev, on, { passive:false });
+      });
+      ["pointerup","pointercancel","touchend","touchcancel","mouseup","mouseleave"].forEach(ev=>{
+        el.addEventListener(ev, off, { passive:false });
+      });
     }
 
     bindHold("touchUp","up");
@@ -1249,12 +1442,12 @@
     bindHold("touchSkill","skill");
 
     $("touchStart").onclick = ()=>{
-      APP.gameState = "playing";
-      hideBattleOverlay();
+      $("startBattleBtn").click();
     };
+
     $("touchPause").onclick = ()=>{
       APP.gameState = "idle";
-      showBattleOverlay("PAUSE", "STARTで再開できます。");
+      showBattleOverlay("PAUSE", "OK で再開できます。");
     };
 
     window.addEventListener("keydown", e=>{
@@ -1262,8 +1455,7 @@
       if(e.code === "Space"){
         e.preventDefault();
         if(APP.mode !== "menu"){
-          APP.gameState = "playing";
-          hideBattleOverlay();
+          $("startBattleBtn").click();
         }
       }
     });
@@ -1272,11 +1464,94 @@
       APP.keys[e.key.toLowerCase()] = false;
     });
 
+    function drawBar(x,y,w,h,val,max,color){
+      ctx.fillStyle = "rgba(255,255,255,.08)";
+      ctx.fillRect(x,y,w,h);
+      ctx.fillStyle = color;
+      ctx.fillRect(x,y,w*(val/max),h);
+      ctx.strokeStyle = "rgba(255,255,255,.25)";
+      ctx.strokeRect(x,y,w,h);
+    }
+
+    function drawArena(){
+      const st = STAGES[APP.selectedStage];
+      const bg = ctx.createLinearGradient(0,0,0,H);
+      bg.addColorStop(0, st.bg1);
+      bg.addColorStop(1, st.bg2);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,W,H);
+
+      ctx.strokeStyle = "rgba(255,255,255,.16)";
+      ctx.lineWidth = 8;
+      ctx.strokeRect(18,18,W-36,H-36);
+
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(W/2,34);
+      ctx.lineTo(W/2,H-34);
+      ctx.stroke();
+
+      ctx.strokeRect(0,H/2-110,22,220);
+      ctx.strokeRect(W-22,H/2-110,22,220);
+
+      ctx.fillStyle = GAME.player.color;
+      ctx.beginPath();
+      ctx.arc(GAME.player.x,GAME.player.y,GAME.player.r,0,Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff";
+      ctx.font = `${Math.max(24,GAME.player.r)}px Segoe UI Emoji`;
+      ctx.textAlign = "center";
+      ctx.fillText(CHARACTERS[GAME.player.char].icon, GAME.player.x, GAME.player.y + 8);
+
+      ctx.fillStyle = GAME.enemy.color;
+      ctx.beginPath();
+      ctx.arc(GAME.enemy.x,GAME.enemy.y,GAME.enemy.r,0,Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff";
+      ctx.fillText(CHARACTERS[GAME.enemy.char].icon, GAME.enemy.x, GAME.enemy.y + 8);
+
+      ctx.beginPath();
+      ctx.arc(GAME.puck.x,GAME.puck.y,GAME.puck.r,0,Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.font = "900 48px Segoe UI";
+      const msg = GAME.countdown > 0 ? String(Math.ceil(GAME.countdown / 20)) : GAME.message;
+      ctx.fillText(msg, W/2, 72);
+
+      drawBar(40,H-40,220,14,GAME.player.skill,100,GAME.player.color);
+      drawBar(W-260,H-40,220,14,GAME.enemy.skill,100,GAME.enemy.color);
+    }
+
     function loop(){
       requestAnimationFrame(loop);
 
       if(APP.gameState === "playing"){
-        updateBattle();
+        if(APP.mode === "cpu"){
+          const me = CHARACTERS[APP.selectedChar];
+          moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
+          GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
+          updateCpuEnemy();
+          updatePuck();
+        } else if(APP.mode === "online"){
+          if(APP.onlineRole === "host" && APP.started){
+            const me = CHARACTERS[APP.selectedChar];
+            moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
+            GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
+
+            const gi = APP.guestInput || {ax:0, ay:0, dash:false, skill:false};
+            moveUnit(GAME.enemy, gi.ax, gi.ay, 7.6, gi.dash, false);
+            GAME.enemy.skill = clamp(GAME.enemy.skill + 0.08, 0, 100);
+
+            updatePuck();
+            pushHostState();
+          } else if(APP.onlineRole === "guest" && APP.started){
+            pushGuestInput();
+          }
+        }
       }
 
       if(!$("battleScreen").classList.contains("hidden")){
@@ -1289,8 +1564,11 @@
 
     updateCharacterUI();
     updateStageUI();
+    $("nicknameInput").value = APP.nickname;
+    $("nickLabel").textContent = APP.nickname;
     setScreen("menu");
     hideBattleOverlay();
+    setBattleStatus("接続待機中...");
     loop();
   </script>
 </body>
