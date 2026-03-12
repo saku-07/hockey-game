@@ -40,16 +40,14 @@
       margin:0;
       width:100%;
       height:100%;
-      overflow:hidden;
-      overscroll-behavior:none;
-      touch-action:manipulation;
+      overflow:auto;
       font-family:"Segoe UI","Yu Gothic UI","Meiryo",sans-serif;
       background:linear-gradient(160deg,var(--bg1),var(--bg2));
       color:var(--text);
     }
 
     body{
-      height:100dvh;
+      min-height:100dvh;
     }
 
     .hidden{display:none !important;}
@@ -124,13 +122,16 @@
     /* ===== MENU ===== */
     #menuScreen{
       padding:12px;
-      overflow:hidden;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      height:auto;
+      min-height:100dvh;
     }
 
     .menuWrap{
       width:100%;
       max-width:1180px;
-      height:calc(100dvh - 24px);
+      min-height:calc(100dvh - 24px);
       margin:0 auto;
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -216,6 +217,9 @@
       grid-template-rows:auto 1fr auto;
       gap:10px;
       overflow:hidden;
+      overscroll-behavior:none;
+      touch-action:none;
+      height:100dvh;
     }
 
     .topbar{
@@ -348,7 +352,7 @@
     @media (max-width:920px){
       .menuWrap{
         grid-template-columns:1fr;
-        grid-template-rows:auto 1fr 1fr;
+        grid-template-rows:auto auto auto;
       }
 
       .menuHero h1{
@@ -380,8 +384,8 @@
       <div class="panel menuHero">
         <h1>🏒 Hockey Legends</h1>
         <p>
-          オンライン対戦は、ホストがルーム作成 → コード共有 → 参加者がコード入力 → 相手参加表示 → 両者が OK を押して開始、という流れです。<br>
-          10点先取。スマホ画面でもスクロールなしで収まる設計にしています。
+          メニュー画面はスクロールOK、対戦画面だけスクロールなしです。<br>
+          オンライン対戦は、ホストがルーム作成 → コード共有 → 参加者がコード入力 → 相手参加表示 → 両者が OK を押して開始、という流れです。
         </p>
       </div>
 
@@ -973,20 +977,31 @@
       pushHostState();
     }
 
-    function updateBattle(){
-      if(APP.mode === "cpu"){
-        const me = CHARACTERS[APP.selectedChar];
-        moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
-        GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
-        updateCpuEnemy();
-        updatePuck();
-      } else if(APP.mode === "online"){
-        if(APP.onlineRole === "host" && APP.started){
-          updateOnlineBattleAsHost();
-        } else if(APP.onlineRole === "guest" && APP.started){
-          pushGuestInput();
+    function loop(){
+      requestAnimationFrame(loop);
+
+      if(APP.gameState === "playing"){
+        if(APP.mode === "cpu"){
+          const me = CHARACTERS[APP.selectedChar];
+          moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
+          GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
+          updateCpuEnemy();
+          updatePuck();
+        } else if(APP.mode === "online"){
+          if(APP.onlineRole === "host" && APP.started){
+            updateOnlineBattleAsHost();
+          } else if(APP.onlineRole === "guest" && APP.started){
+            pushGuestInput();
+          }
         }
       }
+
+      if(!$("battleScreen").classList.contains("hidden")){
+        drawArena();
+      }
+
+      updateScoreUI();
+      updateSkillUI();
     }
 
     function drawArena(){
@@ -1464,108 +1479,8 @@
       APP.keys[e.key.toLowerCase()] = false;
     });
 
-    function drawBar(x,y,w,h,val,max,color){
-      ctx.fillStyle = "rgba(255,255,255,.08)";
-      ctx.fillRect(x,y,w,h);
-      ctx.fillStyle = color;
-      ctx.fillRect(x,y,w*(val/max),h);
-      ctx.strokeStyle = "rgba(255,255,255,.25)";
-      ctx.strokeRect(x,y,w,h);
-    }
-
-    function drawArena(){
-      const st = STAGES[APP.selectedStage];
-      const bg = ctx.createLinearGradient(0,0,0,H);
-      bg.addColorStop(0, st.bg1);
-      bg.addColorStop(1, st.bg2);
-      ctx.fillStyle = bg;
-      ctx.fillRect(0,0,W,H);
-
-      ctx.strokeStyle = "rgba(255,255,255,.16)";
-      ctx.lineWidth = 8;
-      ctx.strokeRect(18,18,W-36,H-36);
-
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(W/2,34);
-      ctx.lineTo(W/2,H-34);
-      ctx.stroke();
-
-      ctx.strokeRect(0,H/2-110,22,220);
-      ctx.strokeRect(W-22,H/2-110,22,220);
-
-      ctx.fillStyle = GAME.player.color;
-      ctx.beginPath();
-      ctx.arc(GAME.player.x,GAME.player.y,GAME.player.r,0,Math.PI*2);
-      ctx.fill();
-
-      ctx.fillStyle = "#fff";
-      ctx.font = `${Math.max(24,GAME.player.r)}px Segoe UI Emoji`;
-      ctx.textAlign = "center";
-      ctx.fillText(CHARACTERS[GAME.player.char].icon, GAME.player.x, GAME.player.y + 8);
-
-      ctx.fillStyle = GAME.enemy.color;
-      ctx.beginPath();
-      ctx.arc(GAME.enemy.x,GAME.enemy.y,GAME.enemy.r,0,Math.PI*2);
-      ctx.fill();
-
-      ctx.fillStyle = "#fff";
-      ctx.fillText(CHARACTERS[GAME.enemy.char].icon, GAME.enemy.x, GAME.enemy.y + 8);
-
-      ctx.beginPath();
-      ctx.arc(GAME.puck.x,GAME.puck.y,GAME.puck.r,0,Math.PI*2);
-      ctx.fill();
-
-      ctx.fillStyle = "#fff";
-      ctx.textAlign = "center";
-      ctx.font = "900 48px Segoe UI";
-      const msg = GAME.countdown > 0 ? String(Math.ceil(GAME.countdown / 20)) : GAME.message;
-      ctx.fillText(msg, W/2, 72);
-
-      drawBar(40,H-40,220,14,GAME.player.skill,100,GAME.player.color);
-      drawBar(W-260,H-40,220,14,GAME.enemy.skill,100,GAME.enemy.color);
-    }
-
-    function loop(){
-      requestAnimationFrame(loop);
-
-      if(APP.gameState === "playing"){
-        if(APP.mode === "cpu"){
-          const me = CHARACTERS[APP.selectedChar];
-          moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
-          GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
-          updateCpuEnemy();
-          updatePuck();
-        } else if(APP.mode === "online"){
-          if(APP.onlineRole === "host" && APP.started){
-            const me = CHARACTERS[APP.selectedChar];
-            moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
-            GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
-
-            const gi = APP.guestInput || {ax:0, ay:0, dash:false, skill:false};
-            moveUnit(GAME.enemy, gi.ax, gi.ay, 7.6, gi.dash, false);
-            GAME.enemy.skill = clamp(GAME.enemy.skill + 0.08, 0, 100);
-
-            updatePuck();
-            pushHostState();
-          } else if(APP.onlineRole === "guest" && APP.started){
-            pushGuestInput();
-          }
-        }
-      }
-
-      if(!$("battleScreen").classList.contains("hidden")){
-        drawArena();
-      }
-
-      updateScoreUI();
-      updateSkillUI();
-    }
-
     updateCharacterUI();
     updateStageUI();
-    $("nicknameInput").value = APP.nickname;
-    $("nickLabel").textContent = APP.nickname;
     setScreen("menu");
     hideBattleOverlay();
     setBattleStatus("接続待機中...");
