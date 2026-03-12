@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <title>Hockey Legends メニュー分離版</title>
+  <title>Hockey Legends 完成版</title>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
   <style>
     :root{
@@ -24,6 +23,7 @@
       --violet:#8b5cf6;
       --red:#ef4444;
       --gray:#334155;
+      --cyan:#67e8f9;
     }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
@@ -35,17 +35,11 @@
       background:linear-gradient(160deg,var(--bg1),var(--bg2));
       color:var(--text);
     }
-    .hidden{display:none !important}
-
-    .screen{
-      width:100%;
-      height:100%;
-    }
-
+    .hidden{display:none!important}
+    .screen{width:100%;height:100%}
     button,input{
       font:inherit;
     }
-
     button{
       border:none;
       border-radius:14px;
@@ -54,7 +48,7 @@
       color:#fff;
       cursor:pointer;
     }
-
+    button:active{transform:scale(.98)}
     input{
       border:none;
       outline:none;
@@ -64,7 +58,6 @@
       background:rgba(255,255,255,.08);
       color:#fff;
     }
-
     .btn-main{background:var(--blue)}
     .btn-cpu{background:var(--green)}
     .btn-online{background:#06b6d4}
@@ -79,7 +72,6 @@
       border-radius:22px;
       box-shadow:0 12px 30px rgba(0,0,0,.3);
     }
-
     .status{
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.08);
@@ -89,84 +81,71 @@
       font-size:13px;
       line-height:1.6;
     }
-
     .label{
       font-size:12px;
       color:var(--muted);
       margin-bottom:8px;
     }
-
     .row{display:flex;gap:8px;align-items:center}
     .col{display:flex;flex-direction:column;gap:8px}
     .wrap{flex-wrap:wrap}
 
-    /* ================= MENU ONLY ================= */
+    /* menu */
     #menuScreen{
       padding:18px;
       overflow:auto;
     }
-
     .menuWrap{
-      max-width:1100px;
+      max-width:1120px;
       margin:0 auto;
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:16px;
     }
-
     .menuHero{
       padding:20px;
       grid-column:1 / -1;
     }
-
     .menuHero h1{
       margin:0 0 10px;
       font-size:42px;
       line-height:1.1;
     }
-
     .menuHero p{
       margin:0;
       color:var(--muted);
       line-height:1.8;
       font-size:15px;
     }
-
     .menuCard{
       padding:16px;
     }
-
     .menuButtons{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
-
     .pickGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
     }
-
     .pickBtn{
       background:#1e293b;
       border:2px solid transparent;
       text-align:left;
       min-height:66px;
     }
-
     .pickBtn.active{
       border-color:#7dd3fc;
     }
-
     .list{
       display:flex;
       flex-direction:column;
       gap:8px;
-      max-height:220px;
+      max-height:240px;
       overflow:auto;
     }
-
     .listItem{
       display:grid;
       grid-template-columns:1fr auto;
@@ -179,14 +158,13 @@
       font-size:13px;
     }
 
-    /* ================= BATTLE ONLY ================= */
+    /* battle */
     #battleScreen{
       padding:12px;
       display:grid;
       grid-template-rows:auto 1fr auto;
       gap:12px;
     }
-
     .topbar{
       padding:12px 14px;
       display:flex;
@@ -195,13 +173,11 @@
       flex-wrap:wrap;
       align-items:center;
     }
-
     .pillWrap{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
     }
-
     .pill{
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
@@ -209,13 +185,11 @@
       padding:8px 12px;
       font-size:13px;
     }
-
     .arenaPanel{
       padding:12px;
       position:relative;
       min-height:0;
     }
-
     .arena{
       width:100%;
       height:100%;
@@ -225,14 +199,12 @@
       background:#0b1a30;
       position:relative;
     }
-
     canvas{
       width:100%;
       height:100%;
       display:block;
       touch-action:none;
     }
-
     .battleOverlay{
       position:absolute;
       inset:0;
@@ -242,70 +214,58 @@
       background:rgba(0,0,0,.3);
       z-index:5;
     }
-
     .battleOverlay.hidden{
-      display:none !important;
+      display:none!important;
     }
-
     .battleOverlayBox{
-      width:min(720px,92%);
+      width:min(760px,92%);
       background:rgba(9,24,44,.98);
       border:1px solid rgba(255,255,255,.12);
       border-radius:22px;
       padding:24px;
       text-align:center;
     }
-
     .battleOverlayTitle{
       font-size:30px;
       font-weight:900;
       margin-bottom:10px;
     }
-
     .battleOverlayText{
       color:var(--muted);
       line-height:1.8;
       white-space:pre-line;
       margin-bottom:14px;
     }
-
     .bottomBar{
       display:grid;
       grid-template-columns:1.2fr .8fr;
       gap:12px;
     }
-
     .controlPanel,.sidePanel{
       padding:14px;
     }
-
     .controlGrid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
       gap:8px;
       max-width:620px;
     }
-
     .touch{
       min-height:58px;
       background:#334155;
     }
-
     .touch.fire{
       background:#8b5cf6;
     }
-
     .touch.blank{
       visibility:hidden;
     }
-
     .note{
       color:var(--muted);
       font-size:12px;
       line-height:1.7;
       margin-top:10px;
     }
-
     .mobileOnly{display:none}
     #touchWrap{display:none}
 
@@ -330,14 +290,13 @@
 </head>
 <body>
 
-  <!-- ================= MENU SCREEN ONLY ================= -->
   <section id="menuScreen" class="screen">
     <div class="menuWrap">
       <div class="panel menuHero">
         <h1>🏒 Hockey Legends</h1>
         <p>
-          これは <b>メニュー画面だけ</b> です。<br>
-          対戦を始めた時だけ、別の対戦画面に切り替わります。
+          メニュー画面と対戦画面を完全分離。<br>
+          Firebase はこの実値で接続。ランキングとルーム一覧は Realtime Database を使います。
         </p>
       </div>
 
@@ -430,7 +389,6 @@
     </div>
   </section>
 
-  <!-- ================= BATTLE SCREEN ONLY ================= -->
   <section id="battleScreen" class="screen hidden">
     <div class="panel topbar">
       <div class="pillWrap">
@@ -498,7 +456,7 @@
       </div>
 
       <div class="panel sidePanel">
-        <div class="label">バトル管理</div>
+        <div class="label">バトル管理 / ランキング</div>
         <div class="row wrap">
           <button type="button" id="leaveBattleBtn" class="btn-danger">メニューへ戻る</button>
           <button type="button" id="updateRankBtn" class="btn-rank">ランキング更新</button>
@@ -513,19 +471,18 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "ここを自分の値にする",
-      authDomain: "ここを自分の値にする",
-      databaseURL: "ここを自分の値にする",
-      projectId: "ここを自分の値にする",
-      storageBucket: "ここを自分の値にする",
-      messagingSenderId: "ここを自分の値にする",
-      appId: "ここを自分の値にする"
+      apiKey: "AIzaSyDeGktS_P7lpb66TI5ZV3lZrRfvib0X3tM",
+      authDomain: "hockey-16e69.firebaseapp.com",
+      databaseURL: "https://hockey-16e69-default-rtdb.firebaseio.com",
+      projectId: "hockey-16e69",
+      storageBucket: "hockey-16e69.firebasestorage.app",
+      messagingSenderId: "215845448303",
+      appId: "1:215845448303:web:59d2492f6b8e3099c63b9a"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const rtdb = firebase.database();
-    const fdb = firebase.firestore();
 
     const $ = (id) => document.getElementById(id);
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
@@ -560,8 +517,12 @@
       mode:"menu",
       cpuLevel:1,
       gameState:"idle",
+      roomCode:"",
+      roomRef:null,
+      roomListener:null,
       keys:{},
-      mobile:{up:false,down:false,left:false,right:false,dash:false,skill:false}
+      mobile:{up:false,down:false,left:false,right:false,dash:false,skill:false},
+      onlineRole:null
     };
 
     const canvas = $("gameCanvas");
@@ -683,6 +644,7 @@
       APP.cpuLevel = level;
       APP.mode = "cpu";
       APP.gameState = "idle";
+      APP.onlineRole = null;
       setModeLabel("CPU");
       setStateLabel("CPU対戦 " + CPU[level].name);
       setScreen("battle");
@@ -690,29 +652,22 @@
       showBattleOverlay("CPU対戦", "試合開始を押してください。");
     }
 
-    function startOnlineBattle(){
+    function startOnlineBattle(role, code){
       APP.mode = "online";
       APP.gameState = "idle";
+      APP.onlineRole = role;
+      APP.roomCode = code;
       setModeLabel("ONLINE");
-      setStateLabel("オンライン");
+      setStateLabel(role === "host" ? "オンライン HOST" : role === "guest" ? "オンライン GUEST" : "観戦");
       setScreen("battle");
       resetMatch("balanced");
-      showBattleOverlay("オンライン", "試合開始を押してください。");
-    }
-
-    function startWatchBattle(){
-      APP.mode = "watch";
-      APP.gameState = "idle";
-      setModeLabel("WATCH");
-      setStateLabel("観戦");
-      setScreen("battle");
-      resetMatch("balanced");
-      showBattleOverlay("観戦", "観戦画面です。");
+      showBattleOverlay(role === "spectator" ? "観戦" : "オンライン", "試合開始を押してください。");
     }
 
     function startTournamentBattle(){
       APP.mode = "tournament";
       APP.gameState = "idle";
+      APP.onlineRole = null;
       setModeLabel("TOURNAMENT");
       setStateLabel("トーナメント");
       setScreen("battle");
@@ -720,9 +675,20 @@
       showBattleOverlay("トーナメント", "試合開始を押してください。");
     }
 
+    function detachRoomListener(){
+      if(APP.roomRef && APP.roomListener){
+        APP.roomRef.off("value", APP.roomListener);
+      }
+      APP.roomRef = null;
+      APP.roomListener = null;
+    }
+
     function backToMenu(){
+      detachRoomListener();
       APP.mode = "menu";
       APP.gameState = "idle";
+      APP.roomCode = "";
+      APP.onlineRole = null;
       setScreen("menu");
       hideBattleOverlay();
     }
@@ -858,19 +824,65 @@
       }
     }
 
-    function updateBattle(){
+    function updateCpuEnemy(){
+      const cpu = CPU[APP.cpuLevel];
+      const ax = clamp((GAME.puck.x - GAME.enemy.x) * cpu.react / 20, -1, 1);
+      const ay = clamp((GAME.puck.y - GAME.enemy.y) * cpu.react / 20, -1, 1);
+      moveUnit(GAME.enemy, ax, ay, cpu.speed, Math.abs(ax)+Math.abs(ay) > 0.8, false);
+    }
+
+    function pushHostState(){
+      if(!APP.roomRef) return;
+      APP.roomRef.child("state").set({
+        player: GAME.player,
+        enemy: GAME.enemy,
+        puck: GAME.puck,
+        scorePlayer: GAME.scorePlayer,
+        scoreEnemy: GAME.scoreEnemy,
+        countdown: GAME.countdown,
+        message: GAME.message,
+        mode: APP.mode,
+        updatedAt: firebase.database.ServerValue.TIMESTAMP
+      });
+    }
+
+    function pushGuestInput(){
+      if(!APP.roomRef) return;
+      APP.roomRef.child("guestInput").set({
+        ax: getAxisX(),
+        ay: getAxisY(),
+        dash: getDash(),
+        skill: getSkill()
+      });
+    }
+
+    function updateOnlineBattleAsHost(){
       const me = CHARACTERS[APP.selectedChar];
       moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
       GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
 
-      if(APP.mode === "cpu" || APP.mode === "tournament" || APP.mode === "online"){
-        const cpu = CPU[APP.cpuLevel];
-        const ax = clamp((GAME.puck.x - GAME.enemy.x) * cpu.react / 20, -1, 1);
-        const ay = clamp((GAME.puck.y - GAME.enemy.y) * cpu.react / 20, -1, 1);
-        moveUnit(GAME.enemy, ax, ay, cpu.speed, Math.abs(ax)+Math.abs(ay) > 0.8, false);
-      }
+      const guestInput = APP._guestInput || {ax:0, ay:0, dash:false, skill:false};
+      moveUnit(GAME.enemy, guestInput.ax, guestInput.ay, 7.6, guestInput.dash, false);
+      GAME.enemy.skill = clamp(GAME.enemy.skill + 0.08, 0, 100);
 
       updatePuck();
+      pushHostState();
+    }
+
+    function updateBattle(){
+      if(APP.mode === "cpu" || APP.mode === "tournament"){
+        const me = CHARACTERS[APP.selectedChar];
+        moveUnit(GAME.player, getAxisX(), getAxisY(), me.speed, getDash(), true);
+        GAME.player.skill = clamp(GAME.player.skill + 0.08, 0, 100);
+        updateCpuEnemy();
+        updatePuck();
+      } else if(APP.mode === "online"){
+        if(APP.onlineRole === "host"){
+          updateOnlineBattleAsHost();
+        } else if(APP.onlineRole === "guest"){
+          pushGuestInput();
+        }
+      }
     }
 
     function drawArena(){
@@ -899,12 +911,19 @@
       ctx.arc(GAME.player.x,GAME.player.y,GAME.player.r,0,Math.PI*2);
       ctx.fill();
 
+      ctx.fillStyle = "#fff";
+      ctx.font = `${Math.max(24,GAME.player.r)}px Segoe UI Emoji`;
+      ctx.textAlign = "center";
+      ctx.fillText(CHARACTERS[GAME.player.char].icon, GAME.player.x, GAME.player.y + 8);
+
       ctx.fillStyle = GAME.enemy.color;
       ctx.beginPath();
       ctx.arc(GAME.enemy.x,GAME.enemy.y,GAME.enemy.r,0,Math.PI*2);
       ctx.fill();
 
       ctx.fillStyle = "#fff";
+      ctx.fillText(CHARACTERS[GAME.enemy.char].icon, GAME.enemy.x, GAME.enemy.y + 8);
+
       ctx.beginPath();
       ctx.arc(GAME.puck.x,GAME.puck.y,GAME.puck.r,0,Math.PI*2);
       ctx.fill();
@@ -935,40 +954,38 @@
       if(!APP.uid) return;
       try{
         const safeName = (APP.nickname || "Guest").slice(0,16);
-        const docRef = fdb.collection("ranking").doc(APP.uid);
-        const doc = await docRef.get();
-        const prev = doc.exists ? doc.data() : { name:safeName, score:0, cpuWins:0, onlineWins:0 };
-        await docRef.set({
+        const ref = rtdb.ref("ranking/" + APP.uid);
+        const snap = await ref.once("value");
+        const prev = snap.val() || { name:safeName, score:0, cpuWins:0, onlineWins:0 };
+        await ref.set({
           name:safeName,
           score:(prev.score||0)+1,
           cpuWins:(prev.cpuWins||0)+(modeName==="cpu"?1:0),
           onlineWins:(prev.onlineWins||0)+(modeName==="online"?1:0),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, {merge:true});
+          updatedAt: firebase.database.ServerValue.TIMESTAMP
+        });
       }catch(e){
         console.error(e);
       }
     }
 
-    async function fetchRanking(){
-      try{
-        const snap = await fdb.collection("ranking").orderBy("score","desc").limit(10).get();
+    function fetchRanking(){
+      rtdb.ref("ranking").orderByChild("score").limitToLast(10).once("value").then(snap=>{
+        const data = snap.val() || {};
+        const arr = Object.values(data).sort((a,b)=>(b.score||0)-(a.score||0));
         const list = $("rankingList");
         list.innerHTML = "";
-        if(snap.empty){
+        if(!arr.length){
           list.innerHTML = `<div class="listItem"><div>まだデータがありません</div><div>0</div></div>`;
           return;
         }
-        snap.forEach((doc, i)=>{
-          const r = doc.data();
+        arr.forEach((r, i)=>{
           const div = document.createElement("div");
           div.className = "listItem";
           div.innerHTML = `<div><b>${i+1}. ${r.name || "Guest"}</b></div><div><b>${r.score || 0}</b></div>`;
           list.appendChild(div);
         });
-      }catch(e){
-        console.error(e);
-      }
+      }).catch(console.error);
     }
 
     function subscribeRoomList(){
@@ -1002,10 +1019,28 @@
     }
 
     async function createRoom(){
+      if(!APP.uid){
+        setOnlineStatus("まだFirebase認証中です。");
+        return;
+      }
       const code = makeCode();
+      const ref = rtdb.ref("rooms/" + code);
+      await ref.set({
+        code,
+        hostUid: APP.uid,
+        hostName: APP.nickname,
+        guestUid: null,
+        guestName: null,
+        hostChar: APP.selectedChar,
+        guestChar: "balanced",
+        guestInput: {ax:0, ay:0, dash:false, skill:false},
+        state: null,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      });
       $("currentRoomCode").value = code;
       setOnlineStatus("ルームを作成しました: " + code);
-      startOnlineBattle();
+      attachHostRoom(ref);
+      startOnlineBattle("host", code);
     }
 
     async function joinRoom(code){
@@ -1014,8 +1049,25 @@
         setOnlineStatus("ルームコードは6文字です。");
         return;
       }
+      const ref = rtdb.ref("rooms/" + code);
+      const snap = await ref.once("value");
+      if(!snap.exists()){
+        setOnlineStatus("そのルームは存在しません。");
+        return;
+      }
+      const room = snap.val();
+      if(room.guestUid && room.guestUid !== APP.uid){
+        setOnlineStatus("そのルームは満員です。");
+        return;
+      }
+      await ref.update({
+        guestUid: APP.uid,
+        guestName: APP.nickname,
+        guestChar: APP.selectedChar
+      });
       setOnlineStatus("ルーム " + code + " に参加しました。");
-      startOnlineBattle();
+      attachGuestRoom(ref);
+      startOnlineBattle("guest", code);
     }
 
     async function watchRoom(code){
@@ -1024,8 +1076,65 @@
         setOnlineStatus("観戦コードは6文字です。");
         return;
       }
+      const ref = rtdb.ref("rooms/" + code);
+      const snap = await ref.once("value");
+      if(!snap.exists()){
+        setOnlineStatus("そのルームは存在しません。");
+        return;
+      }
+      attachSpectatorRoom(ref);
       setOnlineStatus("ルーム " + code + " を観戦中です。");
-      startWatchBattle();
+      startOnlineBattle("spectator", code);
+    }
+
+    function attachHostRoom(ref){
+      detachRoomListener();
+      APP.roomRef = ref;
+      APP.roomListener = snap=>{
+        const room = snap.val() || {};
+        APP._guestInput = room.guestInput || {ax:0, ay:0, dash:false, skill:false};
+      };
+      ref.on("value", APP.roomListener);
+    }
+
+    function attachGuestRoom(ref){
+      detachRoomListener();
+      APP.roomRef = ref;
+      APP.roomListener = snap=>{
+        const room = snap.val() || {};
+        const state = room.state;
+        if(!state) return;
+        GAME.player = state.player || GAME.player;
+        GAME.enemy = state.enemy || GAME.enemy;
+        GAME.puck = state.puck || GAME.puck;
+        GAME.scorePlayer = state.scorePlayer || 0;
+        GAME.scoreEnemy = state.scoreEnemy || 0;
+        GAME.countdown = state.countdown || 0;
+        GAME.message = state.message || "";
+        updateScoreUI();
+        updateSkillUI();
+      };
+      ref.on("value", APP.roomListener);
+    }
+
+    function attachSpectatorRoom(ref){
+      detachRoomListener();
+      APP.roomRef = ref;
+      APP.roomListener = snap=>{
+        const room = snap.val() || {};
+        const state = room.state;
+        if(!state) return;
+        GAME.player = state.player || GAME.player;
+        GAME.enemy = state.enemy || GAME.enemy;
+        GAME.puck = state.puck || GAME.puck;
+        GAME.scorePlayer = state.scorePlayer || 0;
+        GAME.scoreEnemy = state.scoreEnemy || 0;
+        GAME.countdown = state.countdown || 0;
+        GAME.message = state.message || "";
+        updateScoreUI();
+        updateSkillUI();
+      };
+      ref.on("value", APP.roomListener);
     }
 
     auth.signInAnonymously()
