@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-  <title>Hockey Legends v3000 Fixed</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+  <title>Hockey Legends シンプル完全版</title>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -12,111 +12,91 @@
 
   <style>
     :root{
-      --bg0:#06101f;
-      --bg1:#0d1d38;
-      --panel:rgba(10,18,38,.92);
-      --line:rgba(255,255,255,.10);
-      --text:#eef5ff;
-      --muted:#b9c8ef;
-      --cyan:#67e8f9;
+      --bg1:#081220;
+      --bg2:#10233f;
+      --panel:rgba(8,16,32,.92);
+      --line:rgba(255,255,255,.12);
+      --text:#eef4ff;
+      --muted:#b8c8ea;
       --blue:#60a5fa;
       --violet:#a78bfa;
-      --green:#34d399;
-      --yellow:#fbbf24;
+      --green:#22c55e;
+      --cyan:#06b6d4;
+      --yellow:#f59e0b;
       --red:#fb7185;
-      --orange:#fb923c;
-      --shadow:0 18px 60px rgba(0,0,0,.45);
     }
-
-    *{
-      box-sizing:border-box;
-      -webkit-tap-highlight-color:transparent;
-    }
-
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{
       margin:0;
       width:100%;
       height:100%;
       overflow:hidden;
+      font-family:"Segoe UI","Yu Gothic UI","Meiryo",sans-serif;
       color:var(--text);
-      font-family:"Segoe UI","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
-      background:
-        radial-gradient(circle at 20% 18%, rgba(96,165,250,.16), transparent 20%),
-        radial-gradient(circle at 82% 14%, rgba(167,139,250,.15), transparent 18%),
-        radial-gradient(circle at 50% 85%, rgba(52,211,153,.08), transparent 20%),
-        linear-gradient(160deg,var(--bg0),var(--bg1));
-      user-select:none;
+      background:linear-gradient(160deg,var(--bg1),var(--bg2));
     }
 
     .screen{
       width:100%;
       height:100%;
     }
-
     .hidden{
       display:none !important;
     }
 
-    .panel{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
-    }
-
     button,input{
       font:inherit;
-      border:none;
-      outline:none;
-      border-radius:14px;
-    }
-
-    input{
-      width:100%;
-      padding:12px 14px;
-      background:rgba(255,255,255,.08);
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.08);
     }
 
     button{
-      padding:12px 14px;
-      color:#fff;
+      border:none;
+      border-radius:14px;
+      padding:12px 16px;
       font-weight:800;
+      color:#fff;
       cursor:pointer;
-      min-height:46px;
-      transition:.14s transform,.14s filter;
       pointer-events:auto;
     }
+    button:active{transform:scale(.98)}
 
-    button:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.06);
-    }
-
-    button:active{
-      transform:translateY(1px) scale(.985);
+    input{
+      border:none;
+      outline:none;
+      border-radius:14px;
+      padding:12px 14px;
+      background:rgba(255,255,255,.1);
+      color:#fff;
+      width:100%;
     }
 
     .btn-main{background:linear-gradient(135deg,var(--blue),var(--violet))}
     .btn-cpu{background:linear-gradient(135deg,#16a34a,#22c55e)}
     .btn-online{background:linear-gradient(135deg,#0284c7,#06b6d4)}
     .btn-rank{background:linear-gradient(135deg,#ca8a04,#f59e0b)}
-    .btn-sub{background:rgba(255,255,255,.10)}
     .btn-danger{background:linear-gradient(135deg,#dc2626,#fb7185)}
-    .btn-copy{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
-    .btn-tour{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+    .btn-sub{background:rgba(255,255,255,.12)}
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:0 12px 30px rgba(0,0,0,.3);
+    }
 
     .status{
-      min-height:44px;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(255,255,255,.06);
+      background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
-      color:var(--text);
+      border-radius:14px;
+      padding:10px 12px;
       font-size:13px;
       line-height:1.6;
+      color:var(--muted);
+    }
+
+    .title{
+      font-size:32px;
+      font-weight:900;
+      margin:0 0 8px;
     }
 
     .label{
@@ -125,151 +105,80 @@
       margin-bottom:8px;
     }
 
-    .row{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-
-    .wrap{
-      flex-wrap:wrap;
-    }
-
-    .col{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .section-title{
-      font-size:15px;
-      font-weight:900;
-      margin-bottom:10px;
-    }
+    .row{display:flex;gap:8px;align-items:center}
+    .col{display:flex;flex-direction:column;gap:8px}
+    .wrap{flex-wrap:wrap}
 
     /* menu */
     #menuScreen{
-      padding:12px;
+      padding:16px;
       display:grid;
-      grid-template-columns:380px 1fr;
-      gap:12px;
-      position:relative;
-      z-index:2;
+      grid-template-columns:360px 1fr;
+      gap:14px;
     }
 
-    .menu-left{
+    .menuLeft{
       padding:14px;
       overflow:auto;
     }
 
-    .title{
-      font-size:30px;
-      font-weight:900;
-      margin:0 0 8px;
-      letter-spacing:.03em;
-    }
-
-    .sub{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.7;
-      margin-bottom:14px;
-    }
-
-    .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:12px;
-      margin-bottom:12px;
-    }
-
-    .menu-main{
+    .menuMain{
       display:grid;
       grid-template-rows:auto 1fr auto;
-      gap:12px;
+      gap:14px;
       min-width:0;
       min-height:0;
     }
 
     .hero{
-      padding:14px;
+      padding:18px;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.2fr 1fr;
-      gap:12px;
-      min-height:0;
-      height:100%;
-    }
-
-    .hero-card,.list-card{
-      padding:14px;
-      min-height:0;
-      overflow:auto;
-    }
-
-    .hero-title{
-      font-size:38px;
-      font-weight:900;
-      line-height:1.15;
+    .hero h2{
       margin:0 0 10px;
+      font-size:38px;
+      line-height:1.15;
     }
 
-    .hero-text{
+    .hero p{
       color:var(--muted);
       line-height:1.8;
-      font-size:14px;
-      margin-bottom:14px;
+      margin:0 0 16px;
     }
 
-    .menu-buttons{
+    .menuButtons{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:10px;
     }
 
+    .card{
+      padding:14px;
+    }
+
     .grid2{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:8px;
+      gap:10px;
     }
 
-    .pick-btn{
-      min-height:66px;
-      text-align:left;
+    .pickBtn{
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.1);
+      text-align:left;
+      min-height:64px;
     }
 
-    .pick-btn.active{
-      outline:2px solid rgba(103,232,249,.8);
+    .pickBtn.active{
+      outline:2px solid #7dd3fc;
       background:linear-gradient(135deg,rgba(96,165,250,.25),rgba(167,139,250,.22));
-    }
-
-    .pick-name{
-      font-size:14px;
-      font-weight:900;
-    }
-
-    .pick-meta{
-      font-size:11px;
-      color:#d7e4ff;
-      opacity:.88;
-    }
-
-    .bottom-menu{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:12px;
     }
 
     .list{
       display:flex;
       flex-direction:column;
       gap:8px;
-      max-height:260px;
+      max-height:240px;
       overflow:auto;
     }
 
@@ -285,19 +194,18 @@
       font-size:13px;
     }
 
-    .meta{
-      font-size:12px;
-      color:var(--muted);
+    .bottomGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:14px;
     }
 
     /* battle */
     #battleScreen{
-      padding:10px;
+      padding:12px;
       display:grid;
       grid-template-rows:auto 1fr auto;
       gap:12px;
-      position:relative;
-      z-index:1;
     }
 
     .topbar{
@@ -309,35 +217,34 @@
       align-items:center;
     }
 
-    .pill-wrap{
+    .pillWrap{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      align-items:center;
     }
 
     .pill{
-      padding:8px 12px;
-      border-radius:999px;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      padding:8px 12px;
       font-size:13px;
     }
 
-    .arena-panel{
-      position:relative;
+    .arenaWrap{
       padding:12px;
+      position:relative;
       min-height:0;
     }
 
-    .arena-card{
+    .arena{
       width:100%;
       height:100%;
-      border-radius:26px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.1);
-      background:#07111f;
       position:relative;
+      overflow:hidden;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.1);
+      background:#0b1a30;
     }
 
     canvas{
@@ -353,51 +260,47 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:16px;
-      background:rgba(0,0,0,.18);
-      z-index:5;
+      background:rgba(0,0,0,.25);
+      z-index:10;
     }
 
     .overlay.hidden{
       display:none !important;
-      pointer-events:none !important;
     }
 
-    .overlay-box{
-      width:min(860px,96%);
-      border-radius:24px;
-      padding:22px;
-      background:rgba(6,14,28,.92);
+    .overlayBox{
+      width:min(760px,92%);
+      background:rgba(10,18,32,.96);
       border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow);
+      border-radius:22px;
+      padding:24px;
       text-align:center;
     }
 
-    .overlay-title{
+    .overlayTitle{
       font-size:30px;
       font-weight:900;
       margin-bottom:10px;
     }
 
-    .overlay-text{
+    .overlayText{
       white-space:pre-line;
       color:var(--muted);
       line-height:1.8;
-      margin-bottom:16px;
+      margin-bottom:14px;
     }
 
-    .battle-bottom{
+    .battleBottom{
       display:grid;
-      grid-template-columns:1.3fr .9fr .9fr;
+      grid-template-columns:1.2fr .9fr .9fr;
       gap:12px;
     }
 
-    .control-panel,.watch-panel,.rank-panel{
-      padding:12px;
-      min-height:172px;
+    .controlPanel,.watchPanel,.rankPanel{
+      padding:14px;
     }
 
-    .control-grid{
+    .controlGrid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
       gap:8px;
@@ -406,7 +309,6 @@
 
     .touch{
       min-height:58px;
-      font-size:18px;
       background:linear-gradient(135deg,rgba(96,165,250,.24),rgba(167,139,250,.22));
       border:1px solid rgba(255,255,255,.12);
     }
@@ -415,7 +317,7 @@
       background:linear-gradient(135deg,rgba(251,191,36,.26),rgba(251,113,133,.22));
     }
 
-    .touch.hiddenbtn{
+    .touch.blank{
       visibility:hidden;
     }
 
@@ -426,80 +328,61 @@
       margin-top:10px;
     }
 
-    .devicePc .pcOnly{display:block}
-    .devicePc .mobileOnly{display:none}
-    .devicePc #touchWrap{display:none!important}
+    .pcOnly{display:block}
+    .mobileOnly{display:none}
+    #touchWrap{display:none}
 
-    .deviceMobile .pcOnly{display:none}
-    .deviceMobile .mobileOnly{display:block}
-    .deviceMobile #touchWrap{display:block!important}
-
-    @media (max-width:1100px){
+    @media (max-width:1000px){
       #menuScreen{
         grid-template-columns:1fr;
         grid-template-rows:auto 1fr;
       }
-      .hero-grid{
+      .bottomGrid{
         grid-template-columns:1fr;
       }
-      .bottom-menu{
-        grid-template-columns:1fr;
-      }
-      .battle-bottom{
+      .battleBottom{
         grid-template-columns:1fr;
       }
     }
 
-    @media (max-width:720px){
-      .title{font-size:24px}
-      .hero-title{font-size:28px}
-      .menu-buttons{grid-template-columns:1fr}
-      .control-grid{
+    @media (max-width:800px){
+      .pcOnly{display:none}
+      .mobileOnly{display:block}
+      #touchWrap{display:block}
+      .menuButtons{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr 1fr}
+      .controlGrid{
         grid-template-columns:repeat(4,1fr);
         max-width:none;
-      }
-      .touch{
-        min-height:64px;
-        font-size:18px;
-      }
-      .overlay-title{
-        font-size:24px;
       }
     }
   </style>
 </head>
 <body>
+
   <section id="menuScreen" class="screen">
-    <aside class="panel menu-left">
-      <h1 class="title">🏒 Hockey Legends v3000</h1>
-      <div class="sub">
-        ボタン修正版。<br>
-        index.html 1枚でそのまま使える版。
-      </div>
+    <aside class="panel menuLeft">
+      <h1 class="title">🏒 Hockey Legends</h1>
+      <div class="status">メニュー画面と対戦画面は完全に別です。</div>
 
-      <div class="card">
-        <div class="label">Firebase設定</div>
-        <div class="status">
-          下の <b>firebaseConfig</b> を自分の値に変えて使う
-        </div>
-      </div>
+      <div style="height:12px"></div>
 
-      <div class="card">
+      <div class="card panel">
         <div class="label">プレイヤー情報</div>
         <div class="col">
           <input id="nicknameInput" maxlength="16" placeholder="ニックネームを入力" />
           <button type="button" id="saveNickBtn" class="btn-main">ニックネーム保存</button>
         </div>
         <div style="height:8px"></div>
-        <div class="status" id="authStatus">Firebase初期化中...</div>
+        <div id="authStatus" class="status">Firebase初期化中...</div>
       </div>
 
-      <div class="card">
-        <div class="label">オンライン入室 / 観戦</div>
+      <div class="card panel">
+        <div class="label">オンライン</div>
         <div class="col">
           <button type="button" id="createRoomBtn" class="btn-online">ルーム作成</button>
           <div class="row">
-            <input id="roomCodeInput" maxlength="6" placeholder="対戦ルームコード6文字" />
+            <input id="roomCodeInput" maxlength="6" placeholder="ルームコード6文字" />
             <button type="button" id="joinRoomBtn" class="btn-online">参加</button>
           </div>
           <div class="row">
@@ -507,15 +390,15 @@
             <button type="button" id="watchRoomBtn" class="btn-online">観戦</button>
           </div>
           <div class="row">
-            <input id="currentRoomCode" readonly placeholder="作成されたルームコード" />
-            <button type="button" id="copyRoomBtn" class="btn-copy">コピー</button>
+            <input id="currentRoomCode" readonly placeholder="作成したコード" />
+            <button type="button" id="copyRoomBtn" class="btn-sub">コピー</button>
           </div>
         </div>
         <div style="height:8px"></div>
-        <div class="status" id="onlineStatus">まだルームに入っていません。</div>
+        <div id="onlineStatus" class="status">まだルームに入っていません。</div>
       </div>
 
-      <div class="card">
+      <div class="card panel">
         <div class="label">CPU対戦</div>
         <div class="row wrap">
           <button type="button" class="btn-cpu diffBtn" data-diff="0">EASY</button>
@@ -525,83 +408,60 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card panel">
         <div class="label">メニュー</div>
         <div class="row wrap">
           <button type="button" id="gotoHelpBtn" class="btn-sub">操作説明</button>
-          <button type="button" id="gotoRankingBtn" class="btn-rank">ランキング</button>
-          <button type="button" id="gotoTournamentBtn" class="btn-tour">トーナメント</button>
+          <button type="button" id="gotoRankingBtn" class="btn-rank">ランキング更新</button>
+          <button type="button" id="gotoTournamentBtn" class="btn-main">トーナメント</button>
         </div>
       </div>
     </aside>
 
-    <main class="menu-main">
+    <main class="menuMain">
       <div class="panel hero">
-        <div class="hero-grid">
-          <div class="hero-card">
-            <div class="hero-title">ホッケーアプリ版<br>ボタン修正版</div>
-            <div class="hero-text">
-              メニュー画面と対戦画面を完全分離。<br>
-              前後左右移動、必殺シュート、HP制演出、観戦、観戦者一覧、ルーム一覧、トーナメント、ランキング入り。
-            </div>
-            <div class="menu-buttons">
-              <button type="button" id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
-              <button type="button" id="menuOnlineBtn" class="btn-online">オンライン対戦へ</button>
-              <button type="button" id="menuWatchBtn" class="btn-online">観戦へ</button>
-              <button type="button" id="menuTournamentBtn" class="btn-tour">トーナメント開始</button>
-            </div>
-          </div>
-
-          <div class="list-card">
-            <div class="section-title">公開ルーム一覧</div>
-            <div id="roomList" class="list">
-              <div class="item"><div>読み込み中...</div><div>-</div></div>
-            </div>
-          </div>
+        <h2>全部コピペ用<br>ボタン正常版</h2>
+        <p>
+          CPU対戦、オンライン、観戦、前後左右移動、必殺、HP制、ランキング、トーナメント入り。<br>
+          まずはメニュー画面のボタンが押せることを優先して作り直した版です。
+        </p>
+        <div class="menuButtons">
+          <button type="button" id="menuCpuBtn" class="btn-cpu">CPU対戦を始める</button>
+          <button type="button" id="menuOnlineBtn" class="btn-online">オンライン対戦へ</button>
+          <button type="button" id="menuWatchBtn" class="btn-online">観戦へ</button>
+          <button type="button" id="menuTournamentBtn" class="btn-main">トーナメント開始</button>
         </div>
       </div>
 
-      <div class="bottom-menu">
-        <div class="panel hero-card">
+      <div class="bottomGrid">
+        <div class="panel card">
           <div class="section-title">キャラ選択</div>
           <div class="grid2">
-            <button type="button" class="pick-btn charBtn active" data-char="balanced">
-              <div class="pick-name">🛡️ BALANCED</div>
-              <div class="pick-meta">標準HP / 標準速度</div>
-            </button>
-            <button type="button" class="pick-btn charBtn" data-char="speed">
-              <div class="pick-name">⚡ SPEED</div>
-              <div class="pick-meta">低HP / 高速移動</div>
-            </button>
-            <button type="button" class="pick-btn charBtn" data-char="power">
-              <div class="pick-name">💥 POWER</div>
-              <div class="pick-meta">高HP / 強い当たり</div>
-            </button>
-            <button type="button" class="pick-btn charBtn" data-char="tech">
-              <div class="pick-name">🌀 TECH</div>
-              <div class="pick-meta">変化球必殺</div>
-            </button>
+            <button type="button" class="pickBtn charBtn active" data-char="balanced">🛡️ BALANCED</button>
+            <button type="button" class="pickBtn charBtn" data-char="speed">⚡ SPEED</button>
+            <button type="button" class="pickBtn charBtn" data-char="power">💥 POWER</button>
+            <button type="button" class="pickBtn charBtn" data-char="tech">🌀 TECH</button>
           </div>
           <div style="height:8px"></div>
-          <div class="status" id="charStatus">BALANCED: 全体的にバランス型</div>
+          <div id="charStatus" class="status">BALANCED: バランス型</div>
         </div>
 
-        <div class="panel hero-card">
+        <div class="panel card">
           <div class="section-title">ステージ選択</div>
           <div class="grid2">
-            <button type="button" class="pick-btn stageBtn active" data-stage="classic">CLASSIC</button>
-            <button type="button" class="pick-btn stageBtn" data-stage="neon">NEON</button>
-            <button type="button" class="pick-btn stageBtn" data-stage="lava">LAVA</button>
-            <button type="button" class="pick-btn stageBtn" data-stage="ice">ICE</button>
+            <button type="button" class="pickBtn stageBtn active" data-stage="classic">CLASSIC</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="neon">NEON</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="lava">LAVA</button>
+            <button type="button" class="pickBtn stageBtn" data-stage="ice">ICE</button>
           </div>
           <div style="height:8px"></div>
-          <div class="status" id="stageStatus">CLASSIC: 標準ステージ</div>
+          <div id="stageStatus" class="status">CLASSIC: 標準ステージ</div>
         </div>
 
-        <div class="panel hero-card">
-          <div class="section-title">トーナメント表</div>
-          <div id="tournamentList" class="list">
-            <div class="item"><div>まだ開始していません</div><div>-</div></div>
+        <div class="panel card">
+          <div class="section-title">公開ルーム一覧</div>
+          <div id="roomList" class="list">
+            <div class="item"><div>読み込み中...</div><div>-</div></div>
           </div>
         </div>
       </div>
@@ -610,14 +470,14 @@
 
   <section id="battleScreen" class="screen hidden">
     <div class="panel topbar">
-      <div class="pill-wrap">
+      <div class="pillWrap">
         <div class="pill">モード: <span id="modeLabel">MENU</span></div>
         <div class="pill">プレイヤー: <span id="nickLabel">Guest</span></div>
         <div class="pill">状態: <span id="stateLabel">待機中</span></div>
         <div class="pill">キャラ: <span id="charLabel">BALANCED</span></div>
         <div class="pill">ステージ: <span id="stageLabel">CLASSIC</span></div>
       </div>
-      <div class="pill-wrap">
+      <div class="pillWrap">
         <div class="pill">あなた <span id="scorePlayer">0</span></div>
         <div class="pill">相手 <span id="scoreEnemy">0</span></div>
         <div class="pill">必殺 <span id="skillGaugeLabel">100%</span></div>
@@ -625,14 +485,14 @@
       </div>
     </div>
 
-    <div class="panel arena-panel">
-      <div class="arena-card">
+    <div class="panel arenaWrap">
+      <div class="arena">
         <canvas id="gameCanvas" width="1280" height="720"></canvas>
 
         <div id="overlay" class="overlay hidden">
-          <div class="overlay-box">
-            <div id="overlayTitle" class="overlay-title">Hockey Legends v3000</div>
-            <div id="overlayText" class="overlay-text">準備完了です。</div>
+          <div class="overlayBox">
+            <div id="overlayTitle" class="overlayTitle">試合準備</div>
+            <div id="overlayText" class="overlayText">試合開始を押してください。</div>
             <div class="row wrap" style="justify-content:center">
               <button type="button" id="overlayStartBtn" class="btn-main">試合開始</button>
               <button type="button" id="overlayRematchBtn" class="btn-main">再戦</button>
@@ -643,8 +503,8 @@
       </div>
     </div>
 
-    <div class="battle-bottom">
-      <div class="panel control-panel">
+    <div class="battleBottom">
+      <div class="panel controlPanel">
         <div class="section-title">操作説明</div>
 
         <div class="note pcOnly">
@@ -652,7 +512,7 @@
           W/S または ↑/↓ : 上下移動<br>
           A/D または ←/→ : 前後移動<br>
           Shift : ダッシュ<br>
-          F : 必殺シュート<br>
+          F : 必殺<br>
           Space : 開始 / 再開
         </div>
 
@@ -664,30 +524,30 @@
           START : 開始
         </div>
 
-        <div id="touchWrap" style="margin-top:12px;">
-          <div class="control-grid">
-            <button type="button" class="touch hiddenbtn"></button>
+        <div id="touchWrap">
+          <div class="controlGrid">
+            <button type="button" class="touch blank"></button>
             <button type="button" class="touch" id="touchUp">↑</button>
-            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch blank"></button>
             <button type="button" class="touch fire" id="touchSkill">SKILL</button>
             <button type="button" class="touch fire" id="touchStart">START</button>
 
             <button type="button" class="touch" id="touchLeft">←</button>
-            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch blank"></button>
             <button type="button" class="touch" id="touchRight">→</button>
             <button type="button" class="touch" id="touchDash">DASH</button>
             <button type="button" class="touch" id="touchPause">PAUSE</button>
 
-            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch blank"></button>
             <button type="button" class="touch" id="touchDown">↓</button>
-            <button type="button" class="touch hiddenbtn"></button>
-            <button type="button" class="touch hiddenbtn"></button>
-            <button type="button" class="touch hiddenbtn"></button>
+            <button type="button" class="touch blank"></button>
+            <button type="button" class="touch blank"></button>
+            <button type="button" class="touch blank"></button>
           </div>
         </div>
       </div>
 
-      <div class="panel watch-panel">
+      <div class="panel watchPanel">
         <div class="section-title">観戦者一覧</div>
         <div id="watcherList" class="list">
           <div class="item"><div>まだ観戦者はいません</div><div>-</div></div>
@@ -701,7 +561,7 @@
         </div>
       </div>
 
-      <div class="panel rank-panel">
+      <div class="panel rankPanel">
         <div class="section-title">ランキング TOP10</div>
         <div id="rankingList" class="list">
           <div class="item"><div>読み込み中...</div><div>0</div></div>
@@ -729,48 +589,19 @@
     const $ = (id) => document.getElementById(id);
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
     const rand = (a,b)=>Math.random()*(b-a)+a;
-    const isMobile = matchMedia("(max-width: 900px), (pointer: coarse)").matches;
-    document.body.classList.add(isMobile ? "deviceMobile" : "devicePc");
-
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
-    function ensureAudio(){
-      if(!audioCtx) audioCtx = new AudioCtx();
-      if(audioCtx.state === "suspended") audioCtx.resume();
-    }
-    function beep(freq=440,duration=0.08,type="sine",gain=0.03,glideTo=null){
-      try{
-        ensureAudio();
-        const osc = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        if(glideTo) osc.frequency.exponentialRampToValueAtTime(glideTo, audioCtx.currentTime + duration);
-        g.gain.setValueAtTime(gain, audioCtx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-        osc.connect(g); g.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + duration);
-      }catch(e){}
-    }
-    const sfxMenu = ()=>beep(500,0.05,"triangle",0.02,700);
-    const sfxHit = ()=>beep(420,0.05,"square",0.02,320);
-    const sfxGoal = ()=>{beep(680,0.09,"sawtooth",0.04,900); setTimeout(()=>beep(880,0.11,"triangle",0.04,1200),70);};
-    const sfxLose = ()=>beep(220,0.15,"sawtooth",0.04,130);
-    const sfxWin = ()=>{beep(660,0.08,"triangle",0.04,900); setTimeout(()=>beep(880,0.09,"triangle",0.04,1200),90); setTimeout(()=>beep(1320,0.12,"triangle",0.04,1500),180);};
-    const sfxSkill = ()=>{beep(300,0.08,"sawtooth",0.04,1200); setTimeout(()=>beep(1100,0.10,"square",0.03,1700),60);};
 
     const CHARACTERS = {
-      balanced:{ name:"BALANCED", icon:"🛡️", speed:7.8, dash:1.30, radius:34, skillPower:21, skillCurve:0, hp:100, color:"#67e8f9", desc:"BALANCED: 全体的にバランス型" },
-      speed:{ name:"SPEED", icon:"⚡", speed:9.1, dash:1.55, radius:31, skillPower:18, skillCurve:0.4, hp:86, color:"#34d399", desc:"SPEED: 低HP / 高速移動" },
-      power:{ name:"POWER", icon:"💥", speed:7.0, dash:1.24, radius:37, skillPower:28, skillCurve:0, hp:118, color:"#fb923c", desc:"POWER: 高HP / 強い当たり" },
-      tech:{ name:"TECH", icon:"🌀", speed:7.9, dash:1.33, radius:33, skillPower:20, skillCurve:1.5, hp:95, color:"#a78bfa", desc:"TECH: 変化球必殺" }
+      balanced:{ name:"BALANCED", icon:"🛡️", speed:7.8, dash:1.30, radius:34, skillPower:21, hp:100, color:"#67e8f9", desc:"BALANCED: バランス型" },
+      speed:{ name:"SPEED", icon:"⚡", speed:9.1, dash:1.55, radius:31, skillPower:18, hp:86, color:"#34d399", desc:"SPEED: 高速移動型" },
+      power:{ name:"POWER", icon:"💥", speed:7.0, dash:1.24, radius:37, skillPower:28, hp:118, color:"#fb923c", desc:"POWER: 高HP型" },
+      tech:{ name:"TECH", icon:"🌀", speed:7.9, dash:1.33, radius:33, skillPower:20, hp:95, color:"#a78bfa", desc:"TECH: テクニック型" }
     };
 
     const STAGES = {
-      classic:{ name:"CLASSIC", desc:"CLASSIC: 標準ステージ", bgTop:"#0c1b33", bgBottom:"#07111f", glowLeft:"rgba(251,113,133,.14)", glowRight:"rgba(103,232,249,.14)", friction:0.9988 },
-      neon:{ name:"NEON", desc:"NEON: 発光が強い近未来ステージ", bgTop:"#120b29", bgBottom:"#07111f", glowLeft:"rgba(251,113,133,.22)", glowRight:"rgba(167,139,250,.24)", friction:0.9992 },
-      lava:{ name:"LAVA", desc:"LAVA: 高速ステージ", bgTop:"#3a130a", bgBottom:"#12060a", glowLeft:"rgba(251,113,133,.24)", glowRight:"rgba(251,191,36,.22)", friction:0.9994 },
-      ice:{ name:"ICE", desc:"ICE: 滑りやすい高速ステージ", bgTop:"#0c2336", bgBottom:"#08121a", glowLeft:"rgba(96,165,250,.18)", glowRight:"rgba(103,232,249,.20)", friction:0.9996 }
+      classic:{ name:"CLASSIC", desc:"CLASSIC: 標準ステージ", bgTop:"#0c1b33", bgBottom:"#07111f", friction:0.9988 },
+      neon:{ name:"NEON", desc:"NEON: ネオンステージ", bgTop:"#120b29", bgBottom:"#07111f", friction:0.9992 },
+      lava:{ name:"LAVA", desc:"LAVA: 高速ステージ", bgTop:"#3a130a", bgBottom:"#12060a", friction:0.9994 },
+      ice:{ name:"ICE", desc:"ICE: 滑りやすい高速ステージ", bgTop:"#0c2336", bgBottom:"#08121a", friction:0.9996 }
     };
 
     const DIFF = [
@@ -797,9 +628,6 @@
       tournament:null
     };
 
-    $("nicknameInput").value = APP.nickname;
-    $("nickLabel").textContent = APP.nickname;
-
     const canvas = $("gameCanvas");
     const ctx = canvas.getContext("2d");
     const W = canvas.width;
@@ -810,32 +638,48 @@
     const GAME = {
       player:{ x:180, y:H/2, r:34, vx:0, vy:0, color:"#67e8f9", skillGauge:100, skillActive:0, hp:100, hpMax:100, char:"balanced" },
       enemy:{ x:W-180, y:H/2, r:34, vx:0, vy:0, color:"#fb7185", skillGauge:100, skillActive:0, hp:100, hpMax:100, char:"balanced" },
-      puck:{ x:W/2, y:H/2, r:18, vx:0, vy:0, lastTouch:"none", trail:[] },
+      puck:{ x:W/2, y:H/2, r:18, vx:0, vy:0, trail:[] },
       scorePlayer:0,
       scoreEnemy:0,
-      winner:null,
       message:"START",
-      countdown:0,
-      particles:[],
-      shockwaves:[]
+      countdown:0
     };
 
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[m]));
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    function ensureAudio(){
+      if(!audioCtx) audioCtx = new AudioCtx();
+      if(audioCtx.state === "suspended") audioCtx.resume();
     }
-
-    function makeCode(){
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let s = "";
-      for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
-      return s;
+    function beep(freq=440,duration=0.08,type="sine",gain=0.03){
+      try{
+        ensureAudio();
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        g.gain.value = gain;
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start();
+        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.stop(audioCtx.currentTime + duration);
+      }catch(e){}
     }
 
     function setScreen(name){
       $("menuScreen").classList.toggle("hidden", name !== "menu");
       $("battleScreen").classList.toggle("hidden", name !== "battle");
+    }
+
+    function showOverlay(title,text){
+      $("overlayTitle").textContent = title;
+      $("overlayText").textContent = text;
+      $("overlay").classList.remove("hidden");
+    }
+
+    function hideOverlay(){
+      $("overlay").classList.add("hidden");
     }
 
     function setAuthStatus(v){ $("authStatus").textContent = v; }
@@ -868,19 +712,9 @@
       $("stageLabel").textContent = STAGES[APP.selectedStage].name;
     }
 
-    function showOverlay(title,text){
-      $("overlayTitle").textContent = title;
-      $("overlayText").textContent = text;
-      $("overlay").classList.remove("hidden");
-    }
-
-    function hideOverlay(){
-      $("overlay").classList.add("hidden");
-    }
-
-    function applyCharacterTo(obj, charKey){
-      const c = CHARACTERS[charKey] || CHARACTERS.balanced;
-      obj.char = charKey;
+    function applyCharacter(obj, key){
+      const c = CHARACTERS[key];
+      obj.char = key;
       obj.r = c.radius;
       obj.color = c.color;
       obj.hpMax = c.hp;
@@ -889,32 +723,25 @@
       obj.skillActive = 0;
     }
 
-    function resetPositions(dir = Math.random()<0.5 ? -1 : 1){
+    function resetPositions(dir = 1){
       GAME.player.x = 180;
-      GAME.player.y = H/2;
-      GAME.enemy.x = W-180;
-      GAME.enemy.y = H/2;
-      GAME.player.vx = GAME.player.vy = 0;
-      GAME.enemy.vx = GAME.enemy.vy = 0;
-      GAME.puck.x = W/2;
-      GAME.puck.y = H/2;
+      GAME.player.y = H / 2;
+      GAME.enemy.x = W - 180;
+      GAME.enemy.y = H / 2;
+      GAME.puck.x = W / 2;
+      GAME.puck.y = H / 2;
       GAME.puck.vx = 8 * dir;
-      GAME.puck.vy = rand(-3.8,3.8);
-      GAME.puck.lastTouch = "none";
-      GAME.puck.trail = [];
+      GAME.puck.vy = rand(-3,3);
       GAME.countdown = 60;
     }
 
-    function fullReset(enemyChar = "balanced"){
-      applyCharacterTo(GAME.player, APP.selectedChar);
-      applyCharacterTo(GAME.enemy, enemyChar);
+    function fullReset(enemyChar="balanced"){
+      applyCharacter(GAME.player, APP.selectedChar);
+      applyCharacter(GAME.enemy, enemyChar);
       GAME.scorePlayer = 0;
       GAME.scoreEnemy = 0;
-      GAME.winner = null;
       GAME.message = "START";
-      GAME.particles = [];
-      GAME.shockwaves = [];
-      resetPositions();
+      resetPositions(Math.random() < 0.5 ? -1 : 1);
       updateScoreUI();
       updateSkillLabel();
     }
@@ -923,36 +750,271 @@
       return STAGES[APP.selectedStage];
     }
 
-    auth.signInAnonymously()
-      .then(()=>{ $("firebaseState").textContent = "OK"; })
-      .catch(err=>{
-        console.error(err);
-        $("firebaseState").textContent = "失敗";
-        setAuthStatus("匿名認証に失敗しました。Authentication の匿名認証をONにしてください。");
-      });
+    function getAxisX(){
+      let a = 0;
+      if(APP.keys["a"] || APP.keys["arrowleft"] || APP.mobile.left) a -= 1;
+      if(APP.keys["d"] || APP.keys["arrowright"] || APP.mobile.right) a += 1;
+      return a;
+    }
 
-    auth.onAuthStateChanged(user=>{
-      if(!user) return;
-      APP.uid = user.uid;
-      setAuthStatus("匿名認証に成功しました。UID: " + user.uid.slice(0,8) + "...");
-      fetchRanking();
-      subscribeRoomList();
-    });
+    function getAxisY(){
+      let a = 0;
+      if(APP.keys["w"] || APP.keys["arrowup"] || APP.mobile.up) a -= 1;
+      if(APP.keys["s"] || APP.keys["arrowdown"] || APP.mobile.down) a += 1;
+      return a;
+    }
+
+    function getDash(){
+      return !!(APP.keys["shift"] || APP.mobile.dash);
+    }
+
+    function getSkill(){
+      return !!(APP.keys["f"] || APP.mobile.skill);
+    }
+
+    function movePlayer(obj, axisX, axisY, speed, dash, isLeft){
+      const mult = dash ? 1.35 : 1;
+      obj.x += axisX * speed * mult;
+      obj.y += axisY * speed * mult;
+
+      if(isLeft){
+        obj.x = clamp(obj.x, 60 + obj.r, W/2 - 80 - obj.r);
+      }else{
+        obj.x = clamp(obj.x, W/2 + 80 + obj.r, W - 60 - obj.r);
+      }
+      obj.y = clamp(obj.y, 60 + obj.r, H - 60 - obj.r);
+    }
+
+    function dist(ax, ay, bx, by){
+      return Math.hypot(ax - bx, ay - by);
+    }
+
+    function updateSkillGauge(obj, add=0.06){
+      obj.skillGauge = clamp(obj.skillGauge + add, 0, 100);
+    }
+
+    function activateSkill(obj){
+      if(obj.skillGauge < 100) return false;
+      obj.skillGauge = 0;
+      obj.skillActive = 40;
+      beep(900,0.08,"sawtooth",0.03);
+      return true;
+    }
+
+    function scoreGoal(side){
+      if(side === "player"){
+        GAME.scorePlayer++;
+        GAME.message = "GOAL!";
+        beep(800,0.08,"triangle",0.03);
+        resetPositions(-1);
+      }else{
+        GAME.scoreEnemy++;
+        GAME.message = "LOST POINT";
+        beep(250,0.12,"sawtooth",0.03);
+        resetPositions(1);
+      }
+      updateScoreUI();
+      if(GAME.scorePlayer >= WIN_SCORE) finishGame("player");
+      if(GAME.scoreEnemy >= WIN_SCORE) finishGame("enemy");
+    }
+
+    function finishGame(winner){
+      APP.gameState = "ended";
+      GAME.message = winner === "player" ? "YOU WIN!" : "YOU LOSE!";
+      if(winner === "player"){
+        submitWin(APP.mode === "online" ? "online" : "cpu");
+        beep(1100,0.1,"triangle",0.03);
+      }else{
+        beep(220,0.12,"sawtooth",0.03);
+      }
+      showOverlay(winner === "player" ? "🎉 YOU WIN!" : "💥 YOU LOSE!", "再戦するかメニューへ戻ってください。");
+    }
+
+    function updatePuck(){
+      if(GAME.countdown > 0){
+        GAME.countdown--;
+        return;
+      }
+
+      GAME.puck.x += GAME.puck.vx;
+      GAME.puck.y += GAME.puck.vy;
+
+      GAME.puck.vx *= currentStage().friction;
+      GAME.puck.vy *= currentStage().friction;
+
+      const sp = Math.hypot(GAME.puck.vx, GAME.puck.vy);
+      if(sp < 6.2){
+        const ang = Math.atan2(GAME.puck.vy || 1, GAME.puck.vx || 1);
+        GAME.puck.vx = Math.cos(ang) * 6.2;
+        GAME.puck.vy = Math.sin(ang) * 6.2;
+      }
+
+      if(GAME.puck.y - GAME.puck.r <= 34){
+        GAME.puck.y = 34 + GAME.puck.r;
+        GAME.puck.vy *= -1;
+      }
+      if(GAME.puck.y + GAME.puck.r >= H - 34){
+        GAME.puck.y = H - 34 - GAME.puck.r;
+        GAME.puck.vy *= -1;
+      }
+
+      const inGoal = GAME.puck.y > H/2 - GOAL_H/2 && GAME.puck.y < H/2 + GOAL_H/2;
+
+      if(GAME.puck.x - GAME.puck.r <= 18){
+        if(inGoal) scoreGoal("enemy");
+        else{
+          GAME.puck.x = 18 + GAME.puck.r;
+          GAME.puck.vx *= -1;
+        }
+      }
+      if(GAME.puck.x + GAME.puck.r >= W - 18){
+        if(inGoal) scoreGoal("player");
+        else{
+          GAME.puck.x = W - 18 - GAME.puck.r;
+          GAME.puck.vx *= -1;
+        }
+      }
+
+      const d1 = dist(GAME.player.x, GAME.player.y, GAME.puck.x, GAME.puck.y);
+      if(d1 < GAME.player.r + GAME.puck.r){
+        const nx = (GAME.puck.x - GAME.player.x) / (d1 || 1);
+        const ny = (GAME.puck.y - GAME.player.y) / (d1 || 1);
+        const boost = GAME.player.skillActive > 0 ? 7 : 3;
+        GAME.puck.vx = nx * (8 + boost);
+        GAME.puck.vy = ny * (8 + boost);
+        GAME.enemy.hp = Math.max(0, GAME.enemy.hp - (GAME.player.skillActive > 0 ? 18 : 6));
+        if(GAME.player.skillActive > 0) GAME.player.skillActive--;
+        if(GAME.enemy.hp <= 0) finishGame("player");
+      }
+
+      const d2 = dist(GAME.enemy.x, GAME.enemy.y, GAME.puck.x, GAME.puck.y);
+      if(d2 < GAME.enemy.r + GAME.puck.r){
+        const nx = (GAME.puck.x - GAME.enemy.x) / (d2 || 1);
+        const ny = (GAME.puck.y - GAME.enemy.y) / (d2 || 1);
+        const boost = GAME.enemy.skillActive > 0 ? 7 : 3;
+        GAME.puck.vx = nx * (8 + boost);
+        GAME.puck.vy = ny * (8 + boost);
+        GAME.player.hp = Math.max(0, GAME.player.hp - (GAME.enemy.skillActive > 0 ? 18 : 6));
+        if(GAME.enemy.skillActive > 0) GAME.enemy.skillActive--;
+        if(GAME.player.hp <= 0) finishGame("enemy");
+      }
+    }
+
+    function updateCpuMode(){
+      const pChar = CHARACTERS[APP.selectedChar];
+      movePlayer(GAME.player, getAxisX(), getAxisY(), pChar.speed, getDash(), true);
+      updateSkillGauge(GAME.player);
+      if(getSkill()) activateSkill(GAME.player);
+
+      const diff = DIFF[APP.cpuLevel];
+      const ax = clamp((GAME.puck.x - GAME.enemy.x) * diff.react / 20, -1, 1);
+      const ay = clamp((GAME.puck.y - GAME.enemy.y) * diff.react / 20, -1, 1);
+      movePlayer(GAME.enemy, ax, ay, diff.speed, Math.abs(ax)+Math.abs(ay) > 1, false);
+
+      updateSkillGauge(GAME.enemy, 0.08);
+      if(GAME.enemy.skillGauge >= 100 && Math.random() < diff.skillUse){
+        activateSkill(GAME.enemy);
+      }
+
+      updatePuck();
+    }
+
+    function updateOnlineMode(){
+      if(APP.onlineRole === "host"){
+        updateCpuMode();
+      }
+    }
+
+    function drawBackground(){
+      const st = currentStage();
+      const bg = ctx.createLinearGradient(0,0,0,H);
+      bg.addColorStop(0, st.bgTop);
+      bg.addColorStop(1, st.bgBottom);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,W,H);
+
+      ctx.strokeStyle = "rgba(255,255,255,.12)";
+      ctx.lineWidth = 8;
+      ctx.strokeRect(18,18,W-36,H-36);
+
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(W/2,34);
+      ctx.lineTo(W/2,H-34);
+      ctx.stroke();
+
+      ctx.strokeRect(0,H/2-GOAL_H/2,22,GOAL_H);
+      ctx.strokeRect(W-22,H/2-GOAL_H/2,22,GOAL_H);
+    }
+
+    function drawDisc(x,y,r,color,label,emoji){
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff";
+      ctx.font = `${Math.max(22,r)}px Segoe UI Emoji`;
+      ctx.textAlign = "center";
+      ctx.fillText(emoji, x, y + 8);
+
+      ctx.font = "800 14px Segoe UI";
+      ctx.fillText(label, x, y + r + 22);
+      ctx.restore();
+    }
+
+    function drawBar(x,y,w,h,val,max,color){
+      ctx.fillStyle = "rgba(255,255,255,.08)";
+      ctx.fillRect(x,y,w,h);
+      ctx.fillStyle = color;
+      ctx.fillRect(x,y,w*(val/max),h);
+      ctx.strokeStyle = "rgba(255,255,255,.25)";
+      ctx.strokeRect(x,y,w,h);
+    }
+
+    function drawArena(){
+      drawBackground();
+
+      drawDisc(GAME.player.x, GAME.player.y, GAME.player.r, GAME.player.color, "YOU", CHARACTERS[GAME.player.char].icon);
+      drawDisc(GAME.enemy.x, GAME.enemy.y, GAME.enemy.r, GAME.enemy.color, APP.mode === "cpu" ? "CPU" : "RIVAL", CHARACTERS[GAME.enemy.char].icon);
+
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(GAME.puck.x, GAME.puck.y, GAME.puck.r, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.font = "900 48px Segoe UI";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(255,255,255,.92)";
+      const msg = GAME.countdown > 0 ? String(Math.ceil(GAME.countdown / 20)) : GAME.message;
+      ctx.fillText(msg, W/2, 70);
+
+      drawBar(40,20,260,16,GAME.player.hp,GAME.player.hpMax,"#22c55e");
+      drawBar(W-300,20,260,16,GAME.enemy.hp,GAME.enemy.hpMax,"#fb7185");
+
+      drawBar(40,H-40,220,14,GAME.player.skillGauge,100,GAME.player.color);
+      drawBar(W-260,H-40,220,14,GAME.enemy.skillGauge,100,GAME.enemy.color);
+    }
 
     async function submitWin(modeName){
       if(!APP.uid) return;
-      const safeName = (APP.nickname || "Guest").slice(0,16);
-      const docRef = fdb.collection("ranking").doc(APP.uid);
-      const doc = await docRef.get();
-      const prev = doc.exists ? doc.data() : { name:safeName, score:0, cpuWins:0, onlineWins:0 };
-      await docRef.set({
-        name:safeName,
-        score:(prev.score||0)+1,
-        cpuWins:(prev.cpuWins||0)+(modeName==="cpu"?1:0),
-        onlineWins:(prev.onlineWins||0)+(modeName==="online"?1:0),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, {merge:true});
-      fetchRanking();
+      try{
+        const safeName = (APP.nickname || "Guest").slice(0,16);
+        const docRef = fdb.collection("ranking").doc(APP.uid);
+        const doc = await docRef.get();
+        const prev = doc.exists ? doc.data() : { name:safeName, score:0, cpuWins:0, onlineWins:0 };
+        await docRef.set({
+          name:safeName,
+          score:(prev.score||0)+1,
+          cpuWins:(prev.cpuWins||0)+(modeName==="cpu"?1:0),
+          onlineWins:(prev.onlineWins||0)+(modeName==="online"?1:0),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, {merge:true});
+        fetchRanking();
+      }catch(e){
+        console.error(e);
+      }
     }
 
     async function fetchRanking(){
@@ -968,7 +1030,7 @@
           const r = doc.data();
           const div = document.createElement("div");
           div.className = "item";
-          div.innerHTML = `<div><div><b>${i+1}. ${escapeHtml(r.name||"Guest")}</b></div><div class="meta">CPU:${r.cpuWins||0} / ONLINE:${r.onlineWins||0}</div></div><div><b>${r.score||0}</b></div>`;
+          div.innerHTML = `<div><b>${i+1}. ${r.name || "Guest"}</b></div><div><b>${r.score || 0}</b></div>`;
           list.appendChild(div);
         });
       }catch(e){
@@ -979,7 +1041,7 @@
     function subscribeRoomList(){
       rtdb.ref("rooms").on("value", snap=>{
         const rooms = snap.val() || {};
-        const arr = Object.values(rooms).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).slice(0,12);
+        const arr = Object.values(rooms);
         const list = $("roomList");
         list.innerHTML = "";
         if(!arr.length){
@@ -987,354 +1049,237 @@
           return;
         }
         arr.forEach(room=>{
-          const watcherCount = room.watchers ? Object.keys(room.watchers).length : 0;
           const div = document.createElement("div");
           div.className = "item";
           div.innerHTML = `
             <div>
-              <div><b>${escapeHtml(room.code || "------")}</b> / ${escapeHtml(room.hostName || "Host")} vs ${escapeHtml(room.guestName || "Guest")}</div>
-              <div class="meta">状態:${escapeHtml(room.status || "waiting")} / 観戦:${watcherCount} / ステージ:${escapeHtml(room.stage || "classic")}</div>
+              <div><b>${room.code || "------"}</b></div>
+              <div class="meta">${room.hostName || "Host"} vs ${room.guestName || "Guest"}</div>
             </div>
             <div class="row">
-              <button type="button" class="btn-online" data-join="${escapeHtml(room.code || "")}">参加</button>
-              <button type="button" class="btn-sub" data-watch="${escapeHtml(room.code || "")}">観戦</button>
+              <button type="button" class="btn-online joinBtn" data-code="${room.code || ""}">参加</button>
+              <button type="button" class="btn-sub watchBtn" data-code="${room.code || ""}">観戦</button>
             </div>
           `;
           list.appendChild(div);
         });
-        list.querySelectorAll("[data-join]").forEach(btn=>btn.onclick=()=>joinRoom(btn.dataset.join));
-        list.querySelectorAll("[data-watch]").forEach(btn=>btn.onclick=()=>watchRoom(btn.dataset.watch));
+        list.querySelectorAll(".joinBtn").forEach(btn=>{
+          btn.onclick = ()=>joinRoom(btn.dataset.code);
+        });
+        list.querySelectorAll(".watchBtn").forEach(btn=>{
+          btn.onclick = ()=>watchRoom(btn.dataset.code);
+        });
       });
-    }
-
-    function renderTournament(){
-      const list = $("tournamentList");
-      list.innerHTML = "";
-      if(!APP.tournament){
-        list.innerHTML = `<div class="item"><div>まだ開始していません</div><div>-</div></div>`;
-        return;
-      }
-      APP.tournament.matches.forEach((m, i)=>{
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `<div><b>Match ${i+1}</b> : ${m.a} vs ${m.b}<div class="meta">勝者: ${m.winner || "未定"}</div></div><div>${m.done ? "完了" : "進行中"}</div>`;
-        list.appendChild(div);
-      });
-    }
-
-    function startTournament(){
-      APP.tournament = {
-        active:true,
-        current:0,
-        matches:[
-          {a:APP.nickname || "YOU", b:"CPU-A", winner:null, done:false},
-          {a:"CPU-B", b:"CPU-C", winner:null, done:false},
-          {a:"CPU-D", b:"CPU-E", winner:null, done:false}
-        ],
-        winners:[]
-      };
-      renderTournament();
-      APP.cpuLevel = 2;
-      APP.mode = "tournament";
-      APP.gameState = "idle";
-      setModeLabel("TOURNAMENT");
-      setStateLabel("トーナメント 1回戦");
-      setScreen("battle");
-      fullReset("power");
-      showOverlay("トーナメント", "1回戦を開始します。試合開始を押してください。");
-    }
-
-    function progressTournament(playerWon){
-      if(!APP.tournament || !APP.tournament.active) return;
-      const m = APP.tournament.matches[APP.tournament.current];
-      if(!m.done){
-        m.done = true;
-        m.winner = playerWon ? m.a : m.b;
-        APP.tournament.winners.push(m.winner);
-      }
-      APP.tournament.current++;
-
-      if(APP.tournament.current >= APP.tournament.matches.length){
-        if(APP.tournament.winners.length >= 3){
-          const finalA = APP.tournament.winners[0];
-          const finalB = APP.tournament.winners[1];
-          APP.tournament.matches.push({a:finalA,b:finalB,winner:null,done:false});
-          APP.tournament.current = APP.tournament.matches.length - 1;
-          APP.tournament.winners = [APP.tournament.winners[2]];
-          renderTournament();
-          fullReset("tech");
-          APP.gameState = "idle";
-          showOverlay("トーナメント 続行", `${finalA} vs ${finalB}\n試合開始を押してください。`);
-          return;
-        }
-        APP.tournament.active = false;
-        renderTournament();
-        APP.gameState = "idle";
-        showOverlay("トーナメント終了", "トーナメントが終了しました。");
-        return;
-      }
-
-      renderTournament();
-      fullReset("speed");
-      APP.gameState = "idle";
-      showOverlay("次の試合", `${APP.tournament.matches[APP.tournament.current].a} vs ${APP.tournament.matches[APP.tournament.current].b}\n試合開始を押してください。`);
-    }
-
-    function updateWatcherList(room){
-      const list = $("watcherList");
-      const watchers = room && room.watchers ? Object.values(room.watchers) : [];
-      list.innerHTML = "";
-      if(!watchers.length){
-        list.innerHTML = `<div class="item"><div>まだ観戦者はいません</div><div>-</div></div>`;
-        return;
-      }
-      watchers.forEach(w=>{
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `<div>${escapeHtml(w.name || "Spectator")}</div><div>👀</div>`;
-        list.appendChild(div);
-      });
-    }
-
-    function detachRoom(){
-      if(APP.roomRef){
-        if(APP.onlineRole === "spectator" && APP.uid){
-          APP.roomRef.child("watchers/" + APP.uid).remove().catch(()=>{});
-        }
-        APP.roomRef.off();
-      }
-      APP.roomRef = null;
-      APP.roomCache = null;
     }
 
     async function createRoom(){
-      if(!APP.uid){ setOnlineStatus("まだFirebase認証中です。"); return; }
-      detachRoom();
-      let code = makeCode();
-      let snap = await rtdb.ref("rooms/" + code).once("value");
-      while(snap.exists()){
-        code = makeCode();
-        snap = await rtdb.ref("rooms/" + code).once("value");
+      if(!APP.uid){
+        setOnlineStatus("まだFirebase認証中です。");
+        return;
       }
-
-      const ref = rtdb.ref("rooms/" + code);
-      await ref.set({
-        code,
-        status:"waiting",
-        hostUid:APP.uid,
-        hostName:APP.nickname,
-        guestUid:null,
-        guestName:null,
-        hostChar:APP.selectedChar,
-        guestChar:"balanced",
-        stage:APP.selectedStage,
-        hostInput:{ x:180, y:H/2, dash:false, skill:false },
-        guestInput:{ x:W-180, y:H/2, dash:false, skill:false },
-        rematchVotes:{ host:false, guest:false },
-        watchers:{},
-        game:{
-          playerX:180, playerY:H/2, enemyX:W-180, enemyY:H/2,
-          puckX:W/2, puckY:H/2, puckVX:8, puckVY:0,
-          scorePlayer:0, scoreEnemy:0,
-          playerHP:CHARACTERS[APP.selectedChar].hp, playerHPMax:CHARACTERS[APP.selectedChar].hp,
-          enemyHP:CHARACTERS.balanced.hp, enemyHPMax:CHARACTERS.balanced.hp,
-          playerSkillGauge:100, enemySkillGauge:100,
-          countdown:60, message:"READY", winner:""
-        },
-        updatedAt: firebase.database.ServerValue.TIMESTAMP
-      });
-
+      const code = makeCode();
       APP.roomCode = code;
-      APP.onlineRole = "host";
-      APP.roomRef = ref;
       $("currentRoomCode").value = code;
-      bindRoomListener();
-
+      setOnlineStatus("ルームを作成しました: " + code);
       APP.mode = "online";
-      APP.gameState = "idle";
+      APP.onlineRole = "host";
       setModeLabel("ONLINE");
       setStateLabel("オンライン HOST");
       setScreen("battle");
       fullReset("balanced");
-      showOverlay("ルーム作成", `ルームコード: ${code}\n相手を待っています。`);
-      setOnlineStatus("ルームを作成しました。コード: " + code);
+      showOverlay("ルーム作成", `ルームコード: ${code}\n試合開始を押してください。`);
     }
 
     async function joinRoom(code){
-      if(!APP.uid){ setOnlineStatus("まだFirebase認証中です。"); return; }
-      code = String(code||"").trim().toUpperCase();
-      if(code.length !== 6){ setOnlineStatus("ルームコードは6文字です。"); return; }
-      detachRoom();
-
-      const ref = rtdb.ref("rooms/" + code);
-      const snap = await ref.once("value");
-      if(!snap.exists()){ setOnlineStatus("そのルームは存在しません。"); return; }
-      const room = snap.val();
-      if(room.guestUid && room.guestUid !== APP.uid){ setOnlineStatus("そのルームは満員です。"); return; }
-
-      await ref.update({
-        guestUid:APP.uid,
-        guestName:APP.nickname,
-        guestChar:APP.selectedChar,
-        status:"playing",
-        updatedAt: firebase.database.ServerValue.TIMESTAMP
-      });
-
+      code = String(code || "").trim().toUpperCase();
+      if(code.length !== 6){
+        setOnlineStatus("ルームコードは6文字です。");
+        return;
+      }
       APP.roomCode = code;
-      APP.onlineRole = "guest";
-      APP.roomRef = ref;
-      $("currentRoomCode").value = code;
-      bindRoomListener();
-
       APP.mode = "online";
-      APP.gameState = "idle";
+      APP.onlineRole = "guest";
       setModeLabel("ONLINE");
       setStateLabel("オンライン GUEST");
       setScreen("battle");
+      fullReset("balanced");
       showOverlay("参加完了", `ルーム ${code} に参加しました。\n試合開始を押してください。`);
-      setOnlineStatus("ルーム " + code + " に参加しました。");
     }
 
     async function watchRoom(code){
-      if(!APP.uid){ setOnlineStatus("まだFirebase認証中です。"); return; }
-      code = String(code||"").trim().toUpperCase();
-      if(code.length !== 6){ setOnlineStatus("観戦コードは6文字です。"); return; }
-      detachRoom();
-
-      const ref = rtdb.ref("rooms/" + code);
-      const snap = await ref.once("value");
-      if(!snap.exists()){ setOnlineStatus("そのルームは存在しません。"); return; }
-
+      code = String(code || "").trim().toUpperCase();
+      if(code.length !== 6){
+        setOnlineStatus("観戦コードは6文字です。");
+        return;
+      }
       APP.roomCode = code;
-      APP.onlineRole = "spectator";
-      APP.roomRef = ref;
-      $("currentRoomCode").value = code;
-      await ref.child("watchers/" + APP.uid).set({ name:APP.nickname, joinedAt: firebase.database.ServerValue.TIMESTAMP });
-      bindRoomListener();
-
       APP.mode = "watch";
-      APP.gameState = "playing";
+      APP.onlineRole = "spectator";
       setModeLabel("WATCH");
       setStateLabel("観戦中");
       setScreen("battle");
-      showOverlay("観戦", `ルーム ${code} を観戦しています。`);
-      setOnlineStatus("観戦中: " + code);
+      showOverlay("観戦", `ルーム ${code} を観戦中です。`);
     }
 
     async function leaveRoom(){
-      if(!APP.roomCode){
-        APP.mode = "menu";
-        APP.gameState = "idle";
-        setScreen("menu");
-        return;
-      }
-
-      const ref = rtdb.ref("rooms/" + APP.roomCode);
-      const snap = await ref.once("value");
-      const room = snap.val();
-
-      if(room){
-        if(APP.onlineRole === "host"){
-          await ref.remove();
-        }else if(APP.onlineRole === "guest"){
-          await ref.update({
-            guestUid:null,
-            guestName:null,
-            guestChar:"balanced",
-            status:"waiting",
-            rematchVotes:{ host:false, guest:false },
-            updatedAt: firebase.database.ServerValue.TIMESTAMP
-          });
-        }else if(APP.onlineRole === "spectator"){
-          await ref.child("watchers/" + APP.uid).remove();
-        }
-      }
-
-      detachRoom();
       APP.roomCode = "";
       APP.onlineRole = null;
-      $("currentRoomCode").value = "";
       APP.mode = "menu";
       APP.gameState = "idle";
       setScreen("menu");
+      hideOverlay();
     }
 
-    function bindRoomListener(){
-      if(!APP.roomRef) return;
+    function startTournament(){
+      APP.mode = "tournament";
+      APP.gameState = "idle";
+      setModeLabel("TOURNAMENT");
+      setStateLabel("トーナメント");
+      setScreen("battle");
+      fullReset("power");
+      showOverlay("トーナメント", "試合開始を押してください。");
+    }
 
-      APP.roomRef.on("value", snap=>{
-        const room = snap.val();
-        APP.roomCache = room;
-
-        if(!room){
-          setOnlineStatus("ルームが削除されました。");
-          APP.roomCode = "";
-          APP.onlineRole = null;
-          setScreen("menu");
-          return;
-        }
-
-        if(room.stage){
-          APP.selectedStage = room.stage;
-          updateStageUI();
-        }
-
-        updateWatcherList(room);
-
-        if(APP.onlineRole === "host"){
-          setOnlineStatus(room.guestUid ? `ゲスト参加: ${room.guestName || "Guest"} / コード:${room.code}` : `コード:${room.code} / 相手待ち`);
-        }else if(APP.onlineRole === "guest"){
-          setOnlineStatus(`ホスト:${room.hostName || "Host"} / コード:${room.code}`);
-        }else if(APP.onlineRole === "spectator"){
-          setOnlineStatus(`観戦中:${room.code} / ${room.hostName || "Host"} vs ${room.guestName || "Guest"}`);
-        }
-
-        if(room.game && (APP.onlineRole === "guest" || APP.onlineRole === "spectator")){
-          GAME.player.x = room.game.playerX ?? 180;
-          GAME.player.y = room.game.playerY ?? H/2;
-          GAME.enemy.x = room.game.enemyX ?? W-180;
-          GAME.enemy.y = room.game.enemyY ?? H/2;
-          GAME.puck.x = room.game.puckX ?? W/2;
-          GAME.puck.y = room.game.puckY ?? H/2;
-          GAME.puck.vx = room.game.puckVX ?? 0;
-          GAME.puck.vy = room.game.puckVY ?? 0;
-          GAME.scorePlayer = room.game.scorePlayer ?? 0;
-          GAME.scoreEnemy = room.game.scoreEnemy ?? 0;
-          GAME.player.hp = room.game.playerHP ?? 100;
-          GAME.player.hpMax = room.game.playerHPMax ?? 100;
-          GAME.enemy.hp = room.game.enemyHP ?? 100;
-          GAME.enemy.hpMax = room.game.enemyHPMax ?? 100;
-          GAME.player.skillGauge = room.game.playerSkillGauge ?? 100;
-          GAME.enemy.skillGauge = room.game.enemySkillGauge ?? 100;
-          GAME.countdown = room.game.countdown ?? 0;
-          GAME.message = room.game.message || "";
-          GAME.winner = room.game.winner || null;
-          updateScoreUI();
-          updateSkillLabel();
-        }
+    auth.signInAnonymously()
+      .then(()=>{
+        $("firebaseState").textContent = "OK";
+      })
+      .catch(err=>{
+        console.error(err);
+        $("firebaseState").textContent = "失敗";
+        setAuthStatus("匿名認証に失敗しました。");
       });
-    }
 
-    async function requestRematch(){
-      if(APP.mode === "cpu"){
+    auth.onAuthStateChanged(user=>{
+      if(!user) return;
+      APP.uid = user.uid;
+      setAuthStatus("匿名認証に成功しました。");
+      fetchRanking();
+      subscribeRoomList();
+    });
+
+    $("nicknameInput").value = APP.nickname;
+    $("nickLabel").textContent = APP.nickname;
+
+    $("saveNickBtn").onclick = ()=>{
+      ensureAudio();
+      APP.nickname = $("nicknameInput").value.trim().slice(0,16) || "Guest";
+      $("nickLabel").textContent = APP.nickname;
+      localStorage.setItem("hockey_nickname", APP.nickname);
+      setAuthStatus("ニックネームを保存しました。");
+      beep(500,0.05,"triangle",0.02);
+    };
+
+    document.querySelectorAll(".charBtn").forEach(btn=>{
+      btn.onclick = ()=>{
+        ensureAudio();
+        APP.selectedChar = btn.dataset.char;
+        localStorage.setItem("hockey_char", APP.selectedChar);
+        updateCharacterUI();
+        beep(500,0.05,"triangle",0.02);
+      };
+    });
+
+    document.querySelectorAll(".stageBtn").forEach(btn=>{
+      btn.onclick = ()=>{
+        ensureAudio();
+        APP.selectedStage = btn.dataset.stage;
+        localStorage.setItem("hockey_stage", APP.selectedStage);
+        updateStageUI();
+        beep(500,0.05,"triangle",0.02);
+      };
+    });
+
+    document.querySelectorAll(".diffBtn").forEach(btn=>{
+      btn.onclick = ()=>{
+        ensureAudio();
+        APP.cpuLevel = Number(btn.dataset.diff);
+        APP.mode = "cpu";
         APP.gameState = "idle";
+        setModeLabel("CPU");
+        setStateLabel("CPU対戦 " + DIFF[APP.cpuLevel].name);
+        setScreen("battle");
         fullReset("balanced");
-        showOverlay("再戦", "試合開始を押してください。");
-        return;
+        showOverlay("CPU対戦", "試合開始を押してください。");
+      };
+    });
+
+    $("createRoomBtn").onclick = ()=>{ ensureAudio(); createRoom(); };
+    $("joinRoomBtn").onclick = ()=>{ ensureAudio(); joinRoom($("roomCodeInput").value); };
+    $("watchRoomBtn").onclick = ()=>{ ensureAudio(); watchRoom($("watchCodeInput").value); };
+    $("copyRoomBtn").onclick = async ()=>{
+      const code = $("currentRoomCode").value.trim();
+      if(!code) return;
+      try{
+        await navigator.clipboard.writeText(code);
+        setOnlineStatus("コードをコピーしました。");
+      }catch(e){
+        setOnlineStatus("コピーできませんでした。");
       }
+    };
 
-      if(APP.mode === "tournament"){
-        APP.gameState = "idle";
-        showOverlay("次の試合", "試合開始を押してください。");
-        return;
-      }
+    $("gotoHelpBtn").onclick = ()=>{
+      alert("PC: W/S/A/D, Shift, F, Space\nスマホ: 画面下のボタン");
+    };
+    $("gotoRankingBtn").onclick = ()=>fetchRanking();
+    $("gotoTournamentBtn").onclick = ()=>{ ensureAudio(); startTournament(); };
 
-      if(APP.mode !== "online" || !APP.roomRef || APP.onlineRole === "spectator") return;
+    $("menuCpuBtn").onclick = ()=>{
+      ensureAudio();
+      APP.cpuLevel = 1;
+      APP.mode = "cpu";
+      APP.gameState = "idle";
+      setModeLabel("CPU");
+      setStateLabel("CPU対戦 NORMAL");
+      setScreen("battle");
+      fullReset("balanced");
+      showOverlay("CPU対戦", "試合開始を押してください。");
+    };
 
-      const key = APP.onlineRole === "host" ? "host" : "guest";
-      await APP.roomRef.child("rematchVotes/" + key).set(true);
-      showOverlay("再戦申請", "相手の再戦待ちです。");
-    }
+    $("menuOnlineBtn").onclick = ()=>{
+      alert("左側のルーム作成 / 参加を使ってください。");
+    };
+
+    $("menuWatchBtn").onclick = ()=>{
+      alert("左側の観戦コード入力を使ってください。");
+    };
+
+    $("menuTournamentBtn").onclick = ()=>{
+      ensureAudio();
+      startTournament();
+    };
+
+    $("overlayStartBtn").onclick = ()=>{
+      ensureAudio();
+      APP.gameState = "playing";
+      hideOverlay();
+    };
+
+    $("overlayRematchBtn").onclick = ()=>{
+      ensureAudio();
+      fullReset("balanced");
+      APP.gameState = "idle";
+      showOverlay("再戦", "試合開始を押してください。");
+    };
+
+    $("overlayMenuBtn").onclick = ()=>{
+      leaveRoom();
+    };
+
+    $("battleBackMenuBtn").onclick = ()=>{
+      leaveRoom();
+    };
+
+    $("leaveRoomBtn").onclick = ()=>{
+      leaveRoom();
+    };
+
+    $("rematchBtn").onclick = ()=>{
+      ensureAudio();
+      fullReset("balanced");
+      APP.gameState = "idle";
+      showOverlay("再戦", "試合開始を押してください。");
+    };
 
     window.addEventListener("keydown", e=>{
       APP.keys[e.key.toLowerCase()] = true;
@@ -1343,24 +1288,18 @@
         if(APP.mode !== "menu"){
           APP.gameState = "playing";
           hideOverlay();
-          ensureAudio();
         }
-      }
-      if(e.key.toLowerCase() === "f"){
-        APP.keys.skill = true;
-        ensureAudio();
       }
     });
 
     window.addEventListener("keyup", e=>{
       APP.keys[e.key.toLowerCase()] = false;
-      if(e.key.toLowerCase() === "f") APP.keys.skill = false;
     });
 
     function bindHold(id, key){
       const el = $(id);
-      const on = e=>{ e.preventDefault(); ensureAudio(); APP.mobile[key] = true; };
-      const off = e=>{ e.preventDefault(); APP.mobile[key] = false; };
+      const on = (e)=>{ e.preventDefault(); APP.mobile[key] = true; };
+      const off = (e)=>{ e.preventDefault(); APP.mobile[key] = false; };
       ["touchstart","mousedown"].forEach(ev=>el.addEventListener(ev,on,{passive:false}));
       ["touchend","touchcancel","mouseup","mouseleave"].forEach(ev=>el.addEventListener(ev,off,{passive:false}));
     }
@@ -1372,645 +1311,40 @@
     bindHold("touchDash","dash");
     bindHold("touchSkill","skill");
 
-    $("touchStart").onclick = ()=>{ ensureAudio(); APP.gameState = "playing"; hideOverlay(); };
-    $("touchPause").onclick = ()=>{ APP.gameState = "paused"; showOverlay("PAUSE","START または Space で再開できます。"); };
-
-    function getAxisY(){
-      if(APP.onlineRole === "spectator") return 0;
-      let a = 0;
-      if(APP.keys["w"] || APP.keys["arrowup"] || APP.mobile.up) a -= 1;
-      if(APP.keys["s"] || APP.keys["arrowdown"] || APP.mobile.down) a += 1;
-      return a;
-    }
-
-    function getAxisX(){
-      if(APP.onlineRole === "spectator") return 0;
-      let a = 0;
-      if(APP.keys["a"] || APP.keys["arrowleft"] || APP.mobile.left) a -= 1;
-      if(APP.keys["d"] || APP.keys["arrowright"] || APP.mobile.right) a += 1;
-      return a;
-    }
-
-    function getDash(){ return !!(APP.keys["shift"] || APP.mobile.dash); }
-    function getSkill(){ return !!(APP.keys.skill || APP.mobile.skill); }
-
-    function updateSkillGauge(obj, gain=0.055){
-      obj.skillGauge = clamp(obj.skillGauge + gain, 0, 100);
-    }
-
-    function activateSkill(obj){
-      if(obj.skillGauge < 100) return false;
-      obj.skillGauge = 0;
-      obj.skillActive = 45;
-      spawnShockwave(obj.x, obj.y, obj.color);
-      sfxSkill();
-      return true;
-    }
-
-    function spawnHit(x,y,color,count=8,speed=3.5){
-      for(let i=0;i<count;i++){
-        GAME.particles.push({ x,y, vx:rand(-speed,speed), vy:rand(-speed,speed), life:rand(16,34), color });
-      }
-    }
-
-    function spawnShockwave(x,y,color){
-      GAME.shockwaves.push({ x,y,r:8,life:18,color });
-    }
-
-    function playerBounds(isLeft, r){
-      if(isLeft){
-        return { minX: 60 + r, maxX: W/2 - 80 - r, minY: 60 + r, maxY: H - 60 - r };
-      }
-      return { minX: W/2 + 80 + r, maxX: W - 60 - r, minY: 60 + r, maxY: H - 60 - r };
-    }
-
-    function movePaddle(obj, axisX, axisY, speed, dashMul, isLeft){
-      obj.vx = axisX * speed * dashMul;
-      obj.vy = axisY * speed * dashMul;
-      obj.x += obj.vx;
-      obj.y += obj.vy;
-      const b = playerBounds(isLeft, obj.r);
-      obj.x = clamp(obj.x, b.minX, b.maxX);
-      obj.y = clamp(obj.y, b.minY, b.maxY);
-    }
-
-    function damageEnemy(target, amount){
-      target.hp = clamp(target.hp - amount, 0, target.hpMax);
-      if(target.hp <= 0){
-        finishGame(target === GAME.enemy ? "player" : "enemy");
-      }
-    }
-
-    function circleBounce(p, target, isPlayer){
-      const dx = GAME.puck.x - p.x;
-      const dy = GAME.puck.y - p.y;
-      const dist = Math.hypot(dx,dy);
-      const minDist = GAME.puck.r + p.r;
-      if(dist < minDist){
-        const nx = dx / (dist || 1);
-        const ny = dy / (dist || 1);
-        const overlap = minDist - dist;
-        GAME.puck.x += nx * overlap;
-        GAME.puck.y += ny * overlap;
-
-        const char = CHARACTERS[p.char] || CHARACTERS.balanced;
-        const skillBoost = p.skillActive > 0 ? char.skillPower * 0.35 : 0;
-        const base = Math.hypot(GAME.puck.vx, GAME.puck.vy) + 1.8 + skillBoost * 0.06;
-        GAME.puck.vx = nx * base + p.vx * 0.25 + (isPlayer ? 1.4 : -1.4);
-        GAME.puck.vy = ny * base + p.vy * 0.25 + (p.skillActive > 0 ? char.skillCurve * 0.7 : 0);
-        GAME.puck.lastTouch = isPlayer ? "player" : "enemy";
-
-        const dmg = p.skillActive > 0 ? 18 : 6;
-        damageEnemy(target, dmg);
-        spawnHit(GAME.puck.x, GAME.puck.y, p.color, p.skillActive > 0 ? 18 : 8, p.skillActive > 0 ? 6 : 3.5);
-        if(p.skillActive > 0) spawnShockwave(GAME.puck.x, GAME.puck.y, p.color);
-        sfxHit();
-      }
-    }
-
-    function enforceMinPuckSpeed(){
-      if(GAME.countdown > 0) return;
-      const speed = Math.hypot(GAME.puck.vx, GAME.puck.vy);
-      const minSpeed = 6.2;
-      if(speed < minSpeed){
-        const angle = Math.atan2(GAME.puck.vy || rand(-1,1), GAME.puck.vx || (Math.random()<0.5?-1:1));
-        GAME.puck.vx = Math.cos(angle) * minSpeed;
-        GAME.puck.vy = Math.sin(angle) * minSpeed;
-      }
-    }
-
-    function scoreGoal(side){
-      if(side === "player"){
-        GAME.scorePlayer++;
-        GAME.message = "GOAL!";
-        spawnShockwave(W-80,H/2,GAME.player.color);
-        sfxGoal();
-        resetPositions(-1);
-      }else{
-        GAME.scoreEnemy++;
-        GAME.message = "LOST POINT";
-        spawnShockwave(80,H/2,GAME.enemy.color);
-        sfxGoal();
-        resetPositions(1);
-      }
-      updateScoreUI();
-      if(GAME.scorePlayer >= WIN_SCORE) finishGame("player");
-      if(GAME.scoreEnemy >= WIN_SCORE) finishGame("enemy");
-    }
-
-    function finishGame(winner){
-      if(APP.gameState === "ended") return;
-      APP.gameState = "ended";
-      GAME.winner = winner;
-      GAME.message = winner === "player" ? "YOU WIN!" : "YOU LOSE!";
-      if(winner === "player"){
-        sfxWin();
-        if(APP.mode === "cpu") submitWin("cpu");
-        if(APP.mode === "online") submitWin("online");
-        if(APP.mode === "tournament") progressTournament(true);
-        showOverlay("🎉 YOU WIN!", "再戦するかメニューへ戻ってください。");
-      }else{
-        sfxLose();
-        if(APP.mode === "tournament") progressTournament(false);
-        showOverlay("💥 YOU LOSE!", "再戦するかメニューへ戻ってください。");
-      }
-    }
-
-    function updatePuck(){
-      if(GAME.countdown > 0){
-        GAME.countdown--;
-        return;
-      }
-
-      GAME.puck.trail.push({ x:GAME.puck.x, y:GAME.puck.y, life:10 });
-      if(GAME.puck.trail.length > 12) GAME.puck.trail.shift();
-
-      GAME.puck.x += GAME.puck.vx;
-      GAME.puck.y += GAME.puck.vy;
-
-      const friction = currentStage().friction;
-      GAME.puck.vx *= friction;
-      GAME.puck.vy *= friction;
-
-      if(GAME.player.skillActive > 0) GAME.player.skillActive--;
-      if(GAME.enemy.skillActive > 0) GAME.enemy.skillActive--;
-
-      if(Math.abs(GAME.puck.vx) > 24) GAME.puck.vx *= 0.992;
-      if(Math.abs(GAME.puck.vy) > 24) GAME.puck.vy *= 0.992;
-
-      if(GAME.puck.y - GAME.puck.r <= 34){
-        GAME.puck.y = 34 + GAME.puck.r;
-        GAME.puck.vy *= -1;
-        sfxHit();
-      }
-      if(GAME.puck.y + GAME.puck.r >= H - 34){
-        GAME.puck.y = H - 34 - GAME.puck.r;
-        GAME.puck.vy *= -1;
-        sfxHit();
-      }
-
-      const inGoal = GAME.puck.y > H/2 - GOAL_H/2 && GAME.puck.y < H/2 + GOAL_H/2;
-      if(GAME.puck.x - GAME.puck.r <= 18){
-        if(inGoal) scoreGoal("enemy");
-        else{
-          GAME.puck.x = 18 + GAME.puck.r;
-          GAME.puck.vx *= -1;
-          sfxHit();
-        }
-      }
-      if(GAME.puck.x + GAME.puck.r >= W - 18){
-        if(inGoal) scoreGoal("player");
-        else{
-          GAME.puck.x = W - 18 - GAME.puck.r;
-          GAME.puck.vx *= -1;
-          sfxHit();
-        }
-      }
-
-      circleBounce(GAME.player, GAME.enemy, true);
-      circleBounce(GAME.enemy, GAME.player, false);
-      enforceMinPuckSpeed();
-    }
-
-    function updateParticles(){
-      for(let i=GAME.particles.length-1;i>=0;i--){
-        const p = GAME.particles[i];
-        p.x += p.vx; p.y += p.vy; p.vx *= .98; p.vy *= .98; p.life--;
-        if(p.life <= 0) GAME.particles.splice(i,1);
-      }
-      for(let i=GAME.shockwaves.length-1;i>=0;i--){
-        const s = GAME.shockwaves[i];
-        s.r += 8; s.life--;
-        if(s.life <= 0) GAME.shockwaves.splice(i,1);
-      }
-      GAME.puck.trail.forEach(t=>t.life--);
-      GAME.puck.trail = GAME.puck.trail.filter(t=>t.life>0);
-    }
-
-    function updateCpuMode(){
-      const char = CHARACTERS[APP.selectedChar];
-      movePaddle(GAME.player, getAxisX(), getAxisY(), char.speed, getDash()?char.dash:1, true);
-      updateSkillGauge(GAME.player);
-      if(getSkill()) activateSkill(GAME.player);
-
-      const diff = DIFF[APP.cpuLevel];
-      const cpuChar = CHARACTERS[GAME.enemy.char] || CHARACTERS.balanced;
-      const tx = clamp(GAME.puck.x + GAME.puck.vx * 5, W/2 + 80 + GAME.enemy.r, W - 60 - GAME.enemy.r);
-      const ty = GAME.puck.y + GAME.puck.vy * 5;
-      const ax = clamp((tx - GAME.enemy.x) * diff.react / 12, -1, 1);
-      const ay = clamp((ty - GAME.enemy.y) * diff.react / 12, -1, 1);
-      movePaddle(GAME.enemy, ax, ay, Math.max(diff.speed, cpuChar.speed*0.8), Math.abs(ay)+Math.abs(ax) > 0.8 ? diff.dash : 1, false);
-      updateSkillGauge(GAME.enemy, 0.05 + diff.skillUse * 0.12);
-      if(GAME.enemy.skillGauge >= 100 && Math.random() < diff.skillUse) activateSkill(GAME.enemy);
-
-      updatePuck();
-    }
-
-    function pushHostInput(){
-      if(!APP.roomRef) return;
-      const char = CHARACTERS[APP.selectedChar];
-      const nx = clamp(GAME.player.x + getAxisX()*(char.speed+4), 60 + GAME.player.r, W/2 - 80 - GAME.player.r);
-      const ny = clamp(GAME.player.y + getAxisY()*(char.speed+4), 60 + GAME.player.r, H - 60 - GAME.player.r);
-      APP.roomRef.child("hostInput").set({ x:nx, y:ny, dash:getDash(), skill:getSkill() });
-    }
-
-    function pushGuestInput(){
-      if(!APP.roomRef) return;
-      const char = CHARACTERS[APP.selectedChar];
-      const nx = clamp(GAME.enemy.x + getAxisX()*(char.speed+4), W/2 + 80 + GAME.enemy.r, W - 60 - GAME.enemy.r);
-      const ny = clamp(GAME.enemy.y + getAxisY()*(char.speed+4), 60 + GAME.enemy.r, H - 60 - GAME.enemy.r);
-      APP.roomRef.child("guestInput").set({ x:nx, y:ny, dash:getDash(), skill:getSkill() });
-    }
-
-    function hostSimulate(room){
-      if(!room) return;
-
-      const hostChar = CHARACTERS[room.hostChar || APP.selectedChar] || CHARACTERS.balanced;
-      const guestChar = CHARACTERS[room.guestChar || "balanced"] || CHARACTERS.balanced;
-      applyCharacterTo(GAME.enemy, room.guestChar || "balanced");
-      GAME.enemy.hp = room.game?.enemyHP ?? GAME.enemy.hp;
-
-      const hi = room.hostInput || { x:180, y:H/2, dash:false, skill:false };
-      const gi = room.guestInput || { x:W-180, y:H/2, dash:false, skill:false };
-
-      const axH = clamp((hi.x - GAME.player.x)/16, -1, 1);
-      const ayH = clamp((hi.y - GAME.player.y)/16, -1, 1);
-      const axG = clamp((gi.x - GAME.enemy.x)/16, -1, 1);
-      const ayG = clamp((gi.y - GAME.enemy.y)/16, -1, 1);
-
-      movePaddle(GAME.player, axH, ayH, hostChar.speed, hi.dash?hostChar.dash:1, true);
-      movePaddle(GAME.enemy, axG, ayG, guestChar.speed, gi.dash?guestChar.dash:1, false);
-
-      updateSkillGauge(GAME.player);
-      updateSkillGauge(GAME.enemy);
-
-      if(hi.skill) activateSkill(GAME.player);
-      if(gi.skill) activateSkill(GAME.enemy);
-
-      updatePuck();
-
-      APP.roomRef.child("game").set({
-        playerX:GAME.player.x, playerY:GAME.player.y,
-        enemyX:GAME.enemy.x, enemyY:GAME.enemy.y,
-        puckX:GAME.puck.x, puckY:GAME.puck.y, puckVX:GAME.puck.vx, puckVY:GAME.puck.vy,
-        scorePlayer:GAME.scorePlayer, scoreEnemy:GAME.scoreEnemy,
-        playerHP:GAME.player.hp, playerHPMax:GAME.player.hpMax,
-        enemyHP:GAME.enemy.hp, enemyHPMax:GAME.enemy.hpMax,
-        playerSkillGauge:GAME.player.skillGauge, enemySkillGauge:GAME.enemy.skillGauge,
-        countdown:GAME.countdown, message:GAME.message || "", winner:GAME.winner || ""
-      });
-
-      if(room.rematchVotes && room.rematchVotes.host && room.rematchVotes.guest){
-        APP.roomRef.update({
-          rematchVotes:{ host:false, guest:false },
-          game:{
-            playerX:180, playerY:H/2, enemyX:W-180, enemyY:H/2,
-            puckX:W/2, puckY:H/2, puckVX:8*(Math.random()<0.5?-1:1), puckVY:rand(-3.8,3.8),
-            scorePlayer:0, scoreEnemy:0,
-            playerHP:hostChar.hp, playerHPMax:hostChar.hp,
-            enemyHP:guestChar.hp, enemyHPMax:guestChar.hp,
-            playerSkillGauge:100, enemySkillGauge:100,
-            countdown:60, message:"REMATCH!", winner:""
-          }
-        });
-        fullReset(room.guestChar || "balanced");
-        APP.gameState = "idle";
-        showOverlay("再戦", "試合開始を押してください。");
-      }
-    }
-
-    function updateOnlineMode(){
-      if(APP.onlineRole === "host"){
-        pushHostInput();
-        hostSimulate(APP.roomCache);
-      }else if(APP.onlineRole === "guest"){
-        pushGuestInput();
-      }
-    }
-
-    function roundRect(x,y,w,h,r){
-      ctx.beginPath();
-      ctx.moveTo(x+r,y);
-      ctx.arcTo(x+w,y,x+w,y+h,r);
-      ctx.arcTo(x+w,y+h,x,y+h,r);
-      ctx.arcTo(x,y+h,x,y,r);
-      ctx.arcTo(x,y,x+w,y,r);
-      ctx.closePath();
-    }
-
-    function drawStageBackground(){
-      const st = currentStage();
-      const bg = ctx.createLinearGradient(0,0,0,H);
-      bg.addColorStop(0, st.bgTop);
-      bg.addColorStop(1, st.bgBottom);
-      ctx.fillStyle = bg;
-      ctx.fillRect(0,0,W,H);
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255,255,255,.05)";
-      ctx.lineWidth = 1;
-      for(let x=0;x<=W;x+=48){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-      for(let y=0;y<=H;y+=48){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-      ctx.restore();
-
-      ctx.save();
-      ctx.strokeStyle = "rgba(255,255,255,.18)";
-      ctx.lineWidth = 10;
-      roundRect(18,18,W-36,H-36,24);
-      ctx.stroke();
-      ctx.lineWidth = 4;
-      ctx.beginPath(); ctx.moveTo(W/2,34); ctx.lineTo(W/2,H-34); ctx.stroke();
-      ctx.beginPath(); ctx.arc(W/2,H/2,96,0,Math.PI*2); ctx.stroke();
-      ctx.fillStyle = "rgba(255,255,255,.03)";
-      ctx.fillRect(34,34,W/2 - 114,H-68);
-      ctx.fillRect(W/2 + 80,34,W/2 - 114,H-68);
-      ctx.lineWidth = 6;
-      ctx.strokeRect(0,H/2-GOAL_H/2,22,GOAL_H);
-      ctx.strokeRect(W-22,H/2-GOAL_H/2,22,GOAL_H);
-      ctx.restore();
-
-      ctx.save();
-      ctx.fillStyle = st.glowLeft;
-      ctx.shadowBlur = 24;
-      ctx.shadowColor = st.glowLeft;
-      ctx.fillRect(0,H/2-GOAL_H/2,40,GOAL_H);
-      ctx.restore();
-
-      ctx.save();
-      ctx.fillStyle = st.glowRight;
-      ctx.shadowBlur = 24;
-      ctx.shadowColor = st.glowRight;
-      ctx.fillRect(W-40,H/2-GOAL_H/2,40,GOAL_H);
-      ctx.restore();
-    }
-
-    function drawPortrait(x, y, obj, label){
-      ctx.save();
-      const g = ctx.createRadialGradient(x-10,y-10,6,x,y,obj.r+14);
-      g.addColorStop(0,"rgba(255,255,255,.96)");
-      g.addColorStop(.18,obj.color);
-      g.addColorStop(1,"rgba(8,14,28,1)");
-      ctx.fillStyle = g;
-      ctx.shadowBlur = obj.skillActive > 0 ? 40 : 28;
-      ctx.shadowColor = obj.color;
-      ctx.beginPath();
-      ctx.arc(x,y,obj.r,0,Math.PI*2);
-      ctx.fill();
-
-      ctx.shadowBlur = 0;
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "rgba(255,255,255,.35)";
-      ctx.stroke();
-
-      if(obj.skillActive > 0){
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = "rgba(255,255,255,.7)";
-        ctx.beginPath();
-        ctx.arc(x,y,obj.r+8,0,Math.PI*2);
-        ctx.stroke();
-      }
-
-      ctx.fillStyle = "rgba(255,255,255,.22)";
-      ctx.beginPath();
-      ctx.arc(x-10,y-12,obj.r*.35,0,Math.PI*2);
-      ctx.fill();
-
-      const char = CHARACTERS[obj.char] || CHARACTERS.balanced;
-      ctx.font = `${Math.max(22,obj.r)}px Segoe UI Emoji`;
-      ctx.textAlign = "center";
-      ctx.fillStyle = "rgba(255,255,255,.95)";
-      ctx.fillText(char.icon, x, y + 8);
-      ctx.font = "800 14px Segoe UI";
-      ctx.fillText(label, x, y + obj.r + 24);
-      ctx.restore();
-    }
-
-    function drawPuck(){
-      GAME.puck.trail.forEach(t=>{
-        ctx.save();
-        ctx.globalAlpha = t.life / 10 * 0.35;
-        ctx.fillStyle = "#cfe7ff";
-        ctx.beginPath();
-        ctx.arc(t.x,t.y,10 - (10-t.life)*0.4,0,Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-      });
-
-      const x = GAME.puck.x, y = GAME.puck.y, r = GAME.puck.r;
-      ctx.save();
-      const g = ctx.createRadialGradient(x-4,y-4,3,x,y,r+10);
-      g.addColorStop(0,"#ffffff");
-      g.addColorStop(.24,"#dbeafe");
-      g.addColorStop(1,"#60a5fa");
-      ctx.fillStyle = g;
-      ctx.shadowBlur = 26;
-      ctx.shadowColor = "rgba(103,232,249,.6)";
-      ctx.beginPath();
-      ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    function drawBar(x,y,w,h,val,max,color,bg="rgba(255,255,255,.08)"){
-      ctx.save();
-      ctx.fillStyle = bg;
-      ctx.fillRect(x,y,w,h);
-      ctx.fillStyle = color;
-      ctx.fillRect(x,y,w*(val/max),h);
-      ctx.strokeStyle = "rgba(255,255,255,.2)";
-      ctx.strokeRect(x,y,w,h);
-      ctx.restore();
-    }
-
-    function drawArena(){
-      ctx.clearRect(0,0,W,H);
-      drawStageBackground();
-      drawPortrait(GAME.player.x, GAME.player.y, GAME.player, APP.onlineRole === "spectator" ? "P1" : "YOU");
-      drawPortrait(GAME.enemy.x, GAME.enemy.y, GAME.enemy, APP.mode === "cpu" ? "CPU" : (APP.onlineRole === "spectator" ? "P2" : "RIVAL"));
-      drawPuck();
-
-      GAME.particles.forEach(p=>{
-        ctx.save();
-        ctx.globalAlpha = Math.max(0,p.life/40);
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-      });
-
-      GAME.shockwaves.forEach(s=>{
-        ctx.save();
-        ctx.globalAlpha = s.life / 18 * .6;
-        ctx.strokeStyle = s.color;
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.stroke();
-        ctx.restore();
-      });
-
-      ctx.save();
-      ctx.textAlign = "center";
-      ctx.font = "900 52px Segoe UI";
-      ctx.fillStyle = "rgba(255,255,255,.92)";
-      ctx.shadowBlur = 18;
-      ctx.shadowColor = "rgba(103,232,249,.5)";
-      const msg = GAME.countdown > 0 ? String(Math.ceil(GAME.countdown / 20)) : (GAME.message || "");
-      if(msg) ctx.fillText(msg,W/2,76);
-      ctx.restore();
-
-      ctx.save();
-      ctx.font = "800 22px Segoe UI";
-      ctx.fillStyle = "rgba(255,255,255,.85)";
-      ctx.fillText(APP.mode.toUpperCase(),28,42);
-      ctx.restore();
-
-      drawBar(40, 20, 260, 16, GAME.player.hp, GAME.player.hpMax, "#34d399");
-      drawBar(W-300, 20, 260, 16, GAME.enemy.hp, GAME.enemy.hpMax, "#fb7185");
-      ctx.fillStyle = "white";
-      ctx.font = "700 13px Segoe UI";
-      ctx.fillText(`HP ${Math.ceil(GAME.player.hp)}/${GAME.player.hpMax}`, 40, 16);
-      ctx.fillText(`HP ${Math.ceil(GAME.enemy.hp)}/${GAME.enemy.hpMax}`, W-300, 16);
-
-      drawBar(40,H-40,220,14,GAME.player.skillGauge,100,GAME.player.color);
-      drawBar(W-260,H-40,220,14,GAME.enemy.skillGauge,100,GAME.enemy.color);
-    }
-
-    function startCpuMatch(level){
-      APP.cpuLevel = level;
-      APP.mode = "cpu";
-      APP.gameState = "idle";
-      setModeLabel("CPU");
-      setStateLabel("CPU対戦 " + DIFF[level].name);
-      setScreen("battle");
-      fullReset("balanced");
-      showOverlay("CPU対戦", "試合開始を押してください。");
-    }
-
-    function showHelp(){
-      alert(
-`【PC版】
-W/S または ↑/↓ : 上下移動
-A/D または ←/→ : 前後移動
-Shift : ダッシュ
-F : 必殺
-Space : 開始 / 再開
-
-【スマホ版】
-↑ ↓ ← → : 移動
-DASH : ダッシュ
-SKILL : 必殺
-START : 開始`
-      );
-    }
-
-    function startMatchFromOverlay(){
+    $("touchStart").onclick = ()=>{
       ensureAudio();
       APP.gameState = "playing";
       hideOverlay();
-    }
+    };
 
-    function backToMenuFromBattle(){
+    $("touchPause").onclick = ()=>{
       APP.gameState = "idle";
-      if(APP.onlineRole){
-        leaveRoom();
-      }else{
-        APP.mode = "menu";
-        setScreen("menu");
-      }
-    }
-
-    $("saveNickBtn").onclick = ()=>{
-      ensureAudio();
-      APP.nickname = $("nicknameInput").value.trim().slice(0,16) || "Guest";
-      localStorage.setItem("hockey_nickname", APP.nickname);
-      $("nickLabel").textContent = APP.nickname;
-      setAuthStatus("ニックネームを保存しました: " + APP.nickname);
-      sfxMenu();
+      showOverlay("PAUSE", "STARTで再開できます。");
     };
-
-    document.querySelectorAll(".charBtn").forEach(btn=>{
-      btn.onclick = ()=>{
-        ensureAudio();
-        APP.selectedChar = btn.dataset.char;
-        localStorage.setItem("hockey_char", APP.selectedChar);
-        updateCharacterUI();
-        sfxMenu();
-      };
-    });
-
-    document.querySelectorAll(".stageBtn").forEach(btn=>{
-      btn.onclick = ()=>{
-        ensureAudio();
-        APP.selectedStage = btn.dataset.stage;
-        localStorage.setItem("hockey_stage", APP.selectedStage);
-        updateStageUI();
-        sfxMenu();
-      };
-    });
-
-    document.querySelectorAll(".diffBtn").forEach(btn=>{
-      btn.onclick = ()=>{ ensureAudio(); startCpuMatch(Number(btn.dataset.diff)); };
-    });
-
-    $("createRoomBtn").onclick = ()=>{ ensureAudio(); createRoom(); };
-    $("joinRoomBtn").onclick = ()=>{ ensureAudio(); joinRoom($("roomCodeInput").value); };
-    $("watchRoomBtn").onclick = ()=>{ ensureAudio(); watchRoom($("watchCodeInput").value); };
-    $("copyRoomBtn").onclick = async ()=>{
-      ensureAudio();
-      const code = $("currentRoomCode").value.trim();
-      if(!code) return;
-      try{
-        await navigator.clipboard.writeText(code);
-        setOnlineStatus("コードをコピーしました: " + code);
-      }catch{
-        setOnlineStatus("コピーできませんでした。");
-      }
-    };
-
-    $("gotoHelpBtn").onclick = ()=>{ ensureAudio(); showHelp(); };
-    $("gotoRankingBtn").onclick = ()=>{ ensureAudio(); fetchRanking(); };
-    $("gotoTournamentBtn").onclick = ()=>{ ensureAudio(); startTournament(); };
-    $("menuCpuBtn").onclick = ()=>{ ensureAudio(); startCpuMatch(1); };
-    $("menuOnlineBtn").onclick = ()=>{ ensureAudio(); alert("左側のルーム作成 / 参加を使ってください。"); };
-    $("menuWatchBtn").onclick = ()=>{ ensureAudio(); alert("左側の観戦入力欄を使ってください。"); };
-    $("menuTournamentBtn").onclick = ()=>{ ensureAudio(); startTournament(); };
-
-    $("overlayStartBtn").onclick = startMatchFromOverlay;
-    $("overlayRematchBtn").onclick = ()=>{ ensureAudio(); requestRematch(); };
-    $("overlayMenuBtn").onclick = ()=>{ ensureAudio(); backToMenuFromBattle(); };
-    $("battleBackMenuBtn").onclick = ()=>{ ensureAudio(); backToMenuFromBattle(); };
-    $("leaveRoomBtn").onclick = ()=>{ ensureAudio(); leaveRoom(); };
-    $("rematchBtn").onclick = ()=>{ ensureAudio(); requestRematch(); };
 
     function loop(){
       requestAnimationFrame(loop);
-      updateParticles();
 
       if(APP.gameState === "playing"){
         if(APP.mode === "cpu" || APP.mode === "tournament"){
           updateCpuMode();
-        }else if(APP.mode === "online" || APP.mode === "watch"){
+        }else if(APP.mode === "online"){
           updateOnlineMode();
         }
-      }
-
-      if(!$("battleScreen").classList.contains("hidden")){
+        drawArena();
+      }else if(!$("battleScreen").classList.contains("hidden")){
         drawArena();
       }
-
       updateScoreUI();
       updateSkillLabel();
     }
-    requestAnimationFrame(loop);
 
     updateCharacterUI();
     updateStageUI();
     fullReset("balanced");
-    fetchRanking();
     setScreen("menu");
     hideOverlay();
+    loop();
   </script>
 </body>
 </html>
